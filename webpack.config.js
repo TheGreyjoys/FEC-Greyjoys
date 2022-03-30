@@ -3,7 +3,7 @@ require('dotenv').config();
 
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
-  entry: '/client/src/index.js',
+  entry: '/client/src/index.jsx',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'client/dist'),
