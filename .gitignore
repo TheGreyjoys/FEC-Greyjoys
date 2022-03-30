@@ -3,7 +3,8 @@ node_modules/
 jspm_packages/
 
 # Optional eslint cache
-.eslintcache
+.eslintrc.js
+
 
 # dotenv environment variables file
 .env
