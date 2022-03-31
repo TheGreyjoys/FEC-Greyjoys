@@ -8,6 +8,13 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'client/dist'),
   },
+  devtool: 'source-map',
+  resolve: {
+    alias: {
+      Components: path.resolve(__dirname, 'client/src/components/'),
+    },
+    extensions: ['.js', '.jsx'],
+  },
   module: {
     rules: [
       {
