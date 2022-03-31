@@ -8,7 +8,7 @@ require('dotenv').config()
 app.use('/', (req, res, next) => {
   console.log(`${req.method} at ${req.url}`);
   next();
-})
+});
 
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
@@ -38,5 +38,5 @@ app.all('*', (req, res, next) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Example app listening on port ${port}`);
+});
