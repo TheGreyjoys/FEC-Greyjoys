@@ -6,12 +6,12 @@ class App extends React.Component {
 
     this.state = {};
   }
+
   render() {
-    return(
+    return (
       <div>Hello World</div>
-    )
+    );
   }
 }
-
 
 export default App;
