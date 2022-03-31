@@ -15,8 +15,7 @@ This path generally will get info regarding products. If you want the most speci
   - gets an array of related product id's for the given product.
 
 
-
-  examples-
+*************  examples *************
 
 
 1) GET '/products' -
