@@ -1,5 +1,4 @@
-import jest from 'jest';
-
+const forward = require('./index');
 
 describe('Forwards HTTP requests to API', () => {
   it('makes an axios.get request', () => {
