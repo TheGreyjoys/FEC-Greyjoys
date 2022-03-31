@@ -7,7 +7,9 @@
     "server-dev": "npx nodemon --watch server server/index.js",
     "client-dev": "npx webpack -w --config webpack.config.js",
     "start": "npx node server/index.js",
-    "build": "npx webpack --config webpack.config.js"
+    "build": "npx webpack --config webpack.config.js",
+    "test": "jest --config ./jest.config.json",
+    "test:watch": "npm run test -- --watch"
   },
   "repository": {
     "type": "git",
@@ -39,6 +41,7 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
+    "jest": "^27.5.1",
     "webpack": "^5.70.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.4"
