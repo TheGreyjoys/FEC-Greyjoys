@@ -2,8 +2,12 @@
 node_modules/
 jspm_packages/
 
+# Bundle files
+client/dist/bundle.js
+
 # Optional eslint cache
-.eslintcache
+.eslintrc.js
+.eslintignore
 
 # dotenv environment variables file
 .env
