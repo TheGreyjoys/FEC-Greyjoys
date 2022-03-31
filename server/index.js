@@ -15,31 +15,34 @@ app.use('/', (req, res, next) => {
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
 // a route that will forward all incoming HTTP requests to the API
-app.all('*', (req, res, next) => {
+app.all('*', (req, res) => {
   const config = { headers: { authorization: process.env.TOKEN } };
-  let method = req.method;
+  const { method, url, body } = req;
+  // const target = path.join('http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp', url);
   if (method === 'GET') {
-    axios.get(path.join('http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp', req.url), config)
+    // console.log(target);
+    axios.get(`http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp${url}`, config)
       .then((response) => {
         res.send(response.data);
       })
       .catch((err) => res.send(err));
   } else if (method === 'PUT') {
-    axios.put(path.join('http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp', req.url), config)
+    axios.put(`http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp${url}`, config)
       .then((response) => {
         res.send(response);
       })
       .catch((err) => res.send(err));
   } else {
-    axios.post(path.join('http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp', req.url), req.body, config)
+    axios.post(`http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp${url}`, body, config)
       .then((response) => {
         res.send(response);
       })
       .catch((err) => res.send(err));
   }
-  next();
 });
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+module.exports = app;
