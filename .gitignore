@@ -13,3 +13,5 @@ client/dist/bundle.js.map
 # dotenv environment variables file
 .env
 .env.test
+
+coverage/
