@@ -7,8 +7,9 @@ import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import App from './app';
 
-test('renders nav bar on button click', () => {
+test('renders nav bar on button click', (done) => {
   render(<App />);
   fireEvent.click(screen.getByRole('button'));
   expect(screen.getByText('Search').toExist);
+  done();
 });
