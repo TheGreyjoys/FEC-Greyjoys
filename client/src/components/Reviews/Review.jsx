@@ -22,7 +22,7 @@ class Review extends React.Component {
     const { clicked } = this.state;
     const { review } = this.props;
     const {
-      rating, reviewer_name, date, summary, body, recommend, response,
+      rating, reviewer_name, date, summary, body, recommend, response, helpfulness
     } = review;
     if (clicked === false) {
       return (
@@ -31,7 +31,7 @@ class Review extends React.Component {
           stars
           {reviewer_name}
           {date}
-          <h5>{summary.slice(0, 60)}</h5>
+          <div><b>{summary.slice(0, 60)}</b></div>
           <div>{body.slice(0, 250)}</div>
           <button type="submit" onClick={this.expand}>show more</button>
           {recommend && <div>v I recommend this product.</div>}
@@ -41,7 +41,7 @@ class Review extends React.Component {
             {response}
           </div>
           )}
-          <button type="submit">Helpful</button>
+          <button type="submit">Helpful({helpfulness})</button>
           <button type="submit">Report</button>
         </li>
       );
@@ -52,7 +52,7 @@ class Review extends React.Component {
         stars
         {reviewer_name}
         {date}
-        <h5>{summary}</h5>
+        <div><b>{summary}</b></div>
         <div>{body}</div>
         <button type="submit" onClick={this.expand}>show less</button>
         {recommend && <div>v I recommend this product.</div>}
@@ -62,7 +62,7 @@ class Review extends React.Component {
           {response}
         </div>
         )}
-        <button type="submit">Helpful</button>
+        <button type="submit">Helpful({helpfulness})</button>
         <button type="submit">Report</button>
       </li>
     );

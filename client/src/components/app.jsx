@@ -1,5 +1,6 @@
 import React from 'react';
 import Nav from './Nav';
+import Reviews from './Reviews/Reviews';
 
 class App extends React.Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class App extends React.Component {
         {this.state.navDisplay && <Nav />}
         <div>Hello World</div>
         <button onClick={this.renderNav}>Nav</button>
+        <Reviews />
       </div>
     );
   }
