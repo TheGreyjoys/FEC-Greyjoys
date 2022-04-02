@@ -12,7 +12,7 @@ class ProdDetail extends React.Component {
 
   render() {
     return (
-      <main>
+      <div>
         <section className="overview">
           <div className="imageGallery">
             ImageGallery.jsx
@@ -21,21 +21,21 @@ class ProdDetail extends React.Component {
           <div className="prodSelect">
             <div className="rating">Rating.jsx</div>
             <span className="prodCategory">Category</span>
-            <header>PRODUCT NAME</header>
+            <header className="productName">PRODUCT NAME</header>
             <div className="price">Price.jsx</div>
             <form className="styles">
               Styles.jsx
               <div className="selector">Selector.jsx</div>
               <div className="sizeSelect">SIZE</div>
               <div className="qtySelect">QTY</div>
-              <button type="submit">ADD TO BAG</button>
+              <button className="cartAdd" type="submit">ADD TO BAG</button>
             </form>
           </div>
         </section>
-        <details className="productDetails">
+        <section className="productDetails">
           PRODUCT DETAILS
-        </details>
-      </main>
+        </section>
+      </div>
     );
   }
 }
