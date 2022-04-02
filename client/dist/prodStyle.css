@@ -1,0 +1,74 @@
+.overview {
+  height: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+
+  background-color: blanchedalmond;
+}
+
+.imageGallery {
+  height: 100%;
+  width: 65%;
+
+  background-color: aquamarine;
+}
+
+.prodSelect {
+  height: 90%;
+  width: 30%;
+  align-self: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 10% 5% 15% 10% 60%;
+
+  background-color: bisque;
+}
+
+.rating {
+  grid-row: 1;
+}
+
+.prodCategory {
+  grid-row: 2;
+}
+
+.productName {
+  grid-row: 3;
+}
+
+.price {
+  grid-row: 4;
+}
+
+.styles {
+  grid-row: 5;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 3fr 1fr 1fr;
+}
+
+.selector {
+  grid-row: 1;
+}
+
+.sizeSelect {
+  grid-row: 2;
+  grid-column: 1;
+}
+
+.qtySelect {
+  grid-row: 2;
+  grid-column: 2;
+}
+
+.cartAdd {
+  grid-row: 3;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}

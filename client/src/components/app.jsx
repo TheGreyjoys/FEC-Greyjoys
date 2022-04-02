@@ -1,6 +1,7 @@
 import React from 'react';
 import Nav from './Nav';
 import Reviews from './Reviews/Reviews';
+import ProdDetail from './ProdDetail/ProdDetail';
 
 class App extends React.Component {
   constructor(props) {
@@ -21,12 +22,13 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <main>
         {this.state.navDisplay && <Nav />}
         <div>Hello World</div>
         <button onClick={this.renderNav}>Nav</button>
+        <ProdDetail />
         <Reviews />
-      </div>
+      </main>
     );
   }
 }
