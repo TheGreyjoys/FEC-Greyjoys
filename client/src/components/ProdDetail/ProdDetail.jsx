@@ -1,28 +1,37 @@
 import React from 'react';
-import { product, productStyles } from './testProduct';
+import { productTest, productStylesTest } from './testProduct';
 
 class ProdDetail extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      state: '',
+      product: productTest,
+      // productStyles: productStylesTest,
+      selectedStyle: productStylesTest.results[0],
     };
   }
 
   render() {
+    const { product } = this.state;
+    // const { productStyles } = this.state;
+    const { selectedStyle } = this.state;
     return (
       <div>
         <section className="overview">
           <div className="imageGallery">
             ImageGallery.jsx
+            <img src={selectedStyle.photos[0].url} alt="lol" />
             <div className="thumbs">Thumbs.jsx</div>
           </div>
           <div className="prodSelect">
             <div className="rating">Rating.jsx</div>
-            <span className="prodCategory">Category</span>
-            <header className="productName">PRODUCT NAME</header>
-            <div className="price">Price.jsx</div>
+            <span className="prodCategory">{product.category}</span>
+            <header className="productName">{product.name}</header>
+            <div className="price">
+              Price.jsx
+              {product.default_price}
+            </div>
             <form className="styles">
               Styles.jsx
               <div className="selector">Selector.jsx</div>
@@ -33,7 +42,7 @@ class ProdDetail extends React.Component {
           </div>
         </section>
         <section className="productDetails">
-          PRODUCT DETAILS
+          {product.description}
         </section>
       </div>
     );

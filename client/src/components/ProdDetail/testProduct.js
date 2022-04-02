@@ -1,4 +1,4 @@
-const product = {
+const productTest = {
   id: 40344,
   campus: 'hr-rfp',
   name: 'Camo Onesie',
@@ -20,7 +20,7 @@ const product = {
   ],
 };
 
-const productStyles = {
+const productStylesTest = {
   product_id: '40344',
   results: [
     {
@@ -380,4 +380,4 @@ const productStyles = {
   ],
 };
 
-export { product, productStyles };
+export { productTest, productStylesTest };
