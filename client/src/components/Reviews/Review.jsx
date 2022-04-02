@@ -34,7 +34,7 @@ class Review extends React.Component {
           <div><b>{summary.slice(0, 60)}</b></div>
           <div>{body.slice(0, 250)}</div>
           <button type="submit" onClick={this.expand}>show more</button>
-          {recommend && <div>v I recommend this product.</div>}
+          {recommend ? <div>v I recommend this product.</div> : <div>x No I don't recommend this product.</div>}
           {response && (
           <div>
             Response:
@@ -55,7 +55,7 @@ class Review extends React.Component {
         <div><b>{summary}</b></div>
         <div>{body}</div>
         <button type="submit" onClick={this.expand}>show less</button>
-        {recommend && <div>v I recommend this product.</div>}
+        {recommend ? <div>v I recommend this product.</div> : <div>x No I don't recommend this product.</div>}
         {response && (
         <div>
           Response:
