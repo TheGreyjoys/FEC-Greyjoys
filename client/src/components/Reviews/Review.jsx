@@ -22,7 +22,7 @@ class Review extends React.Component {
     const { clicked } = this.state;
     const { review } = this.props;
     const {
-      rating, reviewer_name, date, summary, body, recommend, response
+      rating, reviewer_name, date, summary, body, recommend, response,
     } = review;
     if (clicked === false) {
       return (

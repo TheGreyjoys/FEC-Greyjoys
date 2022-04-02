@@ -1,6 +1,7 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import axios from 'axios';
-import Review from './Review.jsx';
+import Review from './Review';
 
 class Reviews extends React.Component {
   constructor(props) {
@@ -23,11 +24,12 @@ class Reviews extends React.Component {
   }
 
   handleChange(e) {
-    this.setState({ sort: e.target.value, reading: true}, this.getReviews);
+    this.setState({ sort: e.target.value, reading: true }, this.getReviews);
   }
 
   getReviews() {
-    axios.get(`/reviews/?page=${this.state.page}&sort=${this.state.sort}&product_id=${this.state.product_id}`)
+    const { page, sort, product_id } = this.state;
+    axios.get(`/reviews/?page=${page}&sort=${sort}&product_id=${product_id}`)
       .then((res) => {
         this.setState({ reviews: res.data.results });
       })
@@ -35,26 +37,29 @@ class Reviews extends React.Component {
   }
 
   renderReviews() {
-    if (this.state.reading) {
-      return(
-        <
-      )
-    } else {
-      this.state.reviews.map((review) =>
-        <Review key={review.review_id} review={review}/>
-      )
+    const { reviews, reading } = this.state;
+    if (reviews.length === 0) {
+      return 'no reviews';
     }
+    if (reading) {
+      return (
+        <Review key={reviews[0].review_id} review={reviews[0]} />
+      );
+    }
+    return reviews.map((review) => <Review key={review.review_id} review={review} />);
   }
 
   render() {
+    const { reviews, sort } = this.state;
     return (
       <div>
         RATINGS & REVIEWS
         <div> </div>
 
         <div>
-          {this.state.reviews.length} reviews, sorted by
-          <select value={this.state.sort} onChange={this.handleChange}>
+          {reviews.length}
+          reviews, sorted by
+          <select value={sort} onChange={this.handleChange}>
             <option value="relevant">most relevant</option>
             <option value="newest">newest</option>
             <option value="helpful">most helpful</option>
@@ -66,6 +71,5 @@ class Reviews extends React.Component {
     );
   }
 }
-
 
 export default Reviews;
