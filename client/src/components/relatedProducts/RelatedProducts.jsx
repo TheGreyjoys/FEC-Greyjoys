@@ -14,6 +14,8 @@ function RelatedProducts(props) {
   );
 }
 
-RelatedProducts.propTypes = {
-  products: PropTypes.arrayOf.isRequired,
-};
+// RelatedProducts.propTypes = {
+//   products: PropTypes.arrayOf.isRequired,
+// };
+
+export default RelatedProducts;
