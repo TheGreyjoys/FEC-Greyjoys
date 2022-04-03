@@ -1,6 +1,6 @@
 import React from 'react';
 import Nav from './Nav';
-import RelatedProductsAndOutfit from './relatedProducts/relatedProductsAndOutfit';
+import RelatedProductsAndOutfit from './relatedProducts/classRelated';
 
 class App extends React.Component {
   constructor(props) {
