@@ -1,5 +1,6 @@
 import React from 'react';
 import Nav from './Nav';
+import Reviews from './Reviews/Reviews';
 import ProdDetail from './ProdDetail/ProdDetail';
 
 class App extends React.Component {
@@ -26,6 +27,7 @@ class App extends React.Component {
         <div>Hello World</div>
         <button onClick={this.renderNav}>Nav</button>
         <ProdDetail />
+        <Reviews />
       </main>
     );
   }
