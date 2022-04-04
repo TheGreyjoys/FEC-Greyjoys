@@ -11,6 +11,7 @@ class RelatedProductsAndOutfit extends React.Component {
     super(props);
     this.state = {
       relatedProducts: null,
+      outfitItems: null,
     };
   }
 
@@ -22,14 +23,19 @@ class RelatedProductsAndOutfit extends React.Component {
         });
       })
       .catch((err) => console.error(err));
+    this.setState({
+      outfitItems: Object.keys(sessionStorage).map((item) => Number(item)).filter((item) => typeof item === 'number' && !Number.isNaN(item)),
+    });
   }
 
   render() {
     if (this.state.relatedProducts) {
       return (
         <div>
+          <h3>Related Products</h3>
           <RelatedProducts products={this.state.relatedProducts} />
-          {/* <Outfit products={outfitItems} /> */}
+          <h3>Outfit</h3>
+          <Outfit products={this.state.outfitItems} />
         </div>
       );
     }
