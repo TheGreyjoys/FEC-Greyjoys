@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable class-methods-use-this */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -56,9 +58,6 @@ class ImageGallery extends React.Component {
   render() {
     const { allImgs, currIndex } = this.state;
     return (
-      // <div className="imageGallery">
-      //   <img src={currImg} alt="prodImg" />
-      // </div>
       <div className="image-gallery">
         <div className="gallery-wrapper">
           <button
@@ -73,7 +72,7 @@ class ImageGallery extends React.Component {
               className="carousel-content"
               style={{ transform: `translateX(-${currIndex * 100}%)` }}
             >
-              {allImgs.map((img) => <img src={img} alt="somethingalt" />)}
+              {allImgs.map((img, index) => <img src={img} alt={`img${index}`} />)}
             </div>
           </div>
           <button
@@ -89,8 +88,8 @@ class ImageGallery extends React.Component {
   }
 }
 
-ImageGallery.propTypes = {
-  selectedStyle: PropTypes.shape.isRequired,
-};
+// ImageGallery.propTypes = {
+//   selectedStyle: PropTypes.shape.isRequired,
+// };
 
 export default ImageGallery;

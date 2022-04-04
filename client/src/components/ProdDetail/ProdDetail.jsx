@@ -1,16 +1,35 @@
 import React from 'react';
 import { productTest, productStylesTest } from './testProduct';
 import ImageGallery from './ImageGallery';
+import {
+  // eslint-disable-next-line max-len
+  getCurrentProduct, getAllProducts, getProductStyles, getReviews, getReviewsMeta, postReview, markHelpful, markReported,
+} from '../../requests';
 
 class ProdDetail extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      product: productTest,
-      // productStyles: productStylesTest,
+      product: {},
+      productStyles: [],
       selectedStyle: productStylesTest.results[0],
     };
+  }
+
+  componentDidMount() {
+    const { id } = this.props;
+    Promise.all([getCurrentProduct(id), getProductStyles(id)])
+      .then((results) => {
+        const product = results[0].data;
+        const productStyles = results[1].data.results;
+        console.log(productStyles[0]);
+        this.setState({
+          product,
+          productStyles,
+          selectedStyle: productStyles[0],
+        });
+      });
   }
 
   render() {
