@@ -1,5 +1,6 @@
 import React from 'react';
 import { productTest, productStylesTest } from './testProduct';
+import ImageGallery from './ImageGallery';
 
 class ProdDetail extends React.Component {
   constructor(props) {
@@ -19,11 +20,7 @@ class ProdDetail extends React.Component {
     return (
       <div>
         <section className="overview">
-          <div className="imageGallery">
-            ImageGallery.jsx
-            <img src={selectedStyle.photos[0].url} alt="lol" />
-            <div className="thumbs">Thumbs.jsx</div>
-          </div>
+          <ImageGallery selectedStyle={selectedStyle} />
           <div className="prodSelect">
             <div className="rating">Rating.jsx</div>
             <span className="prodCategory">{product.category}</span>
