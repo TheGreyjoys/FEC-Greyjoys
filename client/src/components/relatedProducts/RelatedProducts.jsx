@@ -7,7 +7,7 @@ function RelatedProducts(props) {
 
   return (
     <div>
-      <ul>
+      <ul className="carousel">
         {products.map((product) => <Card key={product} productID={product} />)}
       </ul>
     </div>

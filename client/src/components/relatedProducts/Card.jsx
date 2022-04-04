@@ -47,6 +47,7 @@ function Card(props) {
     });
     return productData;
   };
+
   if (!loaded) {
     updateData(productID)
       .then((productObj) => {
@@ -58,15 +59,13 @@ function Card(props) {
 
   if (loaded) {
     return (
-      <div className="cardContainer">
-        <li className="card">
-          <img src={photos[0].thumbnail_url} alt="product thumbnail" />
-          <h6>{category}</h6>
-          <h5>{name}</h5>
-          <h6>{salePrice || originalPrice}</h6>
-          {/* <div>{ratings}</div> */}
-        </li>
-      </div>
+      <li className="card">
+        <img src={photos[0].thumbnail_url} alt="product thumbnail" />
+        <h6 className="productDetail">{category}</h6>
+        <h5 className="productDetail">{name}</h5>
+        <h6 className="productDetail">{salePrice || originalPrice}</h6>
+        {/* <div>{ratings}</div> */}
+      </li>
     );
   }
   return (

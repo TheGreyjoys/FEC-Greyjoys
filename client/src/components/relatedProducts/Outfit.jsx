@@ -7,11 +7,9 @@ function Outfit(props) {
   console.log('outfit props', products);
 
   return (
-    <div>
-      <ul>
-        {products.map((product) => <Card key={product} productID={product} />)}
-      </ul>
-    </div>
+    <ul>
+      {products.map((product) => <Card key={product} productID={product} />)}
+    </ul>
   );
 }
 Outfit.propTypes = {
