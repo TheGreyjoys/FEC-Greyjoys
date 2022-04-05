@@ -31,8 +31,8 @@ class App extends React.Component {
         <div>Hello World</div>
         <button onClick={this.renderNav}>Nav</button>
         <ProdDetail id={currentProduct} />
-        <RelatedProductsAndOutfit id={currentProduct} />
-        <Reviews />
+        {/* <RelatedProductsAndOutfit id={currentProduct} />
+        <Reviews /> */}
       </main>
     );
   }

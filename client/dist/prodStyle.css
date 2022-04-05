@@ -142,22 +142,46 @@
 .styleSelector {
   grid-row: 5;
 
-  display: grid;
+  width: 100%;
+
+  /* display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 3fr 1fr 1fr;
+  grid-template-rows: 3fr 1fr 1fr; */
+  display: flex;
+  flex-direction: column;
 
   align-items: center;
 }
 
 .selector {
-  grid-row: 1;
+  /* grid-row: 1; */
 
   display: flex;
   flex-direction: column;
 }
 
+.select {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.style {
+  height: 45px;
+  width: 45px;
+  margin: 5px;
+
+  border-radius: 30px;
+  border: 2px solid grey;
+}
+
+.style:hover {
+  cursor: grab;
+}
+
 .size-qty {
-  grid-row: 2;
+  /* grid-row: 2; */
+  width: 100%;
+  margin: 5px 10px 5px 10px;
 
   display: flex;
   flex-direction: row;
@@ -166,16 +190,18 @@
 
 .sizeSelect {
   height: 30px;
-  width: 60%;
-  border-radius: 10px;
+  width: 65%;
 }
 
 .qtySelect {
   height: 30px;
-  width: 25%;
-  border-radius: 10px;
+  width: 30%;
 }
 
 .cartAdd {
-  grid-row: 3;
+  height: 30px;
+  width: 75%;
+  align-self: flex-start;
+
+  margin-left: 5px;
 }

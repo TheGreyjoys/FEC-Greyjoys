@@ -101,7 +101,10 @@ class StyleSelector extends React.Component {
     return (
       <form className="styleSelector">
         <div className="selector">
-          <h5>{currStyle.name}</h5>
+          <h3>{currStyle.name}</h3>
+          <div className="select">
+            {styles.map((style) => <img src={style.photos[0].url} className="style" alt={style.name} />)}
+          </div>
         </div>
         <div className="size-qty">
           {renderSizes()}
