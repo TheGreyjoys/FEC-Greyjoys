@@ -11,6 +11,8 @@ class App extends React.Component {
     super(props);
 
     this.state = {
+      // dummy default product ID
+      currentProduct: 40344,
       navDisplay: false,
       currentProduct: 40346,
     };
@@ -32,12 +34,13 @@ class App extends React.Component {
   }
 
   render() {
+    const { currentProduct } = this.state
     return (
       <main>
         {this.state.navDisplay && <Nav />}
         <div>Hello World</div>
         <button type="button" onClick={this.renderNav}>Nav</button>
-        <ProdDetail />
+        <ProdDetail id={currentProduct} />
         <RelatedProductsAndOutfit
           id={this.state.currentProduct}
           changeProduct={this.changeProduct}
