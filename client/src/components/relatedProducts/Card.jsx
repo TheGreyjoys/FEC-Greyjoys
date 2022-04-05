@@ -1,7 +1,5 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-shadow */
-/* eslint-disable camelcase */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // eslint-disable-next-line no-unused-vars
@@ -63,15 +61,19 @@ function Card(props) {
   }
 
   function handleClick(e) {
-    console.log('you clicked: ', Number(e.target.id));
-    changeProduct(Number(e.target.id));
+    console.log('you clicked: ', (Object.values(e.target)[1].value));
+    if (!Number.isNaN(Object.values(e.target)[1].value)) {
+      changeProduct(Object.values(e.target)[1].value);
+    }
   }
 
   if (loaded) {
     return (
       // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
-      <li className="card" id={id} onClick={handleClick} onKeyPress={handleClick}>
-        <img src={photos[0].thumbnail_url} alt="product thumbnail" />
+      <li className="card" onKeyPress={handleClick}>
+        <button type="button" className="imgLink" value={id} onClick={handleClick}>
+          <img src={photos[0].thumbnail_url} alt="product thumbnail" value={id} />
+        </button>
         <h6 className="productDetail">{category}</h6>
         <h5 className="productDetail">{name}</h5>
         <h6 className="productDetail">{salePrice || originalPrice}</h6>

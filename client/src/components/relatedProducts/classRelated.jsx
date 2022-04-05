@@ -41,13 +41,12 @@ class RelatedProductsAndOutfit extends React.Component {
   }
 
   render() {
-    console.log('related', this.state.relatedProducts);
     if (this.state.relatedProducts) {
       return (
         <div>
           <h3>Related Products</h3>
           <RelatedProducts
-            products={this.state.relatedProducts}
+            products={this.state.relatedProducts.filter((id, i, arr) => arr.indexOf(id) === i)}
             changeProduct={this.props.changeProduct}
           />
           <h3>Outfit</h3>

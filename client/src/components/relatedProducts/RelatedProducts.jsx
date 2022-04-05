@@ -20,32 +20,32 @@ function RelatedProducts(props) {
   };
 
   return (
-    <div className="carouselWrapper">
-      {
+    <div className="carousel-container">
+      <div className="carousel-wrapper">
+        {
         currentIndex > 0
-        && <button type="button" className="leftArrow" onClick={scrollLeft}>&#8249;</button>
-      }
-      <ul
-        className="carousel"
-      >
-        <div className="carouselContent" style={{ transform: `translateX(-${currentIndex * 10}%)` }}>
-          {products.map((product) => (
-            <Card
-              key={product}
-              productID={product}
-              changeProduct={changeProduct}
-            />
-          ))}
+        && <button type="button" className="leftArrow" onClick={scrollLeft}>&larr;</button>
+        }
+        <div className="carousel-content-wrapper">
+          <div className="carousel-content" style={{ transform: `translateX(-${currentIndex * 25}%)` }}>
+            {products.map((product) => (
+              <Card
+                key={product}
+                productID={product}
+                changeProduct={changeProduct}
+              />
+            ))}
+          </div>
         </div>
-
-      </ul>
-      {
+        {
         currentIndex < (length - 1)
-        && <button type="button" className="rightArrow" onClick={scrollRight}>&#8250;</button>
-      }
+        && <button type="button" className="rightArrow" onClick={scrollRight}>&rarr;</button>
+        }
+      </div>
     </div>
   );
 }
+
 RelatedProducts.propTypes = {
   products: PropTypes.arrayOf(PropTypes.number).isRequired,
   changeProduct: PropTypes.func.isRequired,

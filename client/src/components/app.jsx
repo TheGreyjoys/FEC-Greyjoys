@@ -14,7 +14,6 @@ class App extends React.Component {
       // dummy default product ID
       currentProduct: 40344,
       navDisplay: false,
-      currentProduct: 40346,
     };
     this.renderNav = this.renderNav.bind(this);
     this.changeProduct = this.changeProduct.bind(this);
@@ -34,15 +33,15 @@ class App extends React.Component {
   }
 
   render() {
-    const { currentProduct } = this.state
+    const { currentProduct } = this.state;
     return (
       <main>
-        {this.state.navDisplay && <Nav />}
+        {/* {this.state.navDisplay && <Nav />}
         <div>Hello World</div>
         <button type="button" onClick={this.renderNav}>Nav</button>
-        <ProdDetail id={currentProduct} />
+        <ProdDetail id={currentProduct} /> */}
         <RelatedProductsAndOutfit
-          id={this.state.currentProduct}
+          id={currentProduct}
           changeProduct={this.changeProduct}
         />
         <Reviews />
