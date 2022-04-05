@@ -30,7 +30,7 @@ class App extends React.Component {
         <div>Hello World</div>
         <button onClick={this.renderNav}>Nav</button>
         <ProdDetail id={currentProduct} />
-        {/* <Reviews /> */}
+        <Reviews />
       </main>
     );
   }
