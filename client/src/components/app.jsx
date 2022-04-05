@@ -1,3 +1,5 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/no-access-state-in-setstate */
 import React from 'react';
 import Nav from './Nav';
 import RelatedProductsAndOutfit from './relatedProducts/classRelated';

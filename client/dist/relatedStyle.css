@@ -1,11 +1,20 @@
 .carousel {
   display: flex;
   flex-direction: row;
+  border: 2px dotted blue
+}
+
+.carouselWrapper {
+  display: flex;
+  flex-direction: row;
+  border: 1px dashed red;
+  padding: 1% 5% 1% 5%;
 }
 
 .carouselContent {
   display: flex;
   flex-direction: row;
+  margin: 0% 5% 0% 5%
 }
 
 .card {
