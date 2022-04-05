@@ -46,8 +46,8 @@ class ProdDetail extends React.Component {
       const { sale_price, original_price } = selectedStyle;
       if (selectedStyle.sale_price) {
         return (
-          <span>
-            <s>{original_price}</s>
+          <span style={{ color: 'red' }}>
+            <s style={{ color: 'black' }}>{original_price}</s>
             {`  $${sale_price}`}
           </span>
         );
