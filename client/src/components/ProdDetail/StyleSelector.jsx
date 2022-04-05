@@ -9,8 +9,12 @@ class StyleSelector extends React.Component {
       currStyle: {},
       styles: [],
       styleSizes: [],
+      selSize: null,
+      availQty: null,
+      selQty: null,
     };
     this.sizeFinder = this.sizeFinder.bind(this);
+    this.handleSizeChange = this.handleSizeChange.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -30,6 +34,14 @@ class StyleSelector extends React.Component {
     }
   }
 
+  handleSizeChange(e) {
+    const options = e.target.value.split(',');
+    this.setState({
+      selSize: options[0],
+      availQty: Number(options[1]) < 15 ? Number(options[1]) : 15,
+    });
+  }
+
   sizeFinder(skus) {
     const availSizes = [];
     Object.entries(skus).forEach((sku) => {
@@ -42,24 +54,46 @@ class StyleSelector extends React.Component {
   }
 
   render() {
-    const { currStyle, styles, styleSizes } = this.state;
+    const { currStyle, styles, styleSizes, selSize, availQty } = this.state;
 
     const renderSizes = () => {
       if (styleSizes.length) {
         return (
-          <label>
-            Size:
-            <select className="sizeSelect" name="size">
-              {styleSizes.map((option) => <option value={option[0]}>{`${option[0]}   Qty: ${option[1]}`}</option>)}
+          <label className="sizeSelect">
+            {'Size: '}
+            <select name="selSize" onChange={this.handleSizeChange}>
+              {styleSizes.map((option) => <option value={option}>{`${option[0]}`}</option>)}
             </select>
           </label>
         );
       }
       return (
-        <label>
-          Size:
-          <select className="sizeSelect" disabled="true">
+        <label className="sizeSelect">
+          {'Size: '}
+          <select disabled>
             <option>OUT OF STOCK</option>
+          </select>
+        </label>
+      );
+    };
+
+    const renderQty = () => {
+      if (!selSize) {
+        return (
+          <label className="qtySelect">
+            {'Qty: '}
+            <select disabled>
+              <option>-</option>
+            </select>
+          </label>
+        );
+      }
+      const qtyArray = (new Array(availQty)).fill(0);
+      return (
+        <label className="qtySelect">
+          {'Qty: '}
+          <select name="selQty">
+            {qtyArray.map((val, index) => <option value={index + 1}>{index + 1}</option>)}
           </select>
         </label>
       );
@@ -71,6 +105,8 @@ class StyleSelector extends React.Component {
           <h5>{currStyle.name}</h5>
         </div>
         {renderSizes()}
+        {renderQty()}
+        <button type="submit" className="cartAdd">Add To Cart</button>
       </form>
     );
   }

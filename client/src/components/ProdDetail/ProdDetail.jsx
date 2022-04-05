@@ -15,7 +15,7 @@ class ProdDetail extends React.Component {
     this.state = {
       product: {},
       productStyles: [],
-      selectedStyle: { photos: [] },
+      selectedStyle: {},
     };
   }
 
