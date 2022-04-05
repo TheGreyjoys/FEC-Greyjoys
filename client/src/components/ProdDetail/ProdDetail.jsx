@@ -74,7 +74,7 @@ class ProdDetail extends React.Component {
           <div className="prodSelect">
             <div className="rating">Rating.jsx</div>
             <span className="prodCategory">{product.category}</span>
-            <h2 className="productName">{product.name}</h2>
+            <span className="productName">{product.name}</span>
             <div className="price">
               {saleChecker()}
             </div>

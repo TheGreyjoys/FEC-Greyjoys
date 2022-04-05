@@ -67,12 +67,12 @@ class StyleSelector extends React.Component {
 
     const renderSizes = () => {
       const sizes = {
-        XS: 'X-Small',
-        S: 'Small',
-        M: 'Medium',
-        L: 'Large',
-        XL: 'X-Large',
-        XXL: 'XX-Large',
+        XS: 'X-SMALL',
+        S: 'SMALL',
+        M: 'MEDIUM',
+        L: 'LARGE',
+        XL: 'X-LARGE',
+        XXL: 'XX-LARGE',
       };
 
       if (styleSizes.length) {
@@ -110,7 +110,10 @@ class StyleSelector extends React.Component {
     return (
       <form className="styleSelector">
         <div className="selector">
-          <h3>{currStyle.name}</h3>
+          <span className="styleName">
+            Style &rarr;
+            {` ${currStyle.name}`}
+          </span>
           <div className="select">
             {styles.map((style) => (
               <input
