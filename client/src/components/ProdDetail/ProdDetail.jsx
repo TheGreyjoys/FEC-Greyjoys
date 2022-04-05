@@ -17,6 +17,7 @@ class ProdDetail extends React.Component {
       productStyles: [],
       selectedStyle: {},
     };
+    this.handleStyleChange = this.handleStyleChange.bind(this);
   }
 
   componentDidMount() {
@@ -37,6 +38,17 @@ class ProdDetail extends React.Component {
           selectedStyle: defaultStyle,
         });
       });
+  }
+
+  handleStyleChange(styleId) {
+    const { selectedStyle, productStyles } = this.state;
+    if (styleId !== selectedStyle.style_id) {
+      productStyles.forEach((style) => {
+        if (styleId === style.style_id) {
+          this.setState({ selectedStyle: style });
+        }
+      });
+    }
   }
 
   render() {
@@ -66,14 +78,11 @@ class ProdDetail extends React.Component {
             <div className="price">
               {saleChecker()}
             </div>
-            <StyleSelector selectedStyle={selectedStyle} productStyles={productStyles} />
-            {/* <form className="styles">
-              Styles.jsx
-              <div className="selector">Selector.jsx</div>
-              <div className="sizeSelect">SIZE</div>
-              <div className="qtySelect">QTY</div>
-              <button className="cartAdd" type="submit">ADD TO BAG</button>
-            </form> */}
+            <StyleSelector
+              selectedStyle={selectedStyle}
+              productStyles={productStyles}
+              handleStyleChange={this.handleStyleChange}
+            />
           </div>
         </section>
         <section className="productDetails">

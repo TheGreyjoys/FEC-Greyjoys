@@ -13,6 +13,7 @@ class StyleSelector extends React.Component {
       availQty: null,
       selQty: null,
     };
+    this.handleStyleClick = this.handleStyleClick.bind(this);
     this.sizeFinder = this.sizeFinder.bind(this);
     this.handleSizeChange = this.handleSizeChange.bind(this);
   }
@@ -32,6 +33,13 @@ class StyleSelector extends React.Component {
         styleSizes: sizes,
       });
     }
+  }
+
+  handleStyleClick(e) {
+    e.preventDefault();
+    const { handleStyleChange } = this.props;
+
+    handleStyleChange(Number(e.target.name));
   }
 
   handleSizeChange(e) {
@@ -55,6 +63,7 @@ class StyleSelector extends React.Component {
 
   render() {
     const { currStyle, styles, styleSizes, selSize, availQty } = this.state;
+
 
     const renderSizes = () => {
       const sizes = {
@@ -103,7 +112,16 @@ class StyleSelector extends React.Component {
         <div className="selector">
           <h3>{currStyle.name}</h3>
           <div className="select">
-            {styles.map((style) => <img src={style.photos[0].url} className="style" alt={style.name} />)}
+            {styles.map((style) => (
+              <input
+                type="image"
+                className={style.style_id === currStyle.style_id ? 'selStyle' : 'style'}
+                src={style.photos[0].thumbnail_url}
+                alt={style.name}
+                name={style.style_id}
+                onClick={this.handleStyleClick}
+              />
+            ))}
           </div>
         </div>
         <div className="size-qty">

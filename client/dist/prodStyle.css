@@ -178,6 +178,15 @@
   cursor: grab;
 }
 
+.selStyle {
+  height: 42px;
+  width: 42px;
+  margin: 5px;
+
+  border-radius: 30px;
+  border: 4px solid black;
+}
+
 .size-qty {
   /* grid-row: 2; */
   width: 100%;
