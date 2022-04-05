@@ -57,45 +57,44 @@ class StyleSelector extends React.Component {
     const { currStyle, styles, styleSizes, selSize, availQty } = this.state;
 
     const renderSizes = () => {
+      const sizes = {
+        XS: 'X-Small',
+        S: 'Small',
+        M: 'Medium',
+        L: 'Large',
+        XL: 'X-Large',
+        XXL: 'XX-Large',
+      };
+
       if (styleSizes.length) {
         return (
-          <label className="sizeSelect">
-            {'Size: '}
-            <select name="selSize" onChange={this.handleSizeChange}>
-              {styleSizes.map((option) => <option value={option}>{`${option[0]}`}</option>)}
-            </select>
-          </label>
+          <select name="selSize" className="sizeSelect" onChange={this.handleSizeChange}>
+            <option disabled>Size</option>
+            {styleSizes.map((option) => <option value={option}>{sizes[option[0]]}</option>)}
+          </select>
         );
       }
       return (
-        <label className="sizeSelect">
-          {'Size: '}
-          <select disabled>
-            <option>OUT OF STOCK</option>
-          </select>
-        </label>
+        <select className="sizeSelect" disabled>
+          <option>OUT OF STOCK</option>
+        </select>
       );
     };
 
     const renderQty = () => {
       if (!selSize) {
         return (
-          <label className="qtySelect">
-            {'Qty: '}
-            <select disabled>
-              <option>-</option>
-            </select>
-          </label>
+          <select className="qtySelect" disabled>
+            <option>-</option>
+          </select>
         );
       }
       const qtyArray = (new Array(availQty)).fill(0);
       return (
-        <label className="qtySelect">
-          {'Qty: '}
-          <select name="selQty">
-            {qtyArray.map((val, index) => <option value={index + 1}>{index + 1}</option>)}
-          </select>
-        </label>
+        <select name="selQty" className="qtySelect">
+          <option disabled>Qty</option>
+          {qtyArray.map((val, index) => <option value={index + 1}>{index + 1}</option>)}
+        </select>
       );
     };
 
@@ -104,8 +103,10 @@ class StyleSelector extends React.Component {
         <div className="selector">
           <h5>{currStyle.name}</h5>
         </div>
-        {renderSizes()}
-        {renderQty()}
+        <div className="size-qty">
+          {renderSizes()}
+          {renderQty()}
+        </div>
         <button type="submit" className="cartAdd">Add To Cart</button>
       </form>
     );
