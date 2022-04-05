@@ -11,6 +11,7 @@ class ImageGallery extends React.Component {
       allImgs: [],
       allThumbs: [],
       currIndex: '',
+      thumbsShow: 4,
     };
     this.imgPuller = this.imgPuller.bind(this);
     this.nextImg = this.nextImg.bind(this);
@@ -18,13 +19,21 @@ class ImageGallery extends React.Component {
   }
 
   componentDidMount() {
-    const { selectedStyle: { photos } } = this.props;
-    const images = this.imgPuller(photos);
-    this.setState({
-      allImgs: images[0],
-      allThumbs: images[1],
-      currIndex: 0,
-    });
+    console.log('ImageGallery Mounted!')
+  }
+
+  componentDidUpdate(prevProps) {
+    const newId = this.props.selectedStyle.style_id;
+    const prevId = prevProps.selectedStyle.style_id;
+    if (newId !== prevId) {
+      const { selectedStyle: { photos } } = this.props;
+      const images = this.imgPuller(photos);
+      this.setState({
+        allImgs: images[0],
+        allThumbs: images[1],
+        currIndex: 0,
+      });
+    }
   }
 
   imgPuller(photos) {
@@ -56,16 +65,40 @@ class ImageGallery extends React.Component {
   }
 
   render() {
-    const { allImgs, currIndex } = this.state;
+    const { allImgs, currIndex, thumbsShow } = this.state;
     return (
       <div className="image-gallery">
+        <div className="thumb-wrapper">
+          <button
+            type="button"
+            className="up-arrow"
+            onClick={() => {}}
+          >
+            &uarr;
+          </button>
+          <div className="content-wrapper">
+            <div
+              className="thumb-carousel-content"
+              style={{ transform: `translateX(-${currIndex * (100 / thumbsShow)}%)` }}
+            >
+              {allImgs.map((img, index) => <img src={img} alt={`img${index}`} />)}
+            </div>
+          </div>
+          <button
+            type="button"
+            className="down-arrow"
+            onClick={() => {}}
+          >
+            &darr;
+          </button>
+        </div>
         <div className="gallery-wrapper">
           <button
             type="button"
             className="left-arrow"
             onClick={this.prevImg}
           >
-            &lt;
+            &larr;
           </button>
           <div className="content-wrapper">
             <div
@@ -80,7 +113,7 @@ class ImageGallery extends React.Component {
             className="right-arrow"
             onClick={this.nextImg}
           >
-            &gt;
+            &rarr;
           </button>
         </div>
       </div>

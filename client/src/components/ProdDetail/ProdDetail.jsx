@@ -12,8 +12,8 @@ class ProdDetail extends React.Component {
 
     this.state = {
       product: {},
-      productStyles: [],
-      selectedStyle: productStylesTest.results[0],
+      // productStyles: [],
+      selectedStyle: { photos: [] },
     };
   }
 
@@ -23,23 +23,31 @@ class ProdDetail extends React.Component {
       .then((results) => {
         const product = results[0].data;
         const productStyles = results[1].data.results;
-        console.log(productStyles[0]);
+        let defaultStyle;
+        productStyles.forEach((style) => {
+          if (style['default?']) {
+            defaultStyle = style;
+          }
+        });
         this.setState({
           product,
-          productStyles,
-          selectedStyle: productStyles[0],
+          // productStyles,
+          selectedStyle: defaultStyle,
         });
+        // this.render();
       });
   }
 
   render() {
     const { product } = this.state;
-    // const { productStyles } = this.state;
+    // // const { productStyles } = this.state;
     const { selectedStyle } = this.state;
+    console.log('Rendering ProdDetail!')
+    console.log(selectedStyle)
     return (
       <div>
         <section className="overview">
-          <ImageGallery selectedStyle={selectedStyle} />
+          <ImageGallery selectedStyle={this.state.selectedStyle} />
           <div className="prodSelect">
             <div className="rating">Rating.jsx</div>
             <span className="prodCategory">{product.category}</span>
