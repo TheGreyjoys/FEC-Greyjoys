@@ -1,5 +1,6 @@
 import React from 'react';
 import Nav from './Nav';
+import RelatedProductsAndOutfit from './relatedProducts/classRelated';
 import Reviews from './Reviews/Reviews';
 import ProdDetail from './ProdDetail/ProdDetail';
 
@@ -30,6 +31,7 @@ class App extends React.Component {
         <div>Hello World</div>
         <button onClick={this.renderNav}>Nav</button>
         <ProdDetail id={currentProduct} />
+        <RelatedProductsAndOutfit id={currentProduct} />
         <Reviews />
       </main>
     );

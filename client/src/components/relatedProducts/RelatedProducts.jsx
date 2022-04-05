@@ -7,13 +7,14 @@ function RelatedProducts(props) {
 
   return (
     <div>
-      <ul>
-        {products.map((product) => <Card product={product} />)}
+      <ul className="carousel">
+        {products.map((product) => <Card key={product} productID={product} />)}
       </ul>
     </div>
   );
 }
-
 RelatedProducts.propTypes = {
-  products: PropTypes.arrayOf.isRequired,
+  products: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
+
+export default RelatedProducts;
