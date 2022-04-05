@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import { productTest, productStylesTest } from './testProduct';
 import ImageGallery from './ImageGallery';
@@ -39,10 +40,21 @@ class ProdDetail extends React.Component {
   }
 
   render() {
-    const { product } = this.state;
-    const { productStyles } = this.state;
-    const { selectedStyle } = this.state;
-    console.log(selectedStyle)
+    const { product, productStyles, selectedStyle } = this.state;
+
+    const saleChecker = () => {
+      const { sale_price, original_price } = selectedStyle;
+      if (selectedStyle.sale_price) {
+        return (
+          <span>
+            <s>{original_price}</s>
+            {`  $${sale_price}`}
+          </span>
+        );
+      }
+      return <span>{`$${original_price}`}</span>;
+    };
+
     return (
       <div>
         <section className="overview">
@@ -50,10 +62,9 @@ class ProdDetail extends React.Component {
           <div className="prodSelect">
             <div className="rating">Rating.jsx</div>
             <span className="prodCategory">{product.category}</span>
-            <header className="productName">{product.name}</header>
+            <h2 className="productName">{product.name}</h2>
             <div className="price">
-              Price.jsx
-              {product.default_price}
+              {saleChecker()}
             </div>
             <StyleSelector selectedStyle={selectedStyle} productStyles={productStyles} />
             {/* <form className="styles">
