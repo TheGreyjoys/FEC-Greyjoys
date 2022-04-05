@@ -10,8 +10,16 @@ class App extends React.Component {
 
     this.state = {
       navDisplay: false,
+      currentProduct: 40346,
     };
     this.renderNav = this.renderNav.bind(this);
+    this.changeProduct = this.changeProduct.bind(this);
+  }
+
+  changeProduct(id) {
+    this.setState({
+      currentProduct: id,
+    });
   }
 
   renderNav() {
@@ -28,7 +36,10 @@ class App extends React.Component {
         <div>Hello World</div>
         <button type="button" onClick={this.renderNav}>Nav</button>
         <ProdDetail />
-        <RelatedProductsAndOutfit id={40377} />
+        <RelatedProductsAndOutfit
+          id={this.state.currentProduct}
+          changeProduct={this.changeProduct}
+        />
         <Reviews />
       </main>
     );

@@ -3,6 +3,11 @@
   flex-direction: row;
 }
 
+.carouselContent {
+  display: flex;
+  flex-direction: row;
+}
+
 .card {
   width: 150px;
   height: 250px;

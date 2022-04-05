@@ -11,7 +11,7 @@ import {
 } from '../../requests';
 
 function Card(props) {
-  const { productID } = props;
+  const { productID, changeProduct } = props;
   const loadingProduct = {
     name: 'loading',
     category: 'loading',
@@ -45,6 +45,11 @@ function Card(props) {
         productData.photos = style.photos;
       }
     });
+    if (!productData.photos) {
+      productData.originalPrice = results[0].original_price;
+      productData.salePrice = results[0].sale_price;
+      productData.photos = results[0].photos;
+    }
     return productData;
   };
 
@@ -57,9 +62,15 @@ function Card(props) {
       .catch((err) => { console.log(err); });
   }
 
+  function handleClick(e) {
+    console.log('you clicked: ', Number(e.target.id));
+    changeProduct(Number(e.target.id));
+  }
+
   if (loaded) {
     return (
-      <li className="card">
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+      <li className="card" id={id} onClick={handleClick} onKeyPress={handleClick}>
         <img src={photos[0].thumbnail_url} alt="product thumbnail" />
         <h6 className="productDetail">{category}</h6>
         <h5 className="productDetail">{name}</h5>
@@ -75,6 +86,7 @@ function Card(props) {
 
 Card.propTypes = {
   productID: PropTypes.number.isRequired,
+  changeProduct: PropTypes.func.isRequired,
 };
 
 export default Card;
