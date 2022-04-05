@@ -1,6 +1,7 @@
 import React from 'react';
 import { productTest, productStylesTest } from './testProduct';
 import ImageGallery from './ImageGallery';
+import StyleSelector from './StyleSelector';
 import {
   // eslint-disable-next-line max-len
   getCurrentProduct, getAllProducts, getProductStyles, getReviews, getReviewsMeta, postReview, markHelpful, markReported,
@@ -12,7 +13,7 @@ class ProdDetail extends React.Component {
 
     this.state = {
       product: {},
-      // productStyles: [],
+      productStyles: [],
       selectedStyle: { photos: [] },
     };
   }
@@ -31,23 +32,21 @@ class ProdDetail extends React.Component {
         });
         this.setState({
           product,
-          // productStyles,
+          productStyles,
           selectedStyle: defaultStyle,
         });
-        // this.render();
       });
   }
 
   render() {
     const { product } = this.state;
-    // // const { productStyles } = this.state;
+    const { productStyles } = this.state;
     const { selectedStyle } = this.state;
-    console.log('Rendering ProdDetail!')
     console.log(selectedStyle)
     return (
       <div>
         <section className="overview">
-          <ImageGallery selectedStyle={this.state.selectedStyle} />
+          <ImageGallery selectedStyle={selectedStyle} />
           <div className="prodSelect">
             <div className="rating">Rating.jsx</div>
             <span className="prodCategory">{product.category}</span>
@@ -56,13 +55,14 @@ class ProdDetail extends React.Component {
               Price.jsx
               {product.default_price}
             </div>
-            <form className="styles">
+            <StyleSelector selectedStyle={selectedStyle} productStyles={productStyles} />
+            {/* <form className="styles">
               Styles.jsx
               <div className="selector">Selector.jsx</div>
               <div className="sizeSelect">SIZE</div>
               <div className="qtySelect">QTY</div>
               <button className="cartAdd" type="submit">ADD TO BAG</button>
-            </form>
+            </form> */}
           </div>
         </section>
         <section className="productDetails">
