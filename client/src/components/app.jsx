@@ -1,6 +1,8 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/no-access-state-in-setstate */
 import React from 'react';
 import Nav from './Nav';
-import RelatedProductsAndOutfit from './relatedProducts/classRelated';
+import RelatedProductsAndOutfit from './relatedProducts/ClassRelated';
 import Reviews from './Reviews/Reviews';
 import ProdDetail from './ProdDetail/ProdDetail';
 
@@ -14,6 +16,13 @@ class App extends React.Component {
       navDisplay: false,
     };
     this.renderNav = this.renderNav.bind(this);
+    this.changeProduct = this.changeProduct.bind(this);
+  }
+
+  changeProduct(id) {
+    this.setState({
+      currentProduct: id,
+    });
   }
 
   renderNav() {
@@ -29,13 +38,10 @@ class App extends React.Component {
       <main>
         {this.state.navDisplay && <Nav />}
         <div>Hello World</div>
-        <button onClick={this.renderNav}>Nav</button>
-        {/* <ProdDetail /> */}
-
-{/*         <ProdDetail id={currentProduct} /> */}
+        <button type="button" onClick={this.renderNav}>Nav</button>
+        <ProdDetail id={currentProduct} />
+        <RelatedProductsAndOutfit id={currentProduct} changeProduct={this.changeProduct} />
         <Reviews id={currentProduct} />
-        {/* <RelatedProductsAndOutfit id={currentProduct} />
-        <Reviews /> */}
       </main>
     );
   }
