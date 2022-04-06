@@ -1,5 +1,6 @@
 import React from 'react';
 import Nav from './Nav';
+import RelatedProductsAndOutfit from './relatedProducts/classRelated';
 import Reviews from './Reviews/Reviews';
 import ProdDetail from './ProdDetail/ProdDetail';
 
@@ -8,6 +9,8 @@ class App extends React.Component {
     super(props);
 
     this.state = {
+      // dummy default product ID
+      currentProduct: 40344,
       navDisplay: false,
     };
     this.renderNav = this.renderNav.bind(this);
@@ -21,13 +24,18 @@ class App extends React.Component {
   }
 
   render() {
+    const { currentProduct } = this.state;
     return (
       <main>
         {this.state.navDisplay && <Nav />}
         <div>Hello World</div>
         <button onClick={this.renderNav}>Nav</button>
         {/* <ProdDetail /> */}
-        <Reviews />
+
+{/*         <ProdDetail id={currentProduct} /> */}
+        <Reviews id={currentProduct} />
+        {/* <RelatedProductsAndOutfit id={currentProduct} />
+        <Reviews /> */}
       </main>
     );
   }

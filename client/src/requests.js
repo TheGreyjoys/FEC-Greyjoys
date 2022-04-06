@@ -18,6 +18,10 @@ function getReviews(id, sort = 'relevant', page = 1) {
   return axios.get(`/reviews?product_id=${id}&sort=${sort}&page=${page}`);
 }
 
+function getRelatedProducts(id) {
+  return axios.get(`/products/${id}/related`);
+}
+
 function getReviewsMeta(id) {
   return axios.get(`/reviews/meta?product_id=${id}`);
 }
@@ -37,5 +41,5 @@ function markReported(reviewID) {
 
 export {
   // eslint-disable-next-line max-len
-  getCurrentProduct, getAllProducts, getProductStyles, getReviews, getReviewsMeta, postReview, markHelpful, markReported,
+  getCurrentProduct, getAllProducts, getProductStyles, getRelatedProducts, getReviews, getReviewsMeta, postReview, markHelpful, markReported,
 };

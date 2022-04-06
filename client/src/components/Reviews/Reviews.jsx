@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import axios from 'axios';
 import Review from './Review';
 import WriteReview from './WriteReview';
 import Graph from './Graph';
@@ -12,6 +11,7 @@ class Reviews extends React.Component {
     super(props);
     this.state = {
       /* need current product id */
+      /* need current product name */
       reviews: [],
       product_id: this.props.id || '40344',
       page: 1,
@@ -43,6 +43,7 @@ class Reviews extends React.Component {
     const { page, sort, product_id } = this.state;
     getReviews(product_id, sort, page)
       .then((res) => {
+        console.log(res.data)
         this.setState({ reviews: res.data.results });
       })
       .catch(console.log);
@@ -92,7 +93,7 @@ class Reviews extends React.Component {
   }
 
   changeSort(e) {
-    this.setState({ sort: e.target.value, reading: true }, this.getPageReview);
+    this.setState({ sort: e.target.value, reading: true, page: 1 }, this.getPageReview);
   }
 
   toggleExpandReviews() {
@@ -142,15 +143,15 @@ class Reviews extends React.Component {
       <div>
         {reviews.map((review) => <Review key={review.review_id} review={review} />)}
         <button type="submit" onClick={this.toggleExpandReviews}>Collapse</button>
-        {page > 1 && <button type="submit" onClick={() => { this.goToPage(page - 1); }}>Previous Page</button>}
+        {page > 1 && <button type="submit" onClick={() => { this.goToPage(page - 1); }}>Previous Page</button> }
         <button type="submit" onClick={() => { this.goToPage(page + 1); }}>Next Page</button>
-
+        <p>page {page}</p>
       </div>
     );
   }
 
   render() {
-    const { reviews, sort, rating, meta, writing, recommended, reviewNumber, overallRatings } = this.state;
+    const { reviews, sort, rating, meta, writing, recommended, reviewNumber, overallRatings, product_id } = this.state;
     console.log(rating);
     return (
       <div>
@@ -158,6 +159,7 @@ class Reviews extends React.Component {
         <div>
           {rating}
           {(rating !== 0) && this.starRating(rating) }
+          <p>{recommended}% of reviews recommend this product</p>
           {overallRatings
           && (
             <Graph
@@ -185,7 +187,7 @@ class Reviews extends React.Component {
           {this.renderReviews()}
         </div>
         )}
-        {writing ? <WriteReview submit={this.submitReview} /> : <button type="submit" onClick={this.writeReview}>WriteReview</button>}
+        {writing ? <WriteReview submit={this.submitReview} product_id={product_id}/> : <button type="submit" onClick={this.writeReview}>WriteReview</button>}
       </div>
     );
   }
