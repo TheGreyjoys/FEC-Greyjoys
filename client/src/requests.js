@@ -14,12 +14,12 @@ function getProductStyles(id) {
   return axios.get(`/products/${id}/styles`);
 }
 
-function getRelatedProducts(id) {
-  return axios.get(`/products/${id}/related`);
+function getReviews(id, sort = 'relevant', page = 1) {
+  return axios.get(`/reviews?product_id=${id}&sort=${sort}&page=${page}`);
 }
 
-function getReviews(id) {
-  return axios.get(`/reviews?product_id=${id}`);
+function getRelatedProducts(id) {
+  return axios.get(`/products/${id}/related`);
 }
 
 function getReviewsMeta(id) {
