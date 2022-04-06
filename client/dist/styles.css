@@ -1,6 +1,9 @@
 body {
   width: 90%;
   max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Roboto', sans-serif;
 }
 
 nav {
