@@ -2,11 +2,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
 // eslint-disable-next-line no-unused-vars
 import regeneratorRuntime from 'regenerator-runtime';
 import {
   getCurrentProduct, getProductStyles, getReviewsMeta,
 } from '../../requests';
+import Comparison from './Comparison';
 
 function Card(props) {
   const { productID, changeProduct } = props;
@@ -78,6 +80,7 @@ function Card(props) {
         <h5 className="productDetail">{name}</h5>
         <h6 className="productDetail">{salePrice || originalPrice}</h6>
         {/* <div>{ratings}</div> */}
+        <Comparison cardProduct={product} />
       </li>
     );
   }

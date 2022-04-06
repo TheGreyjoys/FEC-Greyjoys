@@ -39,6 +39,11 @@ class RelatedProductsAndOutfit extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    const controller = new AbortController();
+    controller.abort();
+  }
+
   updateOutfit() {
     this.setState({
       outfitItems: Object.keys(sessionStorage).map((item) => Number(item)).filter((item) => typeof item === 'number' && !Number.isNaN(item)),
@@ -67,8 +72,8 @@ class RelatedProductsAndOutfit extends React.Component {
     return (
       <div>
         <div>loading </div>
-        <div>Related Products</div>
-        <div> Outfit </div>
+        <div>Related Productz</div>
+        <div> Outfitz </div>
       </div>
     );
   }
