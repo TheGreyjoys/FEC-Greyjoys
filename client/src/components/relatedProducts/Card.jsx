@@ -11,7 +11,7 @@ import {
 import Comparison from './Comparison';
 
 function Card(props) {
-  const { productID, changeProduct } = props;
+  const { productID, changeProduct, currentProductData } = props;
   const loadingProduct = {
     name: 'loading',
     category: 'loading',
@@ -56,8 +56,8 @@ function Card(props) {
   if (!loaded) {
     updateData(productID)
       .then((productObj) => {
-        setLoaded(true);
         setProduct(productObj);
+        setLoaded(true);
       })
       .catch((err) => { console.log(err); });
   }
@@ -80,7 +80,7 @@ function Card(props) {
         <h5 className="productDetail">{name}</h5>
         <h6 className="productDetail">{salePrice || originalPrice}</h6>
         {/* <div>{ratings}</div> */}
-        <Comparison cardProduct={product} />
+        <Comparison cardProduct={product} currentProductData={currentProductData} />
       </li>
     );
   }

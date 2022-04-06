@@ -58,6 +58,7 @@ class RelatedProductsAndOutfit extends React.Component {
           <RelatedProducts
             products={this.state.relatedProducts.filter((id, i, arr) => arr.indexOf(id) === i)}
             changeProduct={this.props.changeProduct}
+            currentProductData={this.props.currentProductData}
           />
           <h3>Outfit</h3>
           <Outfit
@@ -65,6 +66,7 @@ class RelatedProductsAndOutfit extends React.Component {
             changeProduct={this.props.changeProduct}
             currentProduct={this.props.id}
             updateOutfit={this.updateOutfit}
+            currentProductData={this.props.currentProductData}
           />
         </div>
       );

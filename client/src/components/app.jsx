@@ -13,7 +13,7 @@ class App extends React.Component {
 
     this.state = {
       // dummy default product ID
-      currentProduct: 40344,
+      currentProduct: 40351,
       navDisplay: false,
       productData: null,
     };
@@ -65,7 +65,7 @@ class App extends React.Component {
         {this.state.navDisplay && <Nav />}
         <div>Hello World</div>
         <button type="button" onClick={this.renderNav}>Nav</button>
-        <ProdDetail id={currentProduct} />
+        {/* <ProdDetail id={currentProduct} /> */}
         <RelatedProductsAndOutfit
           id={currentProduct}
           changeProduct={this.changeProduct}
