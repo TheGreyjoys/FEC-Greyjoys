@@ -1,16 +1,21 @@
 body {
+  display: flex;
+  justify-content: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+main {
   width: 90%;
-  max-width: 1000px;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
-  font-family: 'Roboto', sans-serif;
 }
 
 nav {
   display: flex;
   width: 100%;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .logo {
