@@ -3,6 +3,9 @@ import React from 'react';
 import axios from 'axios';
 import Review from './Review';
 import WriteReview from './WriteReview';
+import Graph from './Graph';
+import Stars from './Stars';
+import { getReviews, getReviewsMeta } from '../../requests';
 
 class Reviews extends React.Component {
   constructor(props) {
@@ -10,15 +13,18 @@ class Reviews extends React.Component {
     this.state = {
       /* need current product id */
       reviews: [],
-      product_id: '40344',
+      product_id: this.props.id || '40344',
       page: 1,
       sort: 'relevant',
       reading: false,
       meta: {},
       rating: 0,
+      reviewNumber: 0,
       writing: false,
+      recommended: 0,
+      overallRatings: null,
     };
-    this.getReviews = this.getReviews.bind(this);
+    this.getPageReview = this.getPageReview.bind(this);
     this.changeSort = this.changeSort.bind(this);
     this.renderReviews = this.renderReviews.bind(this);
     this.toggleExpandReviews = this.toggleExpandReviews.bind(this);
@@ -26,28 +32,26 @@ class Reviews extends React.Component {
     this.goToPage = this.goToPage.bind(this);
     this.writeReview = this.writeReview.bind(this);
     this.submitReview = this.submitReview.bind(this);
+    this.starRating = this.starRating.bind(this);
   }
 
   componentDidMount() {
-    this.getReviews();
-    this.getMeta();
+    this.getMeta(this.getPageReview);
   }
 
-
-
-  getReviews() {
+  getPageReview() {
     const { page, sort, product_id } = this.state;
-    axios.get(`/reviews/?page=${page}&sort=${sort}&product_id=${product_id}`)
+    getReviews(product_id, sort, page)
       .then((res) => {
         this.setState({ reviews: res.data.results });
       })
       .catch(console.log);
   }
 
-  getMeta() {
+  getMeta(callback) {
     const { product_id } = this.state;
 
-    axios.get(`/reviews/meta/?product_id=${product_id}`)
+    getReviewsMeta(product_id)
       .then((res) => {
         let sum = 0;
         let people = 0;
@@ -56,13 +60,39 @@ class Reviews extends React.Component {
           people += Number(res.data.ratings[key]);
         }
         const average = people ? Number(sum / people).toFixed(1) : 0;
-        this.setState({ meta: res.data, rating: average });
+        this.setState({
+          meta: res.data,
+          reviewNumber: people,
+          rating: average,
+          overallRatings: res.data.ratings,
+          recommended: (
+            100 * res.data.recommended.true
+            / (Number(res.data.recommended.false)
+            + Number(res.data.recommended.true))
+          ).toFixed(1),
+        });
       })
+      .then(callback)
       .catch(console.log);
   }
 
+  starRating(rating) {
+    var ratingStars = [];
+    for (var i = 0; i < Math.floor(rating); i ++) {
+      ratingStars.push(<Stars key={i + 10} filled="1" />);
+    }
+    if(rating > Math.floor(rating)) {
+      console.log('here');
+      ratingStars.push(<Stars key={20} filled="2" color={rating - Math.floor(rating)} />);
+    }
+    for (var i = Math.round(rating); i < 5; i ++) {
+      ratingStars.push(<Stars key={i + 11} filled="0" />);
+    }
+    return ratingStars;
+  }
+
   changeSort(e) {
-    this.setState({ sort: e.target.value, reading: true }, this.getReviews);
+    this.setState({ sort: e.target.value, reading: true }, this.getPageReview);
   }
 
   toggleExpandReviews() {
@@ -71,7 +101,7 @@ class Reviews extends React.Component {
   }
 
   goToPage(p) {
-    this.setState({ page: p }, this.getReviews);
+    this.setState({ page: p }, this.getPageReview);
   }
 
   writeReview() {
@@ -81,8 +111,8 @@ class Reviews extends React.Component {
 
   submitReview(input) {
     console.log(input);
-    const { writeReview } = this.state;
-    this.setState({ writing: !writeReview });
+    const { writing } = this.state;
+    this.setState({ writing: !writing });
   }
 
   renderReviews() {
@@ -120,28 +150,41 @@ class Reviews extends React.Component {
   }
 
   render() {
-    const { reviews, sort, rating, meta, writing } = this.state;
-    const { length } = reviews;
+    const { reviews, sort, rating, meta, writing, recommended, reviewNumber, overallRatings } = this.state;
+    console.log(rating);
     return (
       <div>
         RATINGS & REVIEWS
         <div>
           {rating}
-          out of 5,
-          {meta.recommend}
-          people recommend this product
+          {(rating !== 0) && this.starRating(rating) }
+          {overallRatings
+          && (
+            <Graph
+              five={overallRatings[5]}
+              four={overallRatings[4]}
+              three={overallRatings[3]}
+              two={overallRatings[2]}
+              one={overallRatings[1]}
+              reviewNumber={reviewNumber}
+            />
+          ) }
         </div>
 
+        {!writing
+        && (
         <div>
-          {length}
-          reviews, sorted by
-          <select value={sort} onChange={this.changeSort}>
-            <option value="relevant">most relevant</option>
-            <option value="newest">newest</option>
-            <option value="helpful">most helpful</option>
-          </select>
+          <div>
+            <p>{reviewNumber} reviews, sorted by <select value={sort} onChange={this.changeSort}>
+              <option value="relevant">most relevant</option>
+              <option value="newest">newest</option>
+              <option value="helpful">most helpful</option>
+            </select>
+            </p>
+          </div>
+          {this.renderReviews()}
         </div>
-        {!writing && this.renderReviews()}
+        )}
         {writing ? <WriteReview submit={this.submitReview} /> : <button type="submit" onClick={this.writeReview}>WriteReview</button>}
       </div>
     );

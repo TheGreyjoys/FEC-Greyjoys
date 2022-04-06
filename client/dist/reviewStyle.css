@@ -1,0 +1,41 @@
+.half {
+  color: lightgrey;
+}
+
+.star {
+  display: inline-block;
+}
+
+.selectable {
+  font-size: xx-large;
+}
+
+.review {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.rating_graph
+{
+  width: 30%;
+}
+
+.rating p:nth-child(2)
+{
+  box-sizing: 100px;
+  float: right;
+  position: relative;
+  top: -50px;
+}
+
+.bar
+{
+  background-color: lightgrey;
+  box-sizing: border-box;
+}
+
+.filled
+{
+  height: 8px;
+  background-color: grey;
+}

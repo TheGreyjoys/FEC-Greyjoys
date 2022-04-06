@@ -14,8 +14,8 @@ function getProductStyles(id) {
   return axios.get(`/products/${id}/styles`);
 }
 
-function getReviews(id) {
-  return axios.get(`/reviews?product_id=${id}`);
+function getReviews(id, sort = 'relevant', page = 1) {
+  return axios.get(`/reviews?product_id=${id}&sort=${sort}&page=${page}`);
 }
 
 function getReviewsMeta(id) {

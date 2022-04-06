@@ -26,7 +26,7 @@ class App extends React.Component {
         {this.state.navDisplay && <Nav />}
         <div>Hello World</div>
         <button onClick={this.renderNav}>Nav</button>
-        <ProdDetail />
+        {/* <ProdDetail /> */}
         <Reviews />
       </main>
     );
