@@ -57,7 +57,13 @@ class RelatedProductsAndOutfit extends React.Component {
         </div>
       );
     }
-    return <div>loading....</div>;
+    return (
+      <div>
+        <div>loading </div>
+        <div>Related Products</div>
+        <div> Outfit </div>
+      </div>
+    );
   }
 }
 
