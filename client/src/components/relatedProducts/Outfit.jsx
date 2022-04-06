@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Card from './Card';
+import AddToOutfit from './AddToOutfit';
 
 function Outfit(props) {
-  const { products, changeProduct } = props;
+  const { products, changeProduct, currentProduct, updateOutfit } = props;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [length] = useState(products.length);
   const scrollRight = () => {
@@ -27,6 +28,7 @@ function Outfit(props) {
         }
         <div className="carousel-content-wrapper">
           <div className="carousel-content" style={{ transform: `translateX(-${currentIndex * 25}%)` }}>
+            <AddToOutfit currentProduct={currentProduct} updateOutfit={updateOutfit} />
             {products.map((product) => (
               <Card
                 key={product}
@@ -44,9 +46,11 @@ function Outfit(props) {
     </div>
   );
 }
+
 Outfit.propTypes = {
   products: PropTypes.arrayOf(PropTypes.number).isRequired,
   changeProduct: PropTypes.func.isRequired,
+  currentProduct: PropTypes.number.isRequired,
 };
 
 export default Outfit;

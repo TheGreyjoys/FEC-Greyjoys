@@ -13,6 +13,7 @@ class RelatedProductsAndOutfit extends React.Component {
       relatedProducts: null,
       outfitItems: null,
     };
+    this.updateOutfit = this.updateOutfit.bind(this);
   }
 
   componentDidMount() {
@@ -23,9 +24,7 @@ class RelatedProductsAndOutfit extends React.Component {
         });
       })
       .catch((err) => console.error(err));
-    this.setState({
-      outfitItems: Object.keys(sessionStorage).map((item) => Number(item)).filter((item) => typeof item === 'number' && !Number.isNaN(item)),
-    });
+    this.updateOutfit();
   }
 
   componentDidUpdate(prevProps) {
@@ -38,6 +37,12 @@ class RelatedProductsAndOutfit extends React.Component {
         })
         .catch((err) => console.error(err));
     }
+  }
+
+  updateOutfit() {
+    this.setState({
+      outfitItems: Object.keys(sessionStorage).map((item) => Number(item)).filter((item) => typeof item === 'number' && !Number.isNaN(item)),
+    });
   }
 
   render() {
@@ -53,6 +58,8 @@ class RelatedProductsAndOutfit extends React.Component {
           <Outfit
             products={this.state.outfitItems}
             changeProduct={this.props.changeProduct}
+            currentProduct={this.props.id}
+            updateOutfit={this.updateOutfit}
           />
         </div>
       );

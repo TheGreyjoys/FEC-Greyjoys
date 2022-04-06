@@ -61,7 +61,7 @@ function Card(props) {
   }
 
   function handleClick(e) {
-    console.log('you clicked: ', (Object.values(e.target)[1].value));
+    console.log('you clicked: ', (e.target));
     if (!Number.isNaN(Object.values(e.target)[1].value)) {
       changeProduct(Object.values(e.target)[1].value);
     }
@@ -71,7 +71,7 @@ function Card(props) {
     return (
       // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
       <li className="card" onKeyPress={handleClick}>
-        <button type="button" className="imgLink" value={id} onClick={handleClick}>
+        <button type="button" className="imgLink" value={id} name={name} onClick={handleClick}>
           <img src={photos[0].thumbnail_url} alt="product thumbnail" value={id} />
         </button>
         <h6 className="productDetail">{category}</h6>
