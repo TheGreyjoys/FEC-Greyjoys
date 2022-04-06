@@ -1,12 +1,9 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import { productTest, productStylesTest } from './testProduct';
+// import { productTest, productStylesTest } from './testProduct';
 import ImageGallery from './ImageGallery';
 import StyleSelector from './StyleSelector';
-import {
-  // eslint-disable-next-line max-len
-  getCurrentProduct, getAllProducts, getProductStyles, getReviews, getReviewsMeta, postReview, markHelpful, markReported,
-} from '../../requests';
+import { getCurrentProduct, getProductStyles } from '../../requests';
 
 class ProdDetail extends React.Component {
   constructor(props) {
@@ -38,6 +35,28 @@ class ProdDetail extends React.Component {
           selectedStyle: defaultStyle,
         });
       });
+  }
+
+  componentDidUpdate(prevProps) {
+    const { id } = this.props;
+    if (prevProps.id !== id) {
+      Promise.all([getCurrentProduct(id), getProductStyles(id)])
+        .then((results) => {
+          const product = results[0].data;
+          const productStyles = results[1].data.results;
+          let defaultStyle;
+          productStyles.forEach((style) => {
+            if (style['default?']) {
+              defaultStyle = style;
+            }
+          });
+          this.setState({
+            product,
+            productStyles,
+            selectedStyle: defaultStyle,
+          });
+        });
+    }
   }
 
   handleStyleChange(styleId) {

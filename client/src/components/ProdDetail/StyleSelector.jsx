@@ -122,6 +122,7 @@ class StyleSelector extends React.Component {
                 src={style.photos[0].thumbnail_url}
                 alt={style.name}
                 name={style.style_id}
+                data-testid="styleOption"
                 onClick={this.handleStyleClick}
               />
             ))}

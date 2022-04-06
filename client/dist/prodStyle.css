@@ -118,9 +118,6 @@
   align-self: center;
   display: flex;
   flex-direction: column;
-  /* display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 10% 5% 15% 10% 60%; */
 
   background-color: bisque;
 }
@@ -141,8 +138,6 @@
 }
 
 .price {
-  /* grid-row: 4; */
-
   font-size: medium;
 }
 
