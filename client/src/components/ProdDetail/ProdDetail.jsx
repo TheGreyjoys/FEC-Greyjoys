@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react';
 // import { productTest, productStylesTest } from './testProduct';
+import PropTypes from 'prop-types';
 import ImageGallery from './ImageGallery';
 import StyleSelector from './StyleSelector';
 import { getCurrentProduct, getProductStyles } from '../../requests';
@@ -15,6 +16,7 @@ class ProdDetail extends React.Component {
       selectedStyle: {},
     };
     this.handleStyleChange = this.handleStyleChange.bind(this);
+    this.handleCartAdd = this.handleCartAdd.bind(this);
   }
 
   componentDidMount() {
@@ -70,6 +72,13 @@ class ProdDetail extends React.Component {
     }
   }
 
+  handleCartAdd(sku, qty) {
+    // eslint-disable-next-line no-alert
+    alert(`${qty} SKU#${sku} added to cart!`);
+    // addCart(sky, qty)
+    // .then()
+  }
+
   render() {
     const { product, productStyles, selectedStyle } = this.state;
 
@@ -101,6 +110,7 @@ class ProdDetail extends React.Component {
               selectedStyle={selectedStyle}
               productStyles={productStyles}
               handleStyleChange={this.handleStyleChange}
+              handleCartAdd={this.handleCartAdd}
             />
           </div>
         </section>
@@ -111,5 +121,9 @@ class ProdDetail extends React.Component {
     );
   }
 }
+
+ProdDetail.propTypes = {
+  id: PropTypes.number.isRequired,
+};
 
 export default ProdDetail;

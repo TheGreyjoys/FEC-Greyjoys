@@ -1,5 +1,6 @@
-/* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+/* eslint-disable react/forbid-prop-types */
+import React from 'react';
+import PropTypes from 'prop-types';
 
 class StyleSelector extends React.Component {
   constructor(props) {
@@ -19,10 +20,10 @@ class StyleSelector extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const newId = this.props.selectedStyle.style_id;
+    const { selectedStyle, productStyles, selectedStyle: { skus } } = this.props;
+    const newId = selectedStyle.style_id;
     const oldId = prevProps.selectedStyle.style_id;
     if (newId !== oldId) {
-      const { selectedStyle, productStyles, selectedStyle: { skus } } = this.props;
       let sizes = [];
       if (Object.keys(skus).length) {
         sizes = this.sizeFinder(skus);
@@ -62,8 +63,9 @@ class StyleSelector extends React.Component {
   }
 
   render() {
-    const { currStyle, styles, styleSizes, selSize, availQty } = this.state;
-
+    const {
+      currStyle, styles, styleSizes, selSize, availQty,
+    } = this.state;
 
     const renderSizes = () => {
       const sizes = {
@@ -137,5 +139,12 @@ class StyleSelector extends React.Component {
     );
   }
 }
+
+StyleSelector.propTypes = {
+  selectedStyle: PropTypes.object.isRequired,
+  productStyles: PropTypes.array.isRequired,
+  handleStyleChange: PropTypes.func.isRequired,
+  handleCartAdd: PropTypes.func.isRequired,
+};
 
 export default StyleSelector;
