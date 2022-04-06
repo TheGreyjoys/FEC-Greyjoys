@@ -74,7 +74,7 @@ class ProdDetail extends React.Component {
 
   handleCartAdd(sku, qty) {
     // eslint-disable-next-line no-alert
-    alert(`${qty} SKU#${sku} added to cart!`);
+    // alert(`${qty} SKU#${sku} added to cart!`);
     // addCart(sky, qty)
     // .then()
   }
