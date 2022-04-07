@@ -62,9 +62,7 @@ class App extends React.Component {
     const { currentProduct } = this.state;
     return (
       <main>
-        {this.state.navDisplay && <Nav />}
-        <div>Hello World</div>
-        <button type="button" onClick={this.renderNav}>Nav</button>
+        <Nav />
         <ProdDetail id={currentProduct} />
         <RelatedProductsAndOutfit
           id={currentProduct}
