@@ -35,11 +35,17 @@ app.all('*', (req, res) => {
       })
       .catch((err) => res.send(err));
   } else {
+    console.log(body);
     axios.post(`http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp${url}`, body, config)
       .then((response) => {
+        console.log('response: ', response.data);
         res.send(response);
       })
-      .catch((err) => res.send(err));
+      .catch((err) => {
+        console.log('err: ', err);
+
+        res.send(err)
+      });
   }
 });
 

@@ -94,19 +94,23 @@ class App extends React.Component {
   }
 
   render() {
-    const { currentProduct } = this.state;
-    return (
-      <main>
-        <Nav />
-        <ProdDetail id={currentProduct} />
-        <RelatedProductsAndOutfit
-          id={currentProduct}
-          changeProduct={this.changeProduct}
-          currentProductData={this.state.productData || this.sampleData}
-        />
-        {/* <Reviews id={currentProduct} /> */}
-      </main>
-    );
+    const { currentProduct, productData } = this.state;
+    if(productData) {
+      return (
+        <main>
+          <Nav />
+          <ProdDetail id={currentProduct} />
+          <RelatedProductsAndOutfit
+            id={currentProduct}
+            changeProduct={this.changeProduct}
+            currentProductData={this.state.productData}
+          />
+          <Reviews id={currentProduct} name={productData.name}/>
+        </main>
+      );
+    } else {
+      return <div>loading...</div>
+    }
   }
 }
 

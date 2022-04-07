@@ -20,9 +20,9 @@ class Reviews extends React.Component {
       meta: {},
       rating: 0,
       reviewNumber: 0,
-      writing: false,
       recommended: 0,
       overallRatings: null,
+      reviewed: false,
     };
     this.getPageReview = this.getPageReview.bind(this);
     this.changeSort = this.changeSort.bind(this);
@@ -43,7 +43,6 @@ class Reviews extends React.Component {
     const { page, sort, product_id } = this.state;
     getReviews(product_id, sort, page)
       .then((res) => {
-        console.log(res.data)
         this.setState({ reviews: res.data.results });
       })
       .catch(console.log);
@@ -83,7 +82,6 @@ class Reviews extends React.Component {
       ratingStars.push(<Stars key={i + 10} filled="1" />);
     }
     if(rating > Math.floor(rating)) {
-      console.log('here');
       ratingStars.push(<Stars key={20} filled="2" color={rating - Math.floor(rating)} />);
     }
     for (var i = Math.round(rating); i < 5; i ++) {
@@ -106,14 +104,13 @@ class Reviews extends React.Component {
   }
 
   writeReview() {
-    const { writing } = this.state;
-    this.setState({ writing: !writing, reading: false });
+    document.getElementById("writeReview").showModal();
   }
 
   submitReview(input) {
     console.log(input);
-    const { writing } = this.state;
-    this.setState({ writing: !writing });
+    this.setState({reviewed: true});
+    document.getElementById("writeReview").close();
   }
 
   renderReviews() {
@@ -151,12 +148,11 @@ class Reviews extends React.Component {
   }
 
   render() {
-    const { reviews, sort, rating, meta, writing, recommended, reviewNumber, overallRatings, product_id } = this.state;
-    console.log(rating);
+    const { reviews, sort, rating, meta, recommended, reviewNumber, overallRatings, product_id } = this.state;
     return (
-      <div>
-        RATINGS & REVIEWS
+      <div className="reviews-container">
         <div>
+          <p>RATINGS & REVIEWS</p>
           {rating}
           {(rating !== 0) && this.starRating(rating) }
           <p>{recommended}% of reviews recommend this product</p>
@@ -170,11 +166,12 @@ class Reviews extends React.Component {
               one={overallRatings[1]}
               reviewNumber={reviewNumber}
             />
-          ) }
-        </div>
 
-        {!writing
-        && (
+          ) }
+           <dialog id="writeReview"><WriteReview submit={this.submitReview} product_id={product_id} name={this.props.name}/></dialog>
+           <button type="submit" onClick={this.writeReview}>WriteReview</button>
+           <output></output>
+        </div>
         <div>
           <div>
             <p>{reviewNumber} reviews, sorted by <select value={sort} onChange={this.changeSort}>
@@ -186,8 +183,6 @@ class Reviews extends React.Component {
           </div>
           {this.renderReviews()}
         </div>
-        )}
-        {writing ? <WriteReview submit={this.submitReview} product_id={product_id}/> : <button type="submit" onClick={this.writeReview}>WriteReview</button>}
       </div>
     );
   }
