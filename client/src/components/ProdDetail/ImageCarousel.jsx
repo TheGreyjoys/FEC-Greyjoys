@@ -13,7 +13,6 @@ class ImageCarousel extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log(prevProps)
     const oldIndex = prevProps.currIndex;
     const { currIndex } = this.props;
     if (oldIndex !== currIndex) {

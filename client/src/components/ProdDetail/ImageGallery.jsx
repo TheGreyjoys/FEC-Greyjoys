@@ -3,6 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ImageCarousel from './ImageCarousel';
+import ThumbCarousel from './ThumbCarousel';
 
 class ImageGallery extends React.Component {
   constructor(props) {
@@ -36,7 +37,7 @@ class ImageGallery extends React.Component {
 
   handleThumbClick(e) {
     this.setState({
-      currIndex: e.target.value,
+      currIndex: Number(e.target.value),
     });
     e.target.className = 'thumb-sel';
   }
@@ -85,18 +86,14 @@ class ImageGallery extends React.Component {
             nextImg={this.nextImg}
           />
           )}
-        <div className="thumb-selector">
-          {allImgs.map((img, index) => (
-            <input
-              type="image"
-              className={index === currIndex ? 'thumb-sel' : 'thumb'}
-              src={allThumbs[index]}
-              alt={`img${index}`}
-              value={index}
-              onClick={this.handleThumbClick}
+        {allThumbs.length
+          && (
+            <ThumbCarousel
+              allThumbs={allThumbs}
+              currIndex={currIndex}
+              handleThumbClick={this.handleThumbClick}
             />
-          ))}
-        </div>
+          )}
       </div>
     );
   }
