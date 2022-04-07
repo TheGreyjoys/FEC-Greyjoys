@@ -4,7 +4,9 @@ import Card from './Card';
 import AddToOutfit from './AddToOutfit';
 
 function Outfit(props) {
-  const { products, changeProduct, currentProduct, updateOutfit } = props;
+  const {
+    products, changeProduct, currentProduct, updateOutfit, currentProductData,
+  } = props;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [length] = useState(products.length);
   const scrollRight = () => {
@@ -34,6 +36,7 @@ function Outfit(props) {
                 key={product}
                 productID={product}
                 changeProduct={changeProduct}
+                currentProductData={currentProductData}
               />
             ))}
           </div>
@@ -51,6 +54,10 @@ Outfit.propTypes = {
   products: PropTypes.arrayOf(PropTypes.number).isRequired,
   changeProduct: PropTypes.func.isRequired,
   currentProduct: PropTypes.number.isRequired,
+  currentProductData: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }).isRequired,
+  updateOutfit: PropTypes.func.isRequired,
 };
 
 export default Outfit;
