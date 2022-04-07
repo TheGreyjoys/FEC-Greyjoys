@@ -101,7 +101,7 @@
   filter: blur(0);
   transform: scale(1);
   opacity: 1;
-  position: absolute;
+  position: fixed;
   left: 25%;
   bottom: 25%;
   z-index: 2;
@@ -113,4 +113,15 @@
   table-layout: auto;
   justify-content: center;
   align-items: center;
+}
+
+.actionButton {
+  border: none;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  position:absolute;
+  color: yellow;
+  /* left: 90%;
+  bottom: 90%; */
 }

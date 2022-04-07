@@ -6,6 +6,7 @@ const { signal } = controller;
 // this file does not yet contain requests for Q&A section or Cart API or Interactions API
 
 function getCurrentProduct(id) {
+  console.log('hi');
   return axios.get(`/products/${id}`, { signal });
 }
 
@@ -53,5 +54,5 @@ function getCart() {
 
 export {
   // eslint-disable-next-line max-len
-  getCurrentProduct, getAllProducts, getProductStyles, getRelatedProducts, getReviews, getReviewsMeta, postReview, markHelpful, markReported, getCart,
+  getCurrentProduct, getAllProducts, getProductStyles, getRelatedProducts, getReviews, getReviewsMeta, postReview, markHelpful, markReported, getCart, controller,
 };

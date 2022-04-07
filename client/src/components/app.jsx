@@ -74,11 +74,11 @@ class App extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    if (controller.signal) {
-      controller.abort();
-    }
-  }
+  // componentWillUnmount() {
+  //   if (controller.signal) {
+  //     controller.abort();
+  //   }
+  // }
 
   changeProduct(id) {
     this.setState({

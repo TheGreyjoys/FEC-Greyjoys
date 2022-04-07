@@ -20,7 +20,7 @@ function Comparison(props) {
   }
 
   if (!showComp) {
-    return <button type="button" onClick={toggleShowComp}>☆</button>;
+    return <button type="button" onClick={toggleShowComp} className="actionButton">☆</button>;
   }
   return ReactDOM.createPortal(
     <div>

@@ -9,6 +9,7 @@ import regeneratorRuntime from 'regenerator-runtime';
 import {
   getCurrentProduct, getProductStyles, getReviewsMeta, controller,
 } from '../../requests';
+import throttle from '../../helpers';
 import Comparison from './Comparison';
 
 function Card(props) {
@@ -33,25 +34,29 @@ function Card(props) {
   } = product;
 
   const updateData = async (prodID) => {
-    const { data: { name, category, id } } = await getCurrentProduct(prodID);
-    const { data: { results } } = await getProductStyles(prodID);
-    const { data: { ratings } } = await getReviewsMeta(prodID);
-    const productData = {
-      name, category, id, ratings,
-    };
-    results.forEach((style) => {
-      if (style['default?']) {
-        productData.originalPrice = style.original_price;
-        productData.salePrice = style.sale_price;
-        productData.photos = style.photos;
+    try {
+      const { data: { name, category, id } } = await (getCurrentProduct(prodID));
+      const { data: { results } } = await (getProductStyles(prodID));
+      const { data: { ratings } } = await (getReviewsMeta(prodID));
+      const productData = {
+        name, category, id, ratings,
+      };
+      results.forEach((style) => {
+        if (style['default?']) {
+          productData.originalPrice = style.original_price;
+          productData.salePrice = style.sale_price;
+          productData.photos = style.photos;
+        }
+      });
+      if (!productData.photos) {
+        productData.originalPrice = results[0].original_price;
+        productData.salePrice = results[0].sale_price;
+        productData.photos = results[0].photos;
       }
-    });
-    if (!productData.photos) {
-      productData.originalPrice = results[0].original_price;
-      productData.salePrice = results[0].sale_price;
-      productData.photos = results[0].photos;
+      return productData;
+    } catch (err) {
+      console.log(err);
     }
-    return productData;
   };
   useEffect(() => {
     if (!loaded) {
@@ -74,7 +79,8 @@ function Card(props) {
   if (loaded) {
     return (
       // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
-      <li className="card" onKeyPress={handleClick}>
+      <div className="card">
+      <li onKeyPress={handleClick}>
         <button type="button" className="imgLink" value={id} name={name} onClick={handleClick}>
           <img src={photos[0].thumbnail_url} alt="product thumbnail" value={id} />
         </button>
@@ -85,6 +91,7 @@ function Card(props) {
         <div id={id} />
         <Comparison cardProduct={product} currentProductData={currentProductData} />
       </li>
+      </div>
     );
   }
   return (

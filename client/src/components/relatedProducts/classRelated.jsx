@@ -80,6 +80,7 @@ class RelatedProductsAndOutfit extends React.Component {
 
   render() {
     if (this.state.relatedProducts) {
+      console.log('relatedProducts', this.state.relatedProducts);
       return (
         <div>
           <h3>Related Products</h3>
