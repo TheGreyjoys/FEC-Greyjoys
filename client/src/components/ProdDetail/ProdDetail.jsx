@@ -1,12 +1,10 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import { productTest, productStylesTest } from './testProduct';
+// import { productTest, productStylesTest } from './testProduct';
+import PropTypes from 'prop-types';
 import ImageGallery from './ImageGallery';
 import StyleSelector from './StyleSelector';
-import {
-  // eslint-disable-next-line max-len
-  getCurrentProduct, getAllProducts, getProductStyles, getReviews, getReviewsMeta, postReview, markHelpful, markReported,
-} from '../../requests';
+import { getCurrentProduct, getProductStyles } from '../../requests';
 
 class ProdDetail extends React.Component {
   constructor(props) {
@@ -18,6 +16,7 @@ class ProdDetail extends React.Component {
       selectedStyle: {},
     };
     this.handleStyleChange = this.handleStyleChange.bind(this);
+    this.handleCartAdd = this.handleCartAdd.bind(this);
   }
 
   componentDidMount() {
@@ -40,6 +39,28 @@ class ProdDetail extends React.Component {
       });
   }
 
+  componentDidUpdate(prevProps) {
+    const { id } = this.props;
+    if (prevProps.id !== id) {
+      Promise.all([getCurrentProduct(id), getProductStyles(id)])
+        .then((results) => {
+          const product = results[0].data;
+          const productStyles = results[1].data.results;
+          let defaultStyle;
+          productStyles.forEach((style) => {
+            if (style['default?']) {
+              defaultStyle = style;
+            }
+          });
+          this.setState({
+            product,
+            productStyles,
+            selectedStyle: defaultStyle,
+          });
+        });
+    }
+  }
+
   handleStyleChange(styleId) {
     const { selectedStyle, productStyles } = this.state;
     if (styleId !== selectedStyle.style_id) {
@@ -51,12 +72,18 @@ class ProdDetail extends React.Component {
     }
   }
 
+  handleCartAdd(sku, qty) {
+    // eslint-disable-next-line no-alert
+    addCart(sky, qty)
+      .then()
+  }
+
   render() {
     const { product, productStyles, selectedStyle } = this.state;
 
     const saleChecker = () => {
       const { sale_price, original_price } = selectedStyle;
-      if (selectedStyle.sale_price) {
+      if (!!selectedStyle.sale_price) {
         return (
           <span style={{ color: 'red' }}>
             <s style={{ color: 'black' }}>{original_price}</s>
@@ -82,15 +109,32 @@ class ProdDetail extends React.Component {
               selectedStyle={selectedStyle}
               productStyles={productStyles}
               handleStyleChange={this.handleStyleChange}
+              handleCartAdd={this.handleCartAdd}
             />
           </div>
         </section>
         <section className="productDetails">
-          {product.description}
+          <span className="productDescription">
+            {product.description}
+          </span>
+          <div className="vl" />
+          <div className="productFeatures">
+            {!!productStyles.length
+            && product.features.map((feature) => (
+              <span className="productFeature">
+                <b>{feature.feature}</b>
+                {`:   ${feature.value}`}
+              </span>
+            ))}
+          </div>
         </section>
       </div>
     );
   }
 }
+
+ProdDetail.propTypes = {
+  id: PropTypes.number.isRequired,
+};
 
 export default ProdDetail;

@@ -3,11 +3,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
 // eslint-disable-next-line no-unused-vars
 import regeneratorRuntime from 'regenerator-runtime';
 import {
   getCurrentProduct, getProductStyles, getReviewsMeta,
 } from '../../requests';
+import Comparison from './Comparison';
 
 function Card(props) {
   const { productID, changeProduct } = props;
@@ -62,7 +64,7 @@ function Card(props) {
   }
 
   function handleClick(e) {
-    console.log('you clicked: ', (Object.values(e.target)[1].value));
+    console.log('you clicked: ', (e.target));
     if (!Number.isNaN(Object.values(e.target)[1].value)) {
       changeProduct(Object.values(e.target)[1].value);
     }
@@ -72,13 +74,14 @@ function Card(props) {
     return (
       // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
       <li className="card" onKeyPress={handleClick}>
-        <button type="button" className="imgLink" value={id} onClick={handleClick}>
+        <button type="button" className="imgLink" value={id} name={name} onClick={handleClick}>
           <img src={photos[0].thumbnail_url} alt="product thumbnail" value={id} />
         </button>
         <h6 className="productDetail">{category}</h6>
         <h5 className="productDetail">{name}</h5>
         <h6 className="productDetail">{salePrice || originalPrice}</h6>
         {/* <div>{ratings}</div> */}
+        <Comparison cardProduct={product} />
       </li>
     );
   }

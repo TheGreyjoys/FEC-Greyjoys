@@ -7,6 +7,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 require('dotenv').config();
 
+app.use(express.json());
+
 app.use('/', (req, res, next) => {
   console.log(`${req.method} at ${req.url}`);
   next();

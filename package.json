@@ -9,6 +9,7 @@
     "start": "npx node server/index.js",
     "build": "npx webpack --config webpack.config.js",
     "test": "jest --detectOpenHandles",
+    "test-prod": "jest ProdDetail.spec.jsx",
     "test:watch": "npm run test -- --watch"
   },
   "repository": {

@@ -1,5 +1,6 @@
-/* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+/* eslint-disable react/forbid-prop-types */
+import React from 'react';
+import PropTypes from 'prop-types';
 
 class StyleSelector extends React.Component {
   constructor(props) {
@@ -19,10 +20,10 @@ class StyleSelector extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const newId = this.props.selectedStyle.style_id;
+    const { selectedStyle, productStyles, selectedStyle: { skus } } = this.props;
+    const newId = selectedStyle.style_id;
     const oldId = prevProps.selectedStyle.style_id;
     if (newId !== oldId) {
-      const { selectedStyle, productStyles, selectedStyle: { skus } } = this.props;
       let sizes = [];
       if (Object.keys(skus).length) {
         sizes = this.sizeFinder(skus);
@@ -50,6 +51,12 @@ class StyleSelector extends React.Component {
     });
   }
 
+  handleQtyChange(e) {
+    this.setState({
+      selQty: e.target.value,
+    });
+  }
+
   sizeFinder(skus) {
     const availSizes = [];
     Object.entries(skus).forEach((sku) => {
@@ -62,8 +69,10 @@ class StyleSelector extends React.Component {
   }
 
   render() {
-    const { currStyle, styles, styleSizes, selSize, availQty } = this.state;
-
+    const {
+      currStyle, styles, styleSizes, selSize, availQty, selQty,
+    } = this.state;
+    const { handleCartAdd } = this.props;
 
     const renderSizes = () => {
       const sizes = {
@@ -77,7 +86,12 @@ class StyleSelector extends React.Component {
 
       if (styleSizes.length) {
         return (
-          <select name="selSize" className="sizeSelect" onChange={this.handleSizeChange}>
+          <select
+            name="selSize"
+            className="sizeSelect"
+            value={selSize}
+            onChange={this.handleSizeChange}
+          >
             <option disabled>Size</option>
             {styleSizes.map((option) => <option value={option}>{sizes[option[0]]}</option>)}
           </select>
@@ -100,7 +114,12 @@ class StyleSelector extends React.Component {
       }
       const qtyArray = (new Array(availQty)).fill(0);
       return (
-        <select name="selQty" className="qtySelect">
+        <select
+          name="selQty"
+          className="qtySelect"
+          value={selQty}
+          onChange={this.handleQtyChange}
+        >
           <option disabled>Qty</option>
           {qtyArray.map((val, index) => <option value={index + 1}>{index + 1}</option>)}
         </select>
@@ -122,6 +141,7 @@ class StyleSelector extends React.Component {
                 src={style.photos[0].thumbnail_url}
                 alt={style.name}
                 name={style.style_id}
+                data-testid="styleOption"
                 onClick={this.handleStyleClick}
               />
             ))}
@@ -131,10 +151,26 @@ class StyleSelector extends React.Component {
           {renderSizes()}
           {renderQty()}
         </div>
-        <button type="submit" className="cartAdd">Add To Cart</button>
+        <button
+          type="submit"
+          className="cartAdd"
+          onClick={(e) => {
+            e.preventDefault();
+            handleCartAdd
+          }}
+        >
+          Add To Cart
+        </button>
       </form>
     );
   }
 }
+
+StyleSelector.propTypes = {
+  selectedStyle: PropTypes.object.isRequired,
+  productStyles: PropTypes.array.isRequired,
+  handleStyleChange: PropTypes.func.isRequired,
+  handleCartAdd: PropTypes.func.isRequired,
+};
 
 export default StyleSelector;
