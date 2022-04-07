@@ -9,7 +9,7 @@ import { setupServer } from 'msw/node';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import App from '../app';
-import RelatedProductsAndOutfit from './ClassRelated';
+import RelatedProductsAndOutfit from './classRelated';
 import RelatedProducts from './RelatedProducts';
 import Outfit from './Outfit';
 import Card from './Card';

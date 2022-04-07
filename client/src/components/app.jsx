@@ -2,7 +2,7 @@
 /* eslint-disable react/no-access-state-in-setstate */
 import React from 'react';
 import Nav from './Nav';
-import RelatedProductsAndOutfit from './relatedProducts/ClassRelated';
+import RelatedProductsAndOutfit from './relatedProducts/classRelated';
 import Reviews from './Reviews/Reviews';
 import ProdDetail from './ProdDetail/ProdDetail';
 
