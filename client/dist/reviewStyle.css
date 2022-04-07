@@ -1,3 +1,9 @@
+.reviews-container {
+  display: flex;
+  flex-direction: row;
+}
+
+
 
 .half {
   color: lightgrey;
@@ -18,7 +24,7 @@
 
 .rating_graph
 {
-  width: 30%;
+ /*  width: 30%; */
 }
 
 .rating p:nth-child(2)

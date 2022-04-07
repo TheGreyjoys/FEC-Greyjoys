@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { postReview } from '../../requests';
-import axios from 'axios';
 
 class WriteReview extends React.Component {
   constructor(props) {

@@ -64,12 +64,12 @@ class App extends React.Component {
       return (
         <main>
           <Nav />
-  {/*         <ProdDetail id={currentProduct} />
+          <ProdDetail id={currentProduct} />
           <RelatedProductsAndOutfit
             id={currentProduct}
             changeProduct={this.changeProduct}
             currentProductData={this.state.productData}
-          /> */}
+          />
           <Reviews id={currentProduct} name={productData.name}/>
         </main>
       );
