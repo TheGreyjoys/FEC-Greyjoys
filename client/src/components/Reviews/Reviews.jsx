@@ -20,7 +20,6 @@ class Reviews extends React.Component {
       meta: {},
       rating: 0,
       reviewNumber: 0,
-      writing: false,
       recommended: 0,
       overallRatings: null,
     };
@@ -54,6 +53,7 @@ class Reviews extends React.Component {
 
     getReviewsMeta(product_id)
       .then((res) => {
+        console.log(res.data);
         let sum = 0;
         let people = 0;
         for (var key in res.data.ratings) {
@@ -106,14 +106,12 @@ class Reviews extends React.Component {
   }
 
   writeReview() {
-    const { writing } = this.state;
-    this.setState({ writing: !writing, reading: false });
+    document.getElementById("writeReview").showModal();
   }
 
   submitReview(input) {
     console.log(input);
-    const { writing } = this.state;
-    this.setState({ writing: !writing });
+    document.getElementById("writeReview").close();
   }
 
   renderReviews() {
@@ -151,8 +149,7 @@ class Reviews extends React.Component {
   }
 
   render() {
-    const { reviews, sort, rating, meta, writing, recommended, reviewNumber, overallRatings, product_id } = this.state;
-    console.log(rating);
+    const { reviews, sort, rating, meta, recommended, reviewNumber, overallRatings, product_id } = this.state;
     return (
       <div>
         RATINGS & REVIEWS
@@ -172,9 +169,6 @@ class Reviews extends React.Component {
             />
           ) }
         </div>
-
-        {!writing
-        && (
         <div>
           <div>
             <p>{reviewNumber} reviews, sorted by <select value={sort} onChange={this.changeSort}>
@@ -186,8 +180,9 @@ class Reviews extends React.Component {
           </div>
           {this.renderReviews()}
         </div>
-        )}
-        {writing ? <WriteReview submit={this.submitReview} product_id={product_id}/> : <button type="submit" onClick={this.writeReview}>WriteReview</button>}
+        <dialog id="writeReview"><WriteReview submit={this.submitReview} product_id={product_id} /></dialog>
+        <button type="submit" onClick={this.writeReview}>WriteReview</button>
+        <output></output>
       </div>
     );
   }

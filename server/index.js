@@ -13,6 +13,7 @@ app.use('/', (req, res, next) => {
 });
 
 app.use(express.static(path.join(__dirname, '../client/dist')));
+app.use(express.json());
 
 // a route that will forward all incoming HTTP requests to the API
 app.all('*', (req, res) => {
