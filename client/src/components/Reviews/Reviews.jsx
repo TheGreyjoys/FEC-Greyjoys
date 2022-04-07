@@ -82,6 +82,7 @@ class Reviews extends React.Component {
       ratingStars.push(<Stars key={i + 10} filled="1" />);
     }
     if(rating > Math.floor(rating)) {
+      console.log('here');
       ratingStars.push(<Stars key={20} filled="2" color={rating - Math.floor(rating)} />);
     }
     for (var i = Math.round(rating); i < 5; i ++) {
