@@ -202,7 +202,7 @@
 .productDetails {
   margin-top: 40px;
 
-  height: 80px;
+  height: fit-content;
 
   display: flex;
   flex-direction: row;
@@ -213,7 +213,7 @@
 
 .productDescription {
   padding-top: 10px;
-  width: 85%;
+  width: 75%;
 
   line-height: 2;
 }
@@ -227,7 +227,8 @@
 }
 
 .productFeatures {
-  width: 14%;
+  height: fit-content;
+  width: 24%;
 
   display: flex;
   flex-direction: column;
