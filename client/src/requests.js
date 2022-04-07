@@ -23,6 +23,7 @@ function getRelatedProducts(id) {
 
 function getReviews(id) {
   return axios.get(`/reviews?product_id=${id}`, { signal });
+}
 
 function getReviewsMeta(id) {
   return axios.get(`/reviews/meta?product_id=${id}`, { signal });
@@ -52,9 +53,5 @@ function getCart() {
 
 export {
   // eslint-disable-next-line max-len
-<<<<<<< HEAD
-  getCurrentProduct, getAllProducts, getProductStyles, getRelatedProducts, getReviews, getReviewsMeta, postReview, markHelpful, markReported, controller,
-=======
-  getCurrentProduct, getAllProducts, getProductStyles, getRelatedProducts, getReviews, getReviewsMeta, postReview, markHelpful, markReported, getCart,
->>>>>>> main
+  getCurrentProduct, getAllProducts, getProductStyles, getRelatedProducts, getReviews, getReviewsMeta, postReview, markHelpful, markReported, getCart, controller,
 };
