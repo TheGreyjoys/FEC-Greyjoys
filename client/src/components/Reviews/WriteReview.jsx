@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { postReview } from '../../requests';
+import axios from 'axios';
 
 class WriteReview extends React.Component {
   constructor(props) {
@@ -36,7 +37,21 @@ class WriteReview extends React.Component {
 
   postCurrReview() {
     const { rating, recommend, comfort, quality, length, fit, summary, body, nickname, email } = this.state;
-    postReview({ product_id: Number(this.props.product_id), rating: Number(rating), recommend: (recommend === 'true'), characteristics: { "135221": Number(comfort), "135222": Number(quality), "135220": Number(length), "135219": Number(fit)}, summary: summary, body: body, name: nickname, email: email })
+    postReview({
+      product_id: Number(this.props.product_id),
+      rating: Number(rating),
+      recommend: (recommend === 'true'),
+      characteristics: {
+        "135221": Number(comfort),
+        "135222": Number(quality),
+        "135220": Number(length),
+        "135219": Number(fit)
+      },
+        summary: summary,
+        body: body,
+        name: nickname,
+        email: email
+      })
       .then((res) => {
         console.log(res.data);
       })
@@ -115,7 +130,7 @@ class WriteReview extends React.Component {
       <div>
         <button style={{'float': 'right'}} onClick={this.props.submit}>X</button>
         <h1>Write Your Review</h1>
-        <h3>About /* need product name */</h3>
+        <h3>About {this.props.name}</h3>
         <div>
           <p>Your overall rating (required):</p>
           <div className="selectable star" onClick={()=>{this.clickStar(1)}}>{this.showStar(1)}</div>

@@ -7,13 +7,14 @@ const app = express();
 const port = process.env.PORT || 3000;
 require('dotenv').config();
 
+app.use(express.json());
+
 app.use('/', (req, res, next) => {
   console.log(`${req.method} at ${req.url}`);
   next();
 });
 
 app.use(express.static(path.join(__dirname, '../client/dist')));
-app.use(express.json());
 
 // a route that will forward all incoming HTTP requests to the API
 app.all('*', (req, res) => {
@@ -34,11 +35,17 @@ app.all('*', (req, res) => {
       })
       .catch((err) => res.send(err));
   } else {
+    console.log(body);
     axios.post(`http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp${url}`, body, config)
       .then((response) => {
+        console.log('response: ', response.data);
         res.send(response);
       })
-      .catch((err) => res.send(err));
+      .catch((err) => {
+        console.log('err: ', err);
+
+        res.send(err)
+      });
   }
 });
 

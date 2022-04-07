@@ -180,7 +180,7 @@ class Reviews extends React.Component {
           </div>
           {this.renderReviews()}
         </div>
-        <dialog id="writeReview"><WriteReview submit={this.submitReview} product_id={product_id} /></dialog>
+        <dialog id="writeReview"><WriteReview submit={this.submitReview} product_id={product_id} name={this.props.name}/></dialog>
         <button type="submit" onClick={this.writeReview}>WriteReview</button>
         <output></output>
       </div>

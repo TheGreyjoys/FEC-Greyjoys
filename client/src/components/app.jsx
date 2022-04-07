@@ -5,6 +5,7 @@ import Nav from './Nav';
 import RelatedProductsAndOutfit from './relatedProducts/ClassRelated';
 import Reviews from './Reviews/Reviews';
 import ProdDetail from './ProdDetail/ProdDetail';
+import { getCurrentProduct } from '../requests';
 
 class App extends React.Component {
   constructor(props) {
@@ -14,9 +15,34 @@ class App extends React.Component {
       // dummy default product ID
       currentProduct: 40344,
       navDisplay: false,
+      productData: null,
     };
     this.renderNav = this.renderNav.bind(this);
     this.changeProduct = this.changeProduct.bind(this);
+  }
+
+  componentDidMount() {
+    getCurrentProduct(this.state.currentProduct)
+      .then((res) => {
+        this.setState({
+          currentProduct: res.data.id,
+          productData: res.data,
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.currentProduct !== this.state.currentProduct) {
+      getCurrentProduct(this.state.currentProduct)
+        .then((res) => {
+          this.setState({
+            currentProduct: res.data.id,
+            productData: res.data,
+          });
+        })
+        .catch((err) => console.log(err));
+    }
   }
 
   changeProduct(id) {
@@ -33,17 +59,24 @@ class App extends React.Component {
   }
 
   render() {
-    const { currentProduct } = this.state;
-    return (
-      <main>
-        {this.state.navDisplay && <Nav />}
-        <div>Hello World</div>
-        <button type="button" onClick={this.renderNav}>Nav</button>
-       {/*  <ProdDetail id={currentProduct} />
-        <RelatedProductsAndOutfit id={currentProduct} changeProduct={this.changeProduct} /> */}
-        <Reviews id={currentProduct} />
-      </main>
-    );
+    const { currentProduct, productData } = this.state;
+    if(productData) {
+      return (
+        <main>
+          <Nav />
+  {/*         <ProdDetail id={currentProduct} />
+          <RelatedProductsAndOutfit
+            id={currentProduct}
+            changeProduct={this.changeProduct}
+            currentProductData={this.state.productData}
+          /> */}
+          <Reviews id={currentProduct} name={productData.name}/>
+        </main>
+      );
+    } else {
+      return <div>loading...</div>
+    }
+
   }
 }
 
