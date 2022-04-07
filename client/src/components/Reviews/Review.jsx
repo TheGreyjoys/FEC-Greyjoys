@@ -2,7 +2,6 @@
 /* eslint-disable react/require-default-props */
 import React from 'react';
 import PropTypes from 'prop-types';
-
 class Review extends React.Component {
   constructor(props) {
     super(props);
@@ -10,6 +9,18 @@ class Review extends React.Component {
       clicked: false,
     };
     this.expand = this.expand.bind(this);
+    this.stars = this.stars.bind(this);
+  }
+
+  stars(rating) {
+    var ratingStars = '';
+    for(var i =0; i < rating; i ++) {
+      ratingStars += "★";
+    }
+    for(var i = rating; i < 5; i ++) {
+      ratingStars += "☆";
+    }
+    return ratingStars;
   }
 
   expand() {
@@ -26,11 +37,9 @@ class Review extends React.Component {
     } = review;
     if (clicked === false) {
       return (
-        <li>
-          {rating}
-          stars
-          {reviewer_name}
-          {date}
+        <li className="review">
+          <p>{this.stars(rating)}</p>
+          <p>{reviewer_name} {date}</p>
           <div><b>{summary.slice(0, 60)}</b></div>
           <div>{body.slice(0, 250)}</div>
           <button type="submit" onClick={this.expand}>show more</button>
@@ -47,11 +56,9 @@ class Review extends React.Component {
       );
     }
     return (
-      <li>
-        {rating}
-        stars
-        {reviewer_name}
-        {date}
+      <li className="review">
+        <p>{this.stars(rating)}</p>
+        <p>{reviewer_name} {date}</p>
         <div><b>{summary}</b></div>
         <div>{body}</div>
         <button type="submit" onClick={this.expand}>show less</button>

@@ -9,14 +9,14 @@ import '@testing-library/jest-dom';
 import ProdDetail from './ProdDetail';
 import ImageGallery from './ImageGallery';
 
-beforeEach(() => {
+// beforeEach(() => {
 
-});
+// });
 
-test('renders image from fetched product images', (done) => {
-  render
-});
+// test('renders image from fetched product images', (done) => {
+//   render
+// });
 
-test('scroll arrows scroll through product image indices');
+// test('scroll arrows scroll through product image indices');
 
-test('image scrolls past first/last loop back to other end of image array');
+// test('image scrolls past first/last loop back to other end of image array');

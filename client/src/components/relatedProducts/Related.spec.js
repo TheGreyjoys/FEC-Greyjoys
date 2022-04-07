@@ -12,7 +12,7 @@ import {
 import '@testing-library/jest-dom';
 import regeneratorRuntime from 'regenerator-runtime';
 import App from '../app';
-import RelatedProductsAndOutfit from './ClassRelated';
+import RelatedProductsAndOutfit from './classRelated';
 import RelatedProducts from './RelatedProducts';
 import Outfit from './Outfit';
 import Card from './Card';

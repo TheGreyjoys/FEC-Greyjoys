@@ -2,7 +2,7 @@
 /* eslint-disable react/no-access-state-in-setstate */
 import React from 'react';
 import Nav from './Nav';
-import RelatedProductsAndOutfit from './relatedProducts/ClassRelated';
+import RelatedProductsAndOutfit from './relatedProducts/classRelated';
 import Reviews from './Reviews/Reviews';
 import ProdDetail from './ProdDetail/ProdDetail';
 import { getCurrentProduct, controller } from '../requests';
@@ -97,10 +97,8 @@ class App extends React.Component {
     const { currentProduct } = this.state;
     return (
       <main>
-        {this.state.navDisplay && <Nav />}
-        <div>Hello World</div>
-        <button type="button" onClick={this.renderNav}>Nav</button>
-        {/* <ProdDetail id={currentProduct} /> */}
+        <Nav />
+        <ProdDetail id={currentProduct} />
         <RelatedProductsAndOutfit
           id={currentProduct}
           changeProduct={this.changeProduct}
