@@ -74,9 +74,8 @@ class ProdDetail extends React.Component {
 
   handleCartAdd(sku, qty) {
     // eslint-disable-next-line no-alert
-    // alert(`${qty} SKU#${sku} added to cart!`);
-    // addCart(sky, qty)
-    // .then()
+    addCart(sky, qty)
+      .then()
   }
 
   render() {
@@ -84,7 +83,7 @@ class ProdDetail extends React.Component {
 
     const saleChecker = () => {
       const { sale_price, original_price } = selectedStyle;
-      if (selectedStyle.sale_price) {
+      if (!!selectedStyle.sale_price) {
         return (
           <span style={{ color: 'red' }}>
             <s style={{ color: 'black' }}>{original_price}</s>
@@ -115,7 +114,19 @@ class ProdDetail extends React.Component {
           </div>
         </section>
         <section className="productDetails">
-          {product.description}
+          <span className="productDescription">
+            {product.description}
+          </span>
+          <div className="vl" />
+          <div className="productFeatures">
+            {!!productStyles.length
+            && product.features.map((feature) => (
+              <span className="productFeature">
+                <b>{feature.feature}</b>
+                {`:   ${feature.value}`}
+              </span>
+            ))}
+          </div>
         </section>
       </div>
     );

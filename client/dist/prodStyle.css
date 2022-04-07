@@ -1,16 +1,14 @@
 .overview {
-  height: fit-content;
+  height: 600px;
   width: 100%;
   display: flex;
-  justify-content: space-evenly;
-  /* flex-direction: row; */
-
-  background-color: blanchedalmond;
+  justify-content: space-between;
+  flex-direction: row;
 }
 
 .image-gallery {
-  max-height: 800px;
-  width: 65%;
+  max-height: 100%;
+  width: 68%;
 
   display: flex;
   position: relative;
@@ -113,18 +111,16 @@
 
 
 .prodSelect {
-  height: 900;
+  height: 100%;
   width: 30%;
   align-self: center;
   display: flex;
   flex-direction: column;
-
-  background-color: bisque;
 }
 
 .rating {
   height: 30px;
-  padding: 20px 0 10px 0;
+  padding: 40px 0 20px 0;
 }
 
 .prodCategory {
@@ -132,9 +128,9 @@
 }
 
 .productName {
-  font-size: xx-large;
+  font-size: xxx-large;
   font-weight: bold;
-  padding: 10px 0 10px 0;
+  padding: 10px 0 20px 0;
 }
 
 .price {
@@ -160,7 +156,7 @@
 
 .styleName {
   padding: 10px 0 10px 0;
-  font-size: medium;
+  font-size: large;
 }
 
 .select {
@@ -169,8 +165,8 @@
 }
 
 .style {
-  height: 45px;
-  width: 45px;
+  height: 50px;
+  width: 50px;
   margin: 5px;
 
   border-radius: 30px;
@@ -182,8 +178,8 @@
 }
 
 .selStyle {
-  height: 42px;
-  width: 42px;
+  height: 47px;
+  width: 47px;
   margin: 5px;
 
   border-radius: 30px;
@@ -204,7 +200,7 @@
   width: 65%;
   margin-top: 10px;
 
-  font-size: medium;
+  font-size: large;
   text-indent: 10px;
 }
 
@@ -213,7 +209,7 @@
   width: 30%;
   margin-top: 10px;
 
-  font-size: medium;
+  font-size: large;
   text-indent: 10px;
 }
 
@@ -223,5 +219,45 @@
   align-self: flex-start;
   margin-left: 5px;
 
-  font-size: medium;
+  font-size: large;
+}
+
+.productDetails {
+  margin-top: 40px;
+
+  height: 80px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  font-size: large;
+}
+
+.productDescription {
+  padding-top: 10px;
+  width: 85%;
+
+  line-height: 2;
+}
+
+.vl {
+  margin: 0 25px 0 25px ;
+  border-left: 2px solid black;
+  height: 90%;
+  width: 1%;
+  align-self: center;
+}
+
+.productFeatures {
+  width: 14%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.productFeature {
+
+  padding: 10px;
+  justify-content: center;
 }

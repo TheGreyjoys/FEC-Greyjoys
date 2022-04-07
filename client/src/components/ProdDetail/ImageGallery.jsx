@@ -18,10 +18,6 @@ class ImageGallery extends React.Component {
     this.prevImg = this.prevImg.bind(this);
   }
 
-  componentDidMount() {
-    console.log('ImageGallery Mounted!')
-  }
-
   componentDidUpdate(prevProps) {
     const newId = this.props.selectedStyle.style_id;
     const prevId = prevProps.selectedStyle.style_id;
