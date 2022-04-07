@@ -93,7 +93,7 @@
 }
 
 .modal {
-  width: 100%;
+  width: 300px;
   background: white;
   border: 1px solid #ccc;
   transition: 1.1s ease-out;
@@ -101,14 +101,16 @@
   filter: blur(0);
   transform: scale(1);
   opacity: 1;
-  position: relative;
+  position: absolute;
   left: 25%;
   bottom: 25%;
   z-index: 2;
 }
 
 .comparisonTable {
-  width: 500px;
-  height: 500px;
+  width: 250px;
+  height: 100px;
   table-layout: auto;
+  justify-content: center;
+  align-items: center;
 }

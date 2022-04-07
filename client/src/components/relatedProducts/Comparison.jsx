@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 function Comparison(props) {
   const { currentProductData, cardProduct } = props;
   const {
-    name: currName = 'hi', category: currCat, ratings: currRating, originalPrice: currOrigPrice, salePrice: currSalePrice,
+    name: currName = 'hi', category: currCat, ratings: currRating, default_price: currPrice,
   } = currentProductData;
   const {
     id, name: compName = 'hi', category: compCat, ratings: compRating, originalPrice: compOrigPrice, salePrice: compSalePrice,
@@ -25,7 +25,6 @@ function Comparison(props) {
   return ReactDOM.createPortal(
     <div>
       <div className="modal">
-        wsuuuuuuuup
         <table className="comparisonTable">
           <thead>
             <tr>
@@ -48,7 +47,7 @@ function Comparison(props) {
             <tr>
               <td>{compSalePrice || compOrigPrice}</td>
               <td>Price</td>
-              <td>{currSalePrice || currOrigPrice}</td>
+              <td>{currPrice}</td>
             </tr>
           </tbody>
         </table>

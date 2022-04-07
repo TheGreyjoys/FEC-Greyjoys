@@ -75,7 +75,9 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
-    controller.abort();
+    if (controller.signal) {
+      controller.abort();
+    }
   }
 
   changeProduct(id) {
