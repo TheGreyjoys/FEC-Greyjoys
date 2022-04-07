@@ -1,4 +1,5 @@
 import React from 'react';
+import CImage from './CImage';
 
 function ImageCarousel(props) {
   const {
@@ -14,12 +15,13 @@ function ImageCarousel(props) {
       >
         &larr;
       </button>
-      <div
-        className="image-slide"
-        style={{
-          backgroundImage: `url(${allImgs[currIndex]})`,
-        }}
-      />
+      {allImgs.map((url, index) => (
+        <CImage
+          url={url}
+          index={index}
+          currIndex={currIndex}
+        />
+      ))}
       <button
         type="button"
         className="right-arrow"
@@ -30,57 +32,5 @@ function ImageCarousel(props) {
     </div>
   );
 }
-
-// class ImageCarousel extends React.Component {
-//   constructor(props) {
-//     super(props);
-
-//     const { allImgs, currIndex } = this.props;
-
-//     this.state = {
-//       allImgs,
-//       currIndex,
-//     };
-//   }
-
-//   componentDidUpdate(prevProps) {
-//     const oldIndex = prevProps.currIndex;
-//     const { currIndex } = this.props;
-//     if (oldIndex !== currIndex) {
-//       this.setState({
-//         currIndex,
-//       });
-//     }
-//   }
-
-//   render() {
-//     const { allImgs, currIndex } = this.state;
-//     const { prevImg, nextImg } = this.props;
-//     return (
-//       <div className="carousel">
-//         <button
-//           type="button"
-//           className="left-arrow"
-//           onClick={prevImg}
-//         >
-//           &larr;
-//         </button>
-//         <div
-//           className="image-slide"
-//           style={{
-//             backgroundImage: `url(${allImgs[currIndex]})`,
-//           }}
-//         />
-//         <button
-//           type="button"
-//           className="right-arrow"
-//           onClick={nextImg}
-//         >
-//           &rarr;
-//         </button>
-//       </div>
-//     );
-//   }
-// }
 
 export default ImageCarousel;

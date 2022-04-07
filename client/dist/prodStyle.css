@@ -27,8 +27,22 @@
   background-size: cover;
   background-position: center;
 
+  position: absolute;
+
   transition: opacity 200ms;
   opacity: 1;
+}
+
+.image-slide-out {
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+
+  position: absolute;
+
+  transition: opacity 200ms;
+  opacity: 0;
 }
 
 .thumb-selector {
