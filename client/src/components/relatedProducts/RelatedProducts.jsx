@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Card from './Card';
 
 function RelatedProducts(props) {
-  const { products, changeProduct } = props;
+  const { products, changeProduct, currentProductData } = props;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [length] = useState(products.length);
 
@@ -33,6 +33,7 @@ function RelatedProducts(props) {
                 key={product}
                 productID={product}
                 changeProduct={changeProduct}
+                currentProductData={currentProductData}
               />
             ))}
           </div>
@@ -49,6 +50,9 @@ function RelatedProducts(props) {
 RelatedProducts.propTypes = {
   products: PropTypes.arrayOf(PropTypes.number).isRequired,
   changeProduct: PropTypes.func.isRequired,
+  currentProductData: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default RelatedProducts;

@@ -5,7 +5,6 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import App from './app';
 import Nav from './Nav';
 
 // test('renders nav bar on button click', (done) => {
