@@ -1,12 +1,13 @@
+/* eslint-disable no-shadow */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 // eslint-disable-next-line no-unused-vars
 import regeneratorRuntime from 'regenerator-runtime';
 import {
-  getCurrentProduct, getProductStyles, getReviewsMeta,
+  getCurrentProduct, getProductStyles, getReviewsMeta, controller,
 } from '../../requests';
 import Comparison from './Comparison';
 
@@ -52,15 +53,16 @@ function Card(props) {
     }
     return productData;
   };
-
-  if (!loaded) {
-    updateData(productID)
-      .then((productObj) => {
-        setProduct(productObj);
-        setLoaded(true);
-      })
-      .catch((err) => { console.log(err); });
-  }
+  useEffect(() => {
+    if (!loaded) {
+      updateData(productID)
+        .then((productObj) => {
+          setProduct(productObj);
+          setLoaded(true);
+        })
+        .catch((err) => { console.log(err); });
+    }
+  });
 
   function handleClick(e) {
     console.log('you clicked: ', (e.target));
@@ -80,6 +82,7 @@ function Card(props) {
         <h5 className="productDetail">{name}</h5>
         <h6 className="productDetail">{salePrice || originalPrice}</h6>
         {/* <div>{ratings}</div> */}
+        <div id={id} />
         <Comparison cardProduct={product} currentProductData={currentProductData} />
       </li>
     );
@@ -92,6 +95,9 @@ function Card(props) {
 Card.propTypes = {
   productID: PropTypes.number.isRequired,
   changeProduct: PropTypes.func.isRequired,
+  currentProductData: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default Card;

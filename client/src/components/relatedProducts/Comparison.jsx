@@ -1,5 +1,8 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 /* eslint-disable max-len */
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 
 function Comparison(props) {
   const { currentProductData, cardProduct } = props;
@@ -7,7 +10,7 @@ function Comparison(props) {
     name: currName = 'hi', category: currCat, ratings: currRating, originalPrice: currOrigPrice, salePrice: currSalePrice,
   } = currentProductData;
   const {
-    name: compName = 'hi', category: compCat, ratings: compRating, originalPrice: compOrigPrice, salePrice: compSalePrice,
+    id, name: compName = 'hi', category: compCat, ratings: compRating, originalPrice: compOrigPrice, salePrice: compSalePrice,
   } = cardProduct;
   const [showComp, setShowComp] = useState(false);
 
@@ -19,15 +22,15 @@ function Comparison(props) {
   if (!showComp) {
     return <button type="button" onClick={toggleShowComp}>Compare</button>;
   }
-  return (
+  return ReactDOM.createPortal(
     <div>
-      wsuuuup
       <div className="modal">
-        <table>
+        wsuuuuuuuup
+        <table className="comparisonTable">
           <thead>
             <tr>
               <th>{compName}</th>
-              <th>Characteristic</th>
+              <th>Name</th>
               <th>{currName}</th>
             </tr>
           </thead>
@@ -51,7 +54,8 @@ function Comparison(props) {
         </table>
       </div>
       <button type="button" onClick={toggleShowComp}>Close</button>
-    </div>
+    </div>,
+    document.getElementById(`${id}`),
   );
 }
 

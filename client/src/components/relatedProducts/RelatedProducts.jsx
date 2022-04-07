@@ -50,6 +50,9 @@ function RelatedProducts(props) {
 RelatedProducts.propTypes = {
   products: PropTypes.arrayOf(PropTypes.number).isRequired,
   changeProduct: PropTypes.func.isRequired,
+  currentProductData: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default RelatedProducts;
