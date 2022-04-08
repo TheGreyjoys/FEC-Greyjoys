@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import RelatedProducts from './RelatedProducts';
 import Outfit from './Outfit';
-import { getRelatedProducts, controller } from '../../requests';
+import { getRelatedProducts } from '../../requests';
 
 class RelatedProductsAndOutfit extends React.Component {
   constructor(props) {
@@ -58,6 +58,7 @@ class RelatedProductsAndOutfit extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.id !== this.props.id) {
+      console.log('getting related products');
       getRelatedProducts(this.props.id)
         .then((res) => {
           this.setState({
@@ -67,10 +68,6 @@ class RelatedProductsAndOutfit extends React.Component {
         .catch((err) => console.error(err));
     }
   }
-
-  // componentWillUnmount() {
-  //   controller.abort();
-  // }
 
   updateOutfit() {
     this.setState({

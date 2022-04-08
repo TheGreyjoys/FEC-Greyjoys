@@ -20,10 +20,11 @@ function Comparison(props) {
   }
 
   if (!showComp) {
-    return <button type="button" onClick={toggleShowComp}>Compare</button>;
+    return <button type="button" onClick={toggleShowComp} className="actionButton">☆</button>;
   }
   return ReactDOM.createPortal(
     <div>
+      <button type="button" className="closeModal" onClick={toggleShowComp}>Close</button>
       <div className="modal">
         <table className="comparisonTable">
           <thead>
@@ -52,7 +53,6 @@ function Comparison(props) {
           </tbody>
         </table>
       </div>
-      <button type="button" onClick={toggleShowComp}>Close</button>
     </div>,
     document.getElementById(`${id}`),
   );
