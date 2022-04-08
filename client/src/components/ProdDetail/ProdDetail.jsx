@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImageGallery from './ImageGallery';
 import StyleSelector from './StyleSelector';
-import { getCurrentProduct, getProductStyles } from '../../requests';
+import { getCurrentProduct, getProductStyles, addCart } from '../../requests';
 
 class ProdDetail extends React.Component {
   constructor(props) {
@@ -77,8 +77,9 @@ class ProdDetail extends React.Component {
 
   handleCartAdd(sku, qty) {
     // eslint-disable-next-line no-alert
-    addCart(sky, qty)
-      // .then()
+    addCart(sku, qty)
+      .then(() => console.log('YAY CART ADDED'))
+      .catch((err) => console.log(err));
   }
 
   render() {

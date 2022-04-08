@@ -47,11 +47,13 @@ function getCart() {
 }
 
 // NOT CURRENTLY WORKING
-// function addCart(sku) {
-//   return axios.post('/cart', { sku_id: sku });
-// }
+function addCart(sku, qty) {
+  const repeatPost = axios.post('/cart', { sku_id: sku });
+  const qtyFill = Array(qty).fill(repeatPost);
+  return Promise.all(qtyFill);
+}
 
 export {
   // eslint-disable-next-line max-len
-  getCurrentProduct, getAllProducts, getProductStyles, getRelatedProducts, getReviews, getReviewsMeta, postReview, markHelpful, markReported, getCart, controller,
+  getCurrentProduct, getAllProducts, getProductStyles, getRelatedProducts, getReviews, getReviewsMeta, postReview, markHelpful, markReported, getCart, addCart, controller,
 };
