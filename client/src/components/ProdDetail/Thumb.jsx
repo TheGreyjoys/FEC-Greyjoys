@@ -16,8 +16,11 @@ class Thumb extends React.Component {
   componentDidUpdate(prevProps) {
     const newIndex = this.props.currIndex;
     const oldIndex = prevProps.currIndex;
-    if (newIndex !== oldIndex) {
+    const newUrl = this.props.url;
+    const oldUrl = prevProps.url;
+    if (newIndex !== oldIndex || newUrl !== oldUrl) {
       this.setState({
+        url: newUrl,
         currIndex: newIndex,
       });
     }

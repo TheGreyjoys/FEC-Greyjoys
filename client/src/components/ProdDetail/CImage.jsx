@@ -14,14 +14,18 @@ class CImage extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const oldIndex = prevProps.currIndex;
     const newIndex = this.props.currIndex;
-    if (newIndex !== oldIndex) {
+    const oldIndex = prevProps.currIndex;
+    const newUrl = this.props.url;
+    const oldUrl = prevProps.url;
+    if (newIndex !== oldIndex || newUrl !== oldUrl) {
       this.setState({
+        url: newUrl,
         currIndex: newIndex,
       });
     }
   }
+
 
   render() {
     const { url, index, currIndex } = this.state;
