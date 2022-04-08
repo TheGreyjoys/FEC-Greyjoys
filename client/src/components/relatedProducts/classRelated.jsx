@@ -57,7 +57,9 @@ class RelatedProductsAndOutfit extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    console.log('related updating');
     if (prevProps.id !== this.props.id) {
+      console.log('getting related products');
       getRelatedProducts(this.props.id)
         .then((res) => {
           this.setState({
@@ -80,7 +82,6 @@ class RelatedProductsAndOutfit extends React.Component {
 
   render() {
     if (this.state.relatedProducts) {
-      console.log('relatedProducts', this.state.relatedProducts);
       return (
         <div>
           <h3>Related Products</h3>

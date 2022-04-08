@@ -62,6 +62,7 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log('app updating');
     if (prevState.currentProduct !== this.state.currentProduct) {
       getCurrentProduct(this.state.currentProduct)
         .then((res) => {

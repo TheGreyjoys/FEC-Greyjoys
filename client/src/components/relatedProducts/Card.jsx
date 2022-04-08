@@ -41,17 +41,19 @@ function Card(props) {
       const productData = {
         name, category, id, ratings,
       };
-      results.forEach((style) => {
-        if (style['default?']) {
-          productData.originalPrice = style.original_price;
-          productData.salePrice = style.sale_price;
-          productData.photos = style.photos;
+      if (results) {
+        results.forEach((style) => {
+          if (style['default?']) {
+            productData.originalPrice = style.original_price;
+            productData.salePrice = style.sale_price;
+            productData.photos = style.photos;
+          }
+        });
+        if (!productData.photos) {
+          productData.originalPrice = results[0].original_price;
+          productData.salePrice = results[0].sale_price;
+          productData.photos = results[0].photos;
         }
-      });
-      if (!productData.photos) {
-        productData.originalPrice = results[0].original_price;
-        productData.salePrice = results[0].sale_price;
-        productData.photos = results[0].photos;
       }
       return productData;
     } catch (err) {
@@ -59,6 +61,7 @@ function Card(props) {
     }
   };
   useEffect(() => {
+    console.log('useEffect running');
     if (!loaded) {
       updateData(productID)
         .then((productObj) => {
@@ -67,7 +70,7 @@ function Card(props) {
         })
         .catch((err) => { console.log(err); });
     }
-  });
+  }, []);
 
   function handleClick(e) {
     console.log('you clicked: ', (e.target));

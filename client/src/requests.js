@@ -6,7 +6,6 @@ const { signal } = controller;
 // this file does not yet contain requests for Q&A section or Cart API or Interactions API
 
 function getCurrentProduct(id) {
-  console.log('hi');
   return axios.get(`/products/${id}`, { signal });
 }
 

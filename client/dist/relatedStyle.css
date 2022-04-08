@@ -69,6 +69,7 @@
   -webkit-box-shadow: 0px 4px 10px 0px rgba(126, 126, 126, 0.35);
   box-shadow: 0px 4px 10px 0px rgba(126, 126, 126, 0.35);
   margin-bottom: 5%;
+  position: relative;
 }
 
 .card img {
@@ -101,7 +102,7 @@
   filter: blur(0);
   transform: scale(1);
   opacity: 1;
-  position: fixed;
+  position: absolute;
   left: 25%;
   bottom: 25%;
   z-index: 2;
@@ -121,7 +122,7 @@
   padding: 0;
   background: transparent;
   position:absolute;
-  color: yellow;
-  /* left: 90%;
-  bottom: 90%; */
+  color: rgb(201, 201, 25);
+  left: 90%;
+  bottom: 90%;
 }
