@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import Thumb from './Thumb';
 
@@ -11,14 +12,16 @@ class ThumbCarousel extends React.Component {
       allThumbs,
       currIndex,
       slide: 0,
-      leftButton: false,
-      rightButton: false,
+      leftBound: 0,
+      rightBound: allThumbs.length > 7 ? 6 : allThumbs.length - 1,
     };
     this.slideLeft = this.slideLeft.bind(this);
     this.slideRight = this.slideRight.bind(this);
+    this.autoSlide = this.autoSlide.bind(this);
   }
 
   componentDidUpdate(prevProps) {
+    const { slide, leftBound, rightBound } = this.state;
     const {
       currProd, currStyle, allThumbs, currIndex,
     } = this.props;
@@ -26,36 +29,64 @@ class ThumbCarousel extends React.Component {
     const oldStyle = prevProps.currStyle;
     if (currProd !== oldProd || currStyle !== oldStyle) {
       this.setState({
-        allThumbs,
-        currIndex,
+        slide: 0,
+        leftBound: 0,
+        rightBound: allThumbs.length > 7 ? 6 : allThumbs.length - 1,
+      });
+    }
+    if (currIndex !== this.state.currIndex) {
+      if (currIndex < leftBound || rightBound < currIndex) {
+        this.autoSlide();
+      }
+      this.setState({ currIndex });
+    }
+  }
+
+  slideLeft() {
+    const { slide, leftBound, rightBound } = this.state;
+
+    if (slide > 0) {
+      this.setState({
+        slide: slide - 1,
+        leftBound: leftBound - 1,
+        rightBound: rightBound - 1,
       });
     }
   }
 
-  // const { currIndex, slide } = this.state;
-  // if (allThumbs.length > 7 && (currIndex - slide) > 0) {
-  // if (slide < (allThumbs.length - 7)) {
-
-  // }
-
-  // }
-  slideLeft() {
-    console.log('slide left');
-    const { slide } = this.state;
-
-    if (slide > 0) {
-      this.setState({ slide: slide - 1 });
-    }
-  }
-
   slideRight() {
-    console.log('slide right');
-    const { slide } = this.state;
+    const { slide, leftBound, rightBound } = this.state;
     const { allThumbs } = this.props;
 
     if (slide < (allThumbs.length - 7)) {
-      this.setState({ slide: slide + 1 });
+      this.setState({
+        slide: slide + 1,
+        leftBound: leftBound + 1,
+        rightBound: rightBound + 1,
+      });
     }
+  }
+
+  autoSlide() {
+    const { currIndex } = this.props;
+    const { slide, leftBound, rightBound } = this.state;
+    if (currIndex > rightBound) {
+      const rightShift = currIndex - rightBound;
+      this.setState({
+        slide: slide + rightShift,
+        leftBound: leftBound + rightShift,
+        rightBound: rightBound + rightShift,
+      });
+    }
+    if (currIndex < leftBound) {
+      const leftShift = currIndex - leftBound;
+      this.setState({
+        slide: slide + leftShift,
+        leftBound: leftBound + leftShift,
+        rightBound: rightBound + leftShift,
+      });
+    }
+    return null;
   }
 
   render() {
@@ -132,10 +163,18 @@ class ThumbCarousel extends React.Component {
       return null;
     };
 
+    const dynamicWidth = thumbCount > 7 ? 7 * 55 : thumbCount * 55;
+
     return (
-      <div className="thumb-carousel">
+      <div
+        className="thumb-carousel"
+        style={{ width: `${dynamicWidth + 65}px` }}
+      >
         {renderLeftArrow()}
-        <div className="thumb-window">
+        <div
+          className="thumb-window"
+          style={{ width: `${dynamicWidth}px` }}
+        >
           <div
             className="thumb-selector"
             style={thumbGrid}

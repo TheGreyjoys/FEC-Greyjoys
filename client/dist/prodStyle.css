@@ -46,7 +46,7 @@
 }
 
 .thumb-carousel {
-  width: 450px;
+  /* width: 450px; */
   align-self: center;
   position: absolute;
   bottom: 20px;
@@ -58,7 +58,7 @@
 }
 
 .thumb-window {
-  width: 385px;
+  /* width: 385px; */
   align-self: center;
   z-index: 1;
   height: 65px;
