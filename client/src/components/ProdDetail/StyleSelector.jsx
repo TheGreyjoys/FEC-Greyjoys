@@ -17,6 +17,8 @@ class StyleSelector extends React.Component {
     this.handleStyleClick = this.handleStyleClick.bind(this);
     this.sizeFinder = this.sizeFinder.bind(this);
     this.handleSizeChange = this.handleSizeChange.bind(this);
+    this.handleQtyChange = this.handleQtyChange.bind(this);
+    this.handleCartClick = this.handleCartClick.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -57,6 +59,17 @@ class StyleSelector extends React.Component {
     });
   }
 
+  handleCartClick(e) {
+    e.preventDefault();
+    const { selSize, selQty, currentStyle: { skus } } = this.state;
+    const { handleCartAdd } = this.props;
+    Object.entries(skus).forEach((pair) => {
+      if (pair[1].size === selSize) {
+        handleCartAdd(pair[0], selQty);
+      }
+    });
+  }
+
   sizeFinder(skus) {
     const availSizes = [];
     Object.entries(skus).forEach((sku) => {
@@ -72,17 +85,16 @@ class StyleSelector extends React.Component {
     const {
       currStyle, styles, styleSizes, selSize, availQty, selQty,
     } = this.state;
-    const { handleCartAdd } = this.props;
 
     const renderSizes = () => {
-      const sizes = {
-        XS: 'X-SMALL',
-        S: 'SMALL',
-        M: 'MEDIUM',
-        L: 'LARGE',
-        XL: 'X-LARGE',
-        XXL: 'XX-LARGE',
-      };
+      // const sizes = {
+      //   XS: 'X-SMALL',
+      //   S: 'SMALL',
+      //   M: 'MEDIUM',
+      //   L: 'LARGE',
+      //   XL: 'X-LARGE',
+      //   XXL: 'XX-LARGE',
+      // };
 
       if (styleSizes.length) {
         return (
@@ -93,7 +105,7 @@ class StyleSelector extends React.Component {
             onChange={this.handleSizeChange}
           >
             <option disabled>Size</option>
-            {styleSizes.map((option) => <option value={option}>{sizes[option[0]]}</option>)}
+            {styleSizes.map((option) => <option value={option}>{option[0]}</option>)}
           </select>
         );
       }
@@ -126,6 +138,29 @@ class StyleSelector extends React.Component {
       );
     };
 
+    const renderCart = () => {
+      if (selSize && selQty) {
+        return (
+          <button
+            type="submit"
+            className="cartAdd"
+            onClick={this.handleCartClick}
+          >
+            Add To Cart
+          </button>
+        );
+      }
+      return (
+        <button
+          type="submit"
+          className="cartAdd"
+          disabled
+        >
+          Add To Cart
+        </button>
+      );
+    };
+
     return (
       <form className="styleSelector">
         <div className="selector">
@@ -151,16 +186,7 @@ class StyleSelector extends React.Component {
           {renderSizes()}
           {renderQty()}
         </div>
-        <button
-          type="submit"
-          className="cartAdd"
-          onClick={(e) => {
-            e.preventDefault();
-            handleCartAdd
-          }}
-        >
-          Add To Cart
-        </button>
+        {renderCart()}
       </form>
     );
   }

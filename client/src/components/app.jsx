@@ -2,10 +2,10 @@
 /* eslint-disable react/no-access-state-in-setstate */
 import React from 'react';
 import Nav from './Nav';
-import RelatedProductsAndOutfit from './relatedProducts/classRelated';
+import RelatedProductsAndOutfit from './relatedProducts/ClassRelated';
 import Reviews from './Reviews/Reviews';
 import ProdDetail from './ProdDetail/ProdDetail';
-import { getCurrentProduct, controller } from '../requests';
+import { getCurrentProduct } from '../requests';
 
 class App extends React.Component {
   constructor(props) {
@@ -95,19 +95,24 @@ class App extends React.Component {
   }
 
   render() {
-    const { currentProduct } = this.state;
-    return (
-      <main>
-        <Nav />
-        <ProdDetail id={currentProduct} />
-        <RelatedProductsAndOutfit
-          id={currentProduct}
-          changeProduct={this.changeProduct}
-          currentProductData={this.state.productData || this.sampleData}
-        />
-        {/* <Reviews id={currentProduct} /> */}
-      </main>
-    );
+    const { currentProduct, productData } = this.state;
+    if(productData) {
+      return (
+        <main>
+          <Nav />
+          <ProdDetail id={currentProduct} />
+          <RelatedProductsAndOutfit
+            id={currentProduct}
+            changeProduct={this.changeProduct}
+            currentProductData={this.state.productData}
+          />
+          <Reviews id={productData.id} name={productData.name}/>
+        </main>
+      );
+    } else {
+      return <div>loading...</div>
+    }
+
   }
 }
 

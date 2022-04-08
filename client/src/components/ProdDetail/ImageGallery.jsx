@@ -2,6 +2,8 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import PropTypes from 'prop-types';
+import ImageCarousel from './ImageCarousel';
+import ThumbCarousel from './ThumbCarousel';
 
 class ImageGallery extends React.Component {
   constructor(props) {
@@ -10,12 +12,13 @@ class ImageGallery extends React.Component {
     this.state = {
       allImgs: [],
       allThumbs: [],
-      currIndex: '',
-      thumbsShow: 4,
+      currIndex: 0,
+
     };
     this.imgPuller = this.imgPuller.bind(this);
     this.nextImg = this.nextImg.bind(this);
     this.prevImg = this.prevImg.bind(this);
+    this.handleThumbClick = this.handleThumbClick.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -32,14 +35,11 @@ class ImageGallery extends React.Component {
     }
   }
 
-  imgPuller(photos) {
-    const thumbs = [];
-    const img = [];
-    photos.forEach((photo) => {
-      thumbs.push(photo.thumbnail_url);
-      img.push(photo.url);
+  handleThumbClick(e) {
+    this.setState({
+      currIndex: Number(e.target.value),
     });
-    return [img, thumbs];
+    e.target.className = 'thumb-sel';
   }
 
   nextImg() {
@@ -60,58 +60,40 @@ class ImageGallery extends React.Component {
     }
   }
 
+  imgPuller(photos) {
+    const thumbs = [];
+    const img = [];
+    photos.forEach((photo) => {
+      thumbs.push(photo.thumbnail_url);
+      img.push(photo.url);
+    });
+    return [img, thumbs];
+  }
+
   render() {
-    const { allImgs, currIndex, thumbsShow } = this.state;
+    const {
+      allImgs, allThumbs, currIndex,
+    } = this.state;
+
     return (
-      <div className="image-gallery">
-        <div className="thumb-wrapper">
-          <button
-            type="button"
-            className="up-arrow"
-            onClick={() => {}}
-          >
-            &uarr;
-          </button>
-          <div className="content-wrapper">
-            <div
-              className="thumb-carousel-content"
-              style={{ transform: `translateX(-${currIndex * (100 / thumbsShow)}%)` }}
-            >
-              {allImgs.map((img, index) => <img src={img} alt={`img${index}`} />)}
-            </div>
-          </div>
-          <button
-            type="button"
-            className="down-arrow"
-            onClick={() => {}}
-          >
-            &darr;
-          </button>
-        </div>
-        <div className="gallery-wrapper">
-          <button
-            type="button"
-            className="left-arrow"
-            onClick={this.prevImg}
-          >
-            &larr;
-          </button>
-          <div className="content-wrapper">
-            <div
-              className="carousel-content"
-              style={{ transform: `translateX(-${currIndex * 100}%)` }}
-            >
-              {allImgs.map((img, index) => <img src={img} alt={`img${index}`} />)}
-            </div>
-          </div>
-          <button
-            type="button"
-            className="right-arrow"
-            onClick={this.nextImg}
-          >
-            &rarr;
-          </button>
-        </div>
+      <div className="image-window">
+        {allImgs.length
+          && (
+          <ImageCarousel
+            allImgs={allImgs}
+            currIndex={currIndex}
+            prevImg={this.prevImg}
+            nextImg={this.nextImg}
+          />
+          )}
+        {allThumbs.length
+          && (
+            <ThumbCarousel
+              allThumbs={allThumbs}
+              currIndex={currIndex}
+              handleThumbClick={this.handleThumbClick}
+            />
+          )}
       </div>
     );
   }
