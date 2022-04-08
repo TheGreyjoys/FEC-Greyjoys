@@ -40,7 +40,7 @@ class Reviews extends React.Component {
     this.getPageReview();
   }
 
-   componentDidUpdate() {
+  componentDidUpdate() {
      if(this.state.product_id !== this.props.id) {
       this.setState({product_id: this.props.id}, () => { this.getMeta(); this.getPageReview(); });
     }
