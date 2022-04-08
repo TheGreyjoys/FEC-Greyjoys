@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-shadow */
 /* eslint-disable no-console */
@@ -10,6 +11,7 @@ import regeneratorRuntime from 'regenerator-runtime';
 import {
   getCurrentProduct, getProductStyles, getReviewsMeta, controller,
 } from '../../requests';
+import starRating from '../../starRating';
 import throttle from '../../helpers';
 import Comparison from './Comparison';
 
@@ -64,7 +66,6 @@ function Card(props) {
     }
   };
   useEffect(() => {
-    console.log('useEffect running');
     if (!loaded) {
       updateData(productID)
         .then((productObj) => {
@@ -87,6 +88,17 @@ function Card(props) {
     updateOutfit();
   }
 
+  function parseRating(starObject) {
+    const entries = Object.entries(starObject);
+    let sum = 0;
+    let total = 0;
+    entries.forEach((arr) => {
+      sum += (Number(arr[0]) * Number(arr[1]));
+      total += Number(arr[1]);
+    });
+    return sum / total;
+  }
+
   if (loaded) {
     return (
       // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
@@ -98,7 +110,7 @@ function Card(props) {
           <h6 className="productDetail">{category}</h6>
           <h5 className="productDetail">{name}</h5>
           <h6 className="productDetail">{salePrice || originalPrice}</h6>
-          {/* <div>{ratings}</div> */}
+          <div>{ratings && starRating((parseRating(ratings)))}</div>
           <div id={id} />
           {type === 'related' && <Comparison cardProduct={product} currentProductData={currentProductData} />}
           {type === 'outfit' && <button type="button" onClick={removeFromOutfit} className="actionButton" style={{ color: 'lightgrey' }}>&#88;</button>}
