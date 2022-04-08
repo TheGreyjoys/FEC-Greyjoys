@@ -13,7 +13,7 @@ class Reviews extends React.Component {
       /* need current product id */
       /* need current product name */
       reviews: null,
-      product_id: this.props.id || '40344',
+      product_id: this.props.id || '40351',
       page: 1,
       sort: 'relevant',
       reading: false,
@@ -91,7 +91,7 @@ class Reviews extends React.Component {
       console.log('here');
       ratingStars.push(<Stars key={20} filled="2" color={rating - Math.floor(rating)} />);
     }
-    for (var i = Math.round(rating); i < 5; i ++) {
+    for (var i = Math.ceil(rating); i < 5; i ++) {
       ratingStars.push(<Stars key={i + 11} filled="0" />);
     }
     return ratingStars;
