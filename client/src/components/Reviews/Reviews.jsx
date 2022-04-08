@@ -168,12 +168,12 @@ class Reviews extends React.Component {
             {overallRatings
             && (
               <Graph
-                five={overallRatings[5]}
-                four={overallRatings[4]}
-                three={overallRatings[3]}
-                two={overallRatings[2]}
-                one={overallRatings[1]}
-                reviewNumber={reviewNumber}
+                five={overallRatings[5] === undefined ? 0 : overallRatings[5]}
+                four={overallRatings[4] === undefined ? 0 : overallRatings[4]}
+                three={overallRatings[3] === undefined ? 0 : overallRatings[3]}
+                two={overallRatings[2] === undefined ? 0 : overallRatings[2]}
+                one={overallRatings[1] === undefined ? 0 : overallRatings[1]}
+                reviewNumber={reviewNumber || 1}
               />
 
             ) }
