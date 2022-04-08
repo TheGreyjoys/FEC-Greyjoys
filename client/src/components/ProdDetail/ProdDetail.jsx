@@ -4,7 +4,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImageGallery from './ImageGallery';
 import StyleSelector from './StyleSelector';
-import { getCurrentProduct, getProductStyles, addCart } from '../../requests';
+import starRating from '../../starRating';
+import { getCurrentProduct, getProductStyles, addCart, getReviewsMeta } from '../../requests';
 
 class ProdDetail extends React.Component {
   constructor(props) {
@@ -12,6 +13,7 @@ class ProdDetail extends React.Component {
 
     this.state = {
       product: {},
+      prodRating: 0,
       productStyles: [],
       selectedStyle: {},
     };
@@ -21,7 +23,7 @@ class ProdDetail extends React.Component {
 
   componentDidMount() {
     const { id } = this.props;
-    Promise.all([getCurrentProduct(id), getProductStyles(id)])
+    Promise.all([getCurrentProduct(id), getProductStyles(id), getReviewsMeta(id)])
       .then((results) => {
         const product = results[0].data;
         const productStyles = results[1].data.results;
@@ -31,8 +33,10 @@ class ProdDetail extends React.Component {
             defaultStyle = style;
           }
         });
+        const prodRating = this.calcRating(results[2].data.ratings);
         this.setState({
           product,
+          prodRating,
           productStyles,
           selectedStyle: defaultStyle,
         });
@@ -42,7 +46,7 @@ class ProdDetail extends React.Component {
   componentDidUpdate(prevProps) {
     const { id } = this.props;
     if (prevProps.id !== id) {
-      Promise.all([getCurrentProduct(id), getProductStyles(id)])
+      Promise.all([getCurrentProduct(id), getProductStyles(id), getReviewsMeta(id)])
         .then((results) => {
           const product = results[0].data;
           const productStyles = results[1].data.results;
@@ -55,8 +59,10 @@ class ProdDetail extends React.Component {
           if (!defaultStyle) {
             defaultStyle = productStyles[0];
           }
+          const prodRating = this.calcRating(results[2].data.ratings);
           this.setState({
             product,
+            prodRating,
             productStyles,
             selectedStyle: defaultStyle,
           });
@@ -82,9 +88,21 @@ class ProdDetail extends React.Component {
       .catch((err) => console.log(err));
   }
 
+  calcRating(ratings) {
+    let subtotal = 0;
+    let count = 0;
+    Object.entries(ratings).forEach((rating) => {
+      const counter = Number(rating[1]);
+      const value = Number(rating[0]);
+      subtotal += (counter * value);
+      count += counter;
+    });
+    return (subtotal / count).toFixed(2);
+  }
+
   render() {
     const {
-      product, productStyles, selectedStyle, product: { id }, selectedStyle: { style_id },
+      product, prodRating, productStyles, selectedStyle, product: { id }, selectedStyle: { style_id },
     } = this.state;
 
     const saleChecker = () => {
@@ -109,7 +127,13 @@ class ProdDetail extends React.Component {
             currStyle={style_id}
           />
           <div className="prodSelect">
-            <div className="rating">Rating.jsx</div>
+            <div className="rating">
+              <div className="prod-stars">
+                {starRating(prodRating)}
+              </div>
+              <span>{`(${prodRating})`}</span>
+              <span>See all ratings</span>
+            </div>
             <span className="prodCategory">{product.category}</span>
             <span className="productName">{product.name}</span>
             <div className="price">
