@@ -16,12 +16,23 @@ function Nav() {
 
   return (
     <nav>
-      <img className="logo" src="https://www.adaptivewfs.com/wp-content/uploads/2020/07/logo-placeholder-image.png" alt="something" style={{ width: '50px' }} />
-      <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Search..." value={searchBar} onChange={handleChange} />
-        <button type="submit">Search</button>
+      <img className="logo" src="https://i.ibb.co/Kwd1XJ3/kraken.png" alt="release it" style={{ width: '60px' }} />
+      <h1>Kraken FEC</h1>
+      <form
+        className="nav-search"
+        onSubmit={handleSubmit}
+      >
+        <input
+          type="text"
+          className="search-bar"
+          placeholder="Search..."
+          value={searchBar}
+          onChange={handleChange}
+        />
+        <button
+          type="submit" className="search-button"
+        />
       </form>
-      <div id="lilRoot" />
     </nav>
   );
 }

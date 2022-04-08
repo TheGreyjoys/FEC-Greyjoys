@@ -16,19 +16,24 @@
   position: relative;
 }
 
-.carousel {
+.carousel, .image-slide, .image-slide-out {
   height: 100%;
   width: 100%;
 }
 
-.image-slide {
-  height: 100%;
-  width: 100%;
+.image-slide, .image-slide-out {
   background-size: cover;
   background-position: center;
 
+  position: absolute;
+
   transition: opacity 200ms;
   opacity: 1;
+}
+
+.image-slide-out {
+  transition: opacity 200ms;
+  opacity: 0;
 }
 
 .thumb-selector {
@@ -42,7 +47,7 @@
   justify-content: center;
 }
 
-.thumb {
+.thumb, .thumb-sel {
   height: 40px;
   width: 40px;
   margin: 0 5px 0 5px;
@@ -55,11 +60,7 @@
 .thumb-sel {
   height: 60px;
   width: 60px;
-  margin: 0 5px 0 5px;
-  border: 2px solid white;
   border-radius: 35px;
-
-  transition: all 150ms linear;
 }
 
 .left-arrow, .right-arrow {
@@ -150,8 +151,8 @@
   border: 2px solid grey;
 }
 
-.style:hover {
-  cursor: grab;
+.style:hover, .selStyle:hover {
+  cursor: pointer;
 }
 
 .selStyle {
@@ -172,7 +173,7 @@
   justify-content: space-evenly;
 }
 
-.sizeSelect {
+.sizeSelect, .qtySelect {
   height: 35px;
   width: 65%;
   margin-top: 10px;
@@ -182,12 +183,7 @@
 }
 
 .qtySelect {
-  height: 35px;
   width: 30%;
-  margin-top: 10px;
-
-  font-size: large;
-  text-indent: 10px;
 }
 
 .cartAdd {
@@ -202,8 +198,6 @@
 .productDetails {
   margin-top: 40px;
 
-  height: 80px;
-
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -213,7 +207,7 @@
 
 .productDescription {
   padding-top: 10px;
-  width: 85%;
+  width: 68%;
 
   line-height: 2;
 }
@@ -222,12 +216,15 @@
   margin: 0 25px 0 25px ;
   border-left: 2px solid black;
   height: 90%;
+  min-height: 50px;
+
   width: 1%;
   align-self: center;
 }
 
 .productFeatures {
-  width: 14%;
+  height: fit-content;
+  width: 24%;
 
   display: flex;
   flex-direction: column;

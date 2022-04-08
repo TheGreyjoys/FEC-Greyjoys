@@ -2,6 +2,8 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import PropTypes from 'prop-types';
+import ImageCarousel from './ImageCarousel';
+import ThumbCarousel from './ThumbCarousel';
 
 class ImageGallery extends React.Component {
   constructor(props) {
@@ -33,14 +35,11 @@ class ImageGallery extends React.Component {
     }
   }
 
-  imgPuller(photos) {
-    const thumbs = [];
-    const img = [];
-    photos.forEach((photo) => {
-      thumbs.push(photo.thumbnail_url);
-      img.push(photo.url);
+  handleThumbClick(e) {
+    this.setState({
+      currIndex: Number(e.target.value),
     });
-    return [img, thumbs];
+    e.target.className = 'thumb-sel';
   }
 
   nextImg() {
@@ -61,56 +60,40 @@ class ImageGallery extends React.Component {
     }
   }
 
-  handleThumbClick(e) {
-    console.log(e.target.value)
-    this.setState({
-      currIndex: e.target.value,
+  imgPuller(photos) {
+    const thumbs = [];
+    const img = [];
+    photos.forEach((photo) => {
+      thumbs.push(photo.thumbnail_url);
+      img.push(photo.url);
     });
-    e.target.className = 'thumb-sel';
+    return [img, thumbs];
   }
 
   render() {
     const {
       allImgs, allThumbs, currIndex,
     } = this.state;
-    console.log('re-render images')
 
     return (
       <div className="image-window">
-        <div className="carousel">
-          <button
-            type="button"
-            className="left-arrow"
-            onClick={this.prevImg}
-          >
-            &larr;
-          </button>
-          <div
-            className="image-slide"
-            style={{
-              backgroundImage: `url(${allImgs[currIndex]})`,
-            }}
+        {allImgs.length
+          && (
+          <ImageCarousel
+            allImgs={allImgs}
+            currIndex={currIndex}
+            prevImg={this.prevImg}
+            nextImg={this.nextImg}
           />
-          <button
-            type="button"
-            className="right-arrow"
-            onClick={this.nextImg}
-          >
-            &rarr;
-          </button>
-        </div>
-        <div className="thumb-selector">
-          {allImgs.map((img, index) => (
-            <input
-              type="image"
-              className={index === currIndex ? 'thumb-sel' : 'thumb'}
-              src={allThumbs[index]}
-              alt={`img${index}`}
-              value={index}
-              onClick={this.handleThumbClick}
+          )}
+        {allThumbs.length
+          && (
+            <ThumbCarousel
+              allThumbs={allThumbs}
+              currIndex={currIndex}
+              handleThumbClick={this.handleThumbClick}
             />
-          ))}
-        </div>
+          )}
       </div>
     );
   }
