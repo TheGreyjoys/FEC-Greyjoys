@@ -37,6 +37,8 @@ function Outfit(props) {
                 productID={product}
                 changeProduct={changeProduct}
                 currentProductData={currentProductData}
+                type="outfit"
+                updateOutfit={updateOutfit}
               />
             ))}
           </div>

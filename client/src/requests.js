@@ -21,8 +21,8 @@ function getRelatedProducts(id) {
   return axios.get(`/products/${id}/related`, { signal });
 }
 
-function getReviews(id) {
-  return axios.get(`/reviews?product_id=${id}`, { signal });
+function getReviews(id, sort, page) {
+  return axios.get(`/reviews?product_id=${id}&sort=${sort}&page=${page}`, { signal });
 }
 
 function getReviewsMeta(id) {

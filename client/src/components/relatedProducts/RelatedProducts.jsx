@@ -34,6 +34,7 @@ function RelatedProducts(props) {
                 productID={product}
                 changeProduct={changeProduct}
                 currentProductData={currentProductData}
+                type="related"
               />
             ))}
           </div>
