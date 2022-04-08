@@ -95,7 +95,7 @@ class App extends React.Component {
 
   render() {
     const { currentProduct, productData } = this.state;
-    if(productData) {
+    if (productData) {
       return (
         <main>
           <Nav />
@@ -105,12 +105,11 @@ class App extends React.Component {
             changeProduct={this.changeProduct}
             currentProductData={this.state.productData}
           />
-          <Reviews id={currentProduct} name={productData.name}/>
+          <Reviews id={currentProduct} name={productData.name} />
         </main>
       );
-    } else {
-      return <div>loading...</div>
     }
+    return <div>loading...</div>;
   }
 }
 
