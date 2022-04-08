@@ -20,7 +20,7 @@ class ThumbCarousel extends React.Component {
 
   componentDidUpdate(prevProps) {
     const {
-      currProd, currStyle, allThumbs, currIndex
+      currProd, currStyle, allThumbs, currIndex,
     } = this.props;
     const oldProd = prevProps.currProd;
     const oldStyle = prevProps.currStyle;
@@ -34,33 +34,32 @@ class ThumbCarousel extends React.Component {
 
   // const { currIndex, slide } = this.state;
   // if (allThumbs.length > 7 && (currIndex - slide) > 0) {
-    // if (slide < (allThumbs.length - 7)) {
+  // if (slide < (allThumbs.length - 7)) {
 
-    // }
+  // }
 
   // }
   slideLeft() {
-    console.log('slide left')
+    console.log('slide left');
     const { slide } = this.state;
-    const { allThumbs, currIndex } = this.props;
 
     if (slide > 0) {
-      this.setState({ slide: slide - 1})
+      this.setState({ slide: slide - 1 });
     }
   }
 
   slideRight() {
-    console.log('slide right')
+    console.log('slide right');
     const { slide } = this.state;
-    const { allThumbs, currIndex } = this.props;
+    const { allThumbs } = this.props;
 
     if (slide < (allThumbs.length - 7)) {
-      this.setState({ slide: slide + 1})
+      this.setState({ slide: slide + 1 });
     }
   }
 
   render() {
-    const { slide } = this.state
+    const { slide } = this.state;
     const { allThumbs, currIndex, handleThumbClick } = this.props;
 
     const thumbCount = allThumbs.length;
@@ -69,9 +68,9 @@ class ThumbCarousel extends React.Component {
       gridTemplateColumns: `repeat(${thumbCount}, 55px)`,
       gridTemplateRows: '1fr',
       width: `${thumbCount * 55}px`,
-
       transform: `translateX(-${(slide * 100) / thumbCount}%)`,
     };
+
     const needScroll = () => {
       if (thumbCount > 7) {
         return true;
@@ -79,18 +78,63 @@ class ThumbCarousel extends React.Component {
       return false;
     };
 
-    return (
-      <div className="thumb-carousel">
-        {needScroll
-          && (
+    const renderLeftArrow = () => {
+      if (needScroll()) {
+        if (slide > 0) {
+          return (
+            <button
+              type="button"
+              className="left-arrow-thumb"
+              onClick={this.slideLeft}
+            >
+              &lt;
+            </button>
+          );
+        }
+        return (
           <button
             type="button"
-            className="left-arrow-thumb"
+            className="left-arrow-thumb-dis"
             onClick={this.slideLeft}
+            disabled
           >
-            &larr;
+            &lt;
           </button>
-          )}
+        );
+      }
+      return null;
+    };
+
+    const renderRightArrow = () => {
+      if (needScroll()) {
+        if (slide < (allThumbs.length - 7)) {
+          return (
+            <button
+              type="button"
+              className="right-arrow-thumb"
+              onClick={this.slideRight}
+            >
+              &gt;
+            </button>
+          );
+        }
+        return (
+          <button
+            type="button"
+            className="right-arrow-thumb-dis"
+            onClick={this.slideRight}
+            disabled
+          >
+            &gt;
+          </button>
+        );
+      }
+      return null;
+    };
+
+    return (
+      <div className="thumb-carousel">
+        {renderLeftArrow()}
         <div className="thumb-window">
           <div
             className="thumb-selector"
@@ -109,16 +153,7 @@ class ThumbCarousel extends React.Component {
             ))}
           </div>
         </div>
-        {needScroll
-          && (
-          <button
-            type="button"
-            className="right-arrow-thumb"
-            onClick={this.slideRight}
-          >
-            &rarr;
-          </button>
-          )}
+        {renderRightArrow()}
       </div>
     );
   }

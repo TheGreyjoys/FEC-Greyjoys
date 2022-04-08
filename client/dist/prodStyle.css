@@ -116,7 +116,7 @@
   right: 24px;
 }
 
-.left-arrow-thumb, .right-arrow-thumb {
+.left-arrow-thumb, .right-arrow-thumb, .left-arrow-thumb-dis, .right-arrow-thumb-dis {
   position: absolute;
   z-index: 1;
   top: 50%;
