@@ -16,20 +16,28 @@
   position: relative;
 }
 
+.carousel {
+  overflow: hidden;
+}
+
 .carousel, .image-slide, .image-slide-out {
   height: 100%;
   width: 100%;
 }
 
 .image-slide, .image-slide-out {
-  background-size: cover;
-  background-position: center;
+  object-fit: cover;
+  object-position: center;
 
   position: absolute;
 
   transition: opacity 200ms;
   opacity: 1;
 }
+
+/* .image-slide:hover {
+  transform: scale(1.25);
+} */
 
 .image-slide-out {
   transition: opacity 200ms;
