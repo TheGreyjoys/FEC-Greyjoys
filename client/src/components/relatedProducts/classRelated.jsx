@@ -70,10 +70,6 @@ class RelatedProductsAndOutfit extends React.Component {
     }
   }
 
-  // componentWillUnmount() {
-  //   controller.abort();
-  // }
-
   updateOutfit() {
     this.setState({
       outfitItems: Object.keys(sessionStorage).map((item) => Number(item)).filter((item) => typeof item === 'number' && !Number.isNaN(item)),

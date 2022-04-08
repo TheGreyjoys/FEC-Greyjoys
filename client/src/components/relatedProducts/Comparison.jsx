@@ -24,6 +24,7 @@ function Comparison(props) {
   }
   return ReactDOM.createPortal(
     <div>
+      <button type="button" className="closeModal" onClick={toggleShowComp}>Close</button>
       <div className="modal">
         <table className="comparisonTable">
           <thead>
@@ -52,7 +53,6 @@ function Comparison(props) {
           </tbody>
         </table>
       </div>
-      <button type="button" onClick={toggleShowComp}>Close</button>
     </div>,
     document.getElementById(`${id}`),
   );

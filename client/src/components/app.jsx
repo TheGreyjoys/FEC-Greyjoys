@@ -2,7 +2,7 @@
 /* eslint-disable react/no-access-state-in-setstate */
 import React from 'react';
 import Nav from './Nav';
-import RelatedProductsAndOutfit from './relatedProducts/ClassRelated';
+import RelatedProductsAndOutfit from './relatedProducts/classRelated';
 import Reviews from './Reviews/Reviews';
 import ProdDetail from './ProdDetail/ProdDetail';
 import { getCurrentProduct } from '../requests';
@@ -19,35 +19,35 @@ class App extends React.Component {
     };
     this.renderNav = this.renderNav.bind(this);
     this.changeProduct = this.changeProduct.bind(this);
-    this.sampleData = {
-      id: 40349,
-      campus: 'hr-rfp',
-      name: 'Pumped Up Kicks',
-      slogan: 'Faster than a just about anything',
-      description: 'The Pumped Up serves up crisp court style with a modern look. These shoes show off tennis-whites shades and are constructed with a supple leather upper and a classic rubber cupsole.',
-      category: 'Kicks',
-      default_price: '89.00',
-      created_at: '2021-08-13T14:38:44.509Z',
-      updated_at: '2021-08-13T14:38:44.509Z',
-      features: [
-        {
-          feature: 'Sole',
-          value: 'Rubber',
-        },
-        {
-          feature: 'Material',
-          value: 'FullControlSkin',
-        },
-        {
-          feature: 'Mid-Sole',
-          value: 'ControlSupport Arch Bridge',
-        },
-        {
-          feature: 'Stitching',
-          value: 'Double Stitch',
-        },
-      ],
-    };
+    // this.sampleData = {
+    //   id: 40349,
+    //   campus: 'hr-rfp',
+    //   name: 'Pumped Up Kicks',
+    //   slogan: 'Faster than a just about anything',
+    //   description: 'The Pumped Up serves up crisp court style with a modern look. These shoes show off tennis-whites shades and are constructed with a supple leather upper and a classic rubber cupsole.',
+    //   category: 'Kicks',
+    //   default_price: '89.00',
+    //   created_at: '2021-08-13T14:38:44.509Z',
+    //   updated_at: '2021-08-13T14:38:44.509Z',
+    //   features: [
+    //     {
+    //       feature: 'Sole',
+    //       value: 'Rubber',
+    //     },
+    //     {
+    //       feature: 'Material',
+    //       value: 'FullControlSkin',
+    //     },
+    //     {
+    //       feature: 'Mid-Sole',
+    //       value: 'ControlSupport Arch Bridge',
+    //     },
+    //     {
+    //       feature: 'Stitching',
+    //       value: 'Double Stitch',
+    //     },
+    //   ],
+    // };
   }
 
   componentDidMount() {
@@ -62,7 +62,6 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('app updating');
     if (prevState.currentProduct !== this.state.currentProduct) {
       getCurrentProduct(this.state.currentProduct)
         .then((res) => {
@@ -74,12 +73,6 @@ class App extends React.Component {
         .catch((err) => console.log(err));
     }
   }
-
-  // componentWillUnmount() {
-  //   if (controller.signal) {
-  //     controller.abort();
-  //   }
-  // }
 
   changeProduct(id) {
     this.setState({
@@ -96,7 +89,7 @@ class App extends React.Component {
 
   render() {
     const { currentProduct, productData } = this.state;
-    if(productData) {
+    if (productData) {
       return (
         <main>
           <Nav />
@@ -106,13 +99,11 @@ class App extends React.Component {
             changeProduct={this.changeProduct}
             currentProductData={this.state.productData}
           />
-          <Reviews id={productData.id} name={productData.name}/>
+          <Reviews id={productData.id} name={productData.name} />
         </main>
       );
-    } else {
-      return <div>loading...</div>
     }
-
+    return <div>loading...</div>;
   }
 }
 

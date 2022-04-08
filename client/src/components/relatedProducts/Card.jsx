@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-shadow */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
@@ -13,7 +14,9 @@ import throttle from '../../helpers';
 import Comparison from './Comparison';
 
 function Card(props) {
-  const { productID, changeProduct, currentProductData } = props;
+  const {
+    productID, changeProduct, currentProductData, type, updateOutfit,
+  } = props;
   const loadingProduct = {
     name: 'loading',
     category: 'loading',
@@ -79,21 +82,27 @@ function Card(props) {
     }
   }
 
+  function removeFromOutfit(e) {
+    sessionStorage.removeItem(`${productID}`);
+    updateOutfit();
+  }
+
   if (loaded) {
     return (
       // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
       <div className="card">
-      <li onKeyPress={handleClick}>
-        <button type="button" className="imgLink" value={id} name={name} onClick={handleClick}>
-          <img src={photos[0].thumbnail_url} alt="product thumbnail" value={id} />
-        </button>
-        <h6 className="productDetail">{category}</h6>
-        <h5 className="productDetail">{name}</h5>
-        <h6 className="productDetail">{salePrice || originalPrice}</h6>
-        {/* <div>{ratings}</div> */}
-        <div id={id} />
-        <Comparison cardProduct={product} currentProductData={currentProductData} />
-      </li>
+        <li>
+          <button type="button" className="imgLink" value={id} name={name} onClick={handleClick}>
+            <img src={photos[0].thumbnail_url} alt="product thumbnail" value={id} />
+          </button>
+          <h6 className="productDetail">{category}</h6>
+          <h5 className="productDetail">{name}</h5>
+          <h6 className="productDetail">{salePrice || originalPrice}</h6>
+          {/* <div>{ratings}</div> */}
+          <div id={id} />
+          {type === 'related' && <Comparison cardProduct={product} currentProductData={currentProductData} />}
+          {type === 'outfit' && <button type="button" onClick={removeFromOutfit} className="actionButton" style={{ color: 'lightgrey' }}>&#88;</button>}
+        </li>
       </div>
     );
   }
@@ -108,6 +117,7 @@ Card.propTypes = {
   currentProductData: PropTypes.shape({
     id: PropTypes.number.isRequired,
   }).isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default Card;
