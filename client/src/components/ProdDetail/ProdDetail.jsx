@@ -123,7 +123,7 @@ class ProdDetail extends React.Component {
             && product.features.map((feature) => (
               <span className="productFeature">
                 <b>{feature.feature}</b>
-                {`:   ${feature.value}`}
+                {`:     ${feature.value}`}
               </span>
             ))}
           </div>
