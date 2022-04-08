@@ -2,10 +2,10 @@
 /* eslint-disable react/no-access-state-in-setstate */
 import React from 'react';
 import Nav from './Nav';
-import RelatedProductsAndOutfit from './relatedProducts/classRelated';
+import RelatedProductsAndOutfit from './relatedProducts/ClassRelated';
 import Reviews from './Reviews/Reviews';
 import ProdDetail from './ProdDetail/ProdDetail';
-import { getCurrentProduct, controller } from '../requests';
+import { getCurrentProduct } from '../requests';
 
 class App extends React.Component {
   constructor(props) {
@@ -105,12 +105,13 @@ class App extends React.Component {
             changeProduct={this.changeProduct}
             currentProductData={this.state.productData}
           />
-          <Reviews id={currentProduct} name={productData.name}/>
+          <Reviews id={productData.id} name={productData.name}/>
         </main>
       );
     } else {
       return <div>loading...</div>
     }
+
   }
 }
 
