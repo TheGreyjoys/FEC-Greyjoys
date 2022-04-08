@@ -3,8 +3,8 @@ import React from 'react';
 import Review from './Review';
 import WriteReview from './WriteReview';
 import Graph from './Graph';
-import Stars from './Stars';
 import { getReviews, getReviewsMeta } from '../../requests';
+import starRating from '../../starRating';
 
 class Reviews extends React.Component {
   constructor(props) {
@@ -32,7 +32,6 @@ class Reviews extends React.Component {
     this.goToPage = this.goToPage.bind(this);
     this.writeReview = this.writeReview.bind(this);
     this.submitReview = this.submitReview.bind(this);
-    this.starRating = this.starRating.bind(this);
   }
 
   componentDidMount() {
@@ -67,34 +66,21 @@ class Reviews extends React.Component {
           people += Number(res.data.ratings[key]);
         }
         const average = people ? Number(sum / people).toFixed(1) : 0;
+        const recTrue = res.data.recommended.true ? res.data.recommended.true : 0;
+        const recFalse = res.data.recommended.false ? res.data.recommended.false : 0;
         this.setState({
           meta: res.data,
           reviewNumber: people,
           rating: average,
           overallRatings: res.data.ratings,
           recommended: (
-            100 * res.data.recommended.true
-            / (Number(res.data.recommended.false)
-            + Number(res.data.recommended.true))
+            100 * recTrue
+            / (Number(recFalse)
+            + Number(recTrue))
           ).toFixed(1),
         });
       })
       .catch(console.log);
-  }
-
-  starRating(rating) {
-    var ratingStars = [];
-    for (var i = 0; i < Math.floor(rating); i ++) {
-      ratingStars.push(<Stars key={i + 10} filled="1" />);
-    }
-    if(rating > Math.floor(rating)) {
-      console.log('here');
-      ratingStars.push(<Stars key={20} filled="2" color={rating - Math.floor(rating)} />);
-    }
-    for (var i = Math.ceil(rating); i < 5; i ++) {
-      ratingStars.push(<Stars key={i + 11} filled="0" />);
-    }
-    return ratingStars;
   }
 
   changeSort(e) {
@@ -163,7 +149,7 @@ class Reviews extends React.Component {
           <div>
             <p>RATINGS & REVIEWS</p>
             {rating}
-            {(rating !== 0) && this.starRating(rating) }
+            {(rating !== 0) ? starRating(rating) : <div>☆☆☆☆☆</div> }
             <p>{recommended}% of reviews recommend this product</p>
             {overallRatings
             && (
