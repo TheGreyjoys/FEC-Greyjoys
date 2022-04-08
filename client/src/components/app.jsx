@@ -70,7 +70,7 @@ class App extends React.Component {
             changeProduct={this.changeProduct}
             currentProductData={this.state.productData}
           />
-          <Reviews id={currentProduct} name={productData.name}/>
+          <Reviews id={productData.id} name={productData.name}/>
         </main>
       );
     } else {

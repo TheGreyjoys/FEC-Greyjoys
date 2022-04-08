@@ -10,12 +10,13 @@ class ImageGallery extends React.Component {
     this.state = {
       allImgs: [],
       allThumbs: [],
-      currIndex: '',
-      thumbsShow: 4,
+      currIndex: 0,
+
     };
     this.imgPuller = this.imgPuller.bind(this);
     this.nextImg = this.nextImg.bind(this);
     this.prevImg = this.prevImg.bind(this);
+    this.handleThumbClick = this.handleThumbClick.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -60,35 +61,23 @@ class ImageGallery extends React.Component {
     }
   }
 
+  handleThumbClick(e) {
+    console.log(e.target.value)
+    this.setState({
+      currIndex: e.target.value,
+    });
+    e.target.className = 'thumb-sel';
+  }
+
   render() {
-    const { allImgs, currIndex, thumbsShow } = this.state;
+    const {
+      allImgs, allThumbs, currIndex,
+    } = this.state;
+    console.log('re-render images')
+
     return (
-      <div className="image-gallery">
-        <div className="thumb-wrapper">
-          <button
-            type="button"
-            className="up-arrow"
-            onClick={() => {}}
-          >
-            &uarr;
-          </button>
-          <div className="content-wrapper">
-            <div
-              className="thumb-carousel-content"
-              style={{ transform: `translateX(-${currIndex * (100 / thumbsShow)}%)` }}
-            >
-              {allImgs.map((img, index) => <img src={img} alt={`img${index}`} />)}
-            </div>
-          </div>
-          <button
-            type="button"
-            className="down-arrow"
-            onClick={() => {}}
-          >
-            &darr;
-          </button>
-        </div>
-        <div className="gallery-wrapper">
+      <div className="image-window">
+        <div className="carousel">
           <button
             type="button"
             className="left-arrow"
@@ -96,14 +85,12 @@ class ImageGallery extends React.Component {
           >
             &larr;
           </button>
-          <div className="content-wrapper">
-            <div
-              className="carousel-content"
-              style={{ transform: `translateX(-${currIndex * 100}%)` }}
-            >
-              {allImgs.map((img, index) => <img src={img} alt={`img${index}`} />)}
-            </div>
-          </div>
+          <div
+            className="image-slide"
+            style={{
+              backgroundImage: `url(${allImgs[currIndex]})`,
+            }}
+          />
           <button
             type="button"
             className="right-arrow"
@@ -111,6 +98,18 @@ class ImageGallery extends React.Component {
           >
             &rarr;
           </button>
+        </div>
+        <div className="thumb-selector">
+          {allImgs.map((img, index) => (
+            <input
+              type="image"
+              className={index === currIndex ? 'thumb-sel' : 'thumb'}
+              src={allThumbs[index]}
+              alt={`img${index}`}
+              value={index}
+              onClick={this.handleThumbClick}
+            />
+          ))}
         </div>
       </div>
     );

@@ -6,82 +6,60 @@
   flex-direction: row;
 }
 
-.image-gallery {
+.image-window {
   max-height: 100%;
   width: 68%;
 
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   position: relative;
 }
 
-.thumb-wrapper {
+.carousel {
   height: 100%;
-  width: 20%;
-
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
+  width: 100%;
 }
 
-.thumb-carousel-content {
-  height: 25%;
+.image-slide {
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
 
-  display: flex;
-  flex-direction: column;
-  transition: all 250ms linear;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  transition: opacity 200ms;
+  opacity: 1;
 }
 
-.up-arrow, .down-arrow {
+.thumb-selector {
+  width: 100%;
+  height: 60px;
+  z-index: 1;
   position: absolute;
-  /* transform: translateY(-50%); */
-  width: 40px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.thumb {
   height: 40px;
-  border-radius: 24px;
-  background-color: white;
-  border: 1px solid #ddd;
-  opacity: 0.5;
+  width: 40px;
+  margin: 0 5px 0 5px;
+  border: 2px solid white;
+  border-radius: 25px;
+
+  transition: all 150ms linear;
 }
 
-.up-arrow {
-  top: 0%;
-}
+.thumb-sel {
+  height: 60px;
+  width: 60px;
+  margin: 0 5px 0 5px;
+  border: 2px solid white;
+  border-radius: 35px;
 
-.down-arrow {
-  bottom: 0%;
-}
-
-.gallery-wrapper {
-  display: flex;
-  width: 100%;
-  position: relative;
-}
-
-.content-wrapper {
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-}
-
-.carousel-content {
-  display: flex;
-  transition: all 250ms linear;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* hide scrollbar in webkit browser */
-.carousel-content::-webkit-scrollbar, .carousel-content::-webkit-scrollbar {
-  display: none;
-}
-
-.carousel-content > * {
-  width: 100%;
-  flex-shrink: 0;
-  flex-grow: 1;
+  transition: all 150ms linear;
 }
 
 .left-arrow, .right-arrow {
@@ -108,7 +86,6 @@
 .right-arrow {
   right: 24px;
 }
-
 
 .prodSelect {
   height: 100%;

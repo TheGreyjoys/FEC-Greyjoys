@@ -12,12 +12,12 @@ class Reviews extends React.Component {
     this.state = {
       /* need current product id */
       /* need current product name */
-      reviews: [],
+      reviews: null,
       product_id: this.props.id || '40344',
       page: 1,
       sort: 'relevant',
       reading: false,
-      meta: {},
+      meta: null,
       rating: 0,
       reviewNumber: 0,
       recommended: 0,
@@ -36,7 +36,14 @@ class Reviews extends React.Component {
   }
 
   componentDidMount() {
-    this.getMeta(this.getPageReview);
+    this.getMeta();
+    this.getPageReview();
+  }
+
+   componentDidUpdate() {
+     if(this.state.product_id !== this.props.id) {
+      this.setState({product_id: this.props.id}, () => { this.getMeta(); this.getPageReview(); });
+    }
   }
 
   getPageReview() {
@@ -48,7 +55,7 @@ class Reviews extends React.Component {
       .catch(console.log);
   }
 
-  getMeta(callback) {
+  getMeta() {
     const { product_id } = this.state;
 
     getReviewsMeta(product_id)
@@ -72,7 +79,6 @@ class Reviews extends React.Component {
           ).toFixed(1),
         });
       })
-      .then(callback)
       .catch(console.log);
   }
 
@@ -152,38 +158,46 @@ class Reviews extends React.Component {
     const { reviews, sort, rating, meta, recommended, reviewNumber, overallRatings, product_id } = this.state;
     return (
       <div className="reviews-container">
-        <div>
-          <p>RATINGS & REVIEWS</p>
-          {rating}
-          {(rating !== 0) && this.starRating(rating) }
-          <p>{recommended}% of reviews recommend this product</p>
-          {overallRatings
-          && (
-            <Graph
-              five={overallRatings[5]}
-              four={overallRatings[4]}
-              three={overallRatings[3]}
-              two={overallRatings[2]}
-              one={overallRatings[1]}
-              reviewNumber={reviewNumber}
-            />
-
-          ) }
-           <dialog id="writeReview"><WriteReview submit={this.submitReview} product_id={product_id} name={this.props.name}/></dialog>
-           <button type="submit" onClick={this.writeReview}>WriteReview</button>
-           <output></output>
-        </div>
-        <div>
+        { meta ?
+          (
           <div>
-            <p>{reviewNumber} reviews, sorted by <select value={sort} onChange={this.changeSort}>
-              <option value="relevant">most relevant</option>
-              <option value="newest">newest</option>
-              <option value="helpful">most helpful</option>
-            </select>
-            </p>
+            <p>RATINGS & REVIEWS</p>
+            {rating}
+            {(rating !== 0) && this.starRating(rating) }
+            <p>{recommended}% of reviews recommend this product</p>
+            {overallRatings
+            && (
+              <Graph
+                five={overallRatings[5]}
+                four={overallRatings[4]}
+                three={overallRatings[3]}
+                two={overallRatings[2]}
+                one={overallRatings[1]}
+                reviewNumber={reviewNumber}
+              />
+
+            ) }
+            <dialog id="writeReview"><WriteReview submit={this.submitReview} product_id={product_id} name={this.props.name}/></dialog>
+            <button type="submit" onClick={this.writeReview}>WriteReview</button>
+            <output></output>
           </div>
-          {this.renderReviews()}
-        </div>
+          ) : <div>loading...</div>
+        }
+        {reviews ?
+          (
+            <div>
+              <div>
+                <p>{reviewNumber} reviews, sorted by <select value={sort} onChange={this.changeSort}>
+                  <option value="relevant">most relevant</option>
+                  <option value="newest">newest</option>
+                  <option value="helpful">most helpful</option>
+                </select>
+                </p>
+              </div>
+              {this.renderReviews()}
+            </div>
+          ) : <div>loading...</div>
+        }
       </div>
     );
   }
