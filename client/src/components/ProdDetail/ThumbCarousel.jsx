@@ -9,7 +9,7 @@ class ThumbCarousel extends React.Component {
     const { allThumbs, currIndex } = this.props;
 
     this.state = {
-      allThumbs,
+
       currIndex,
       slide: 0,
       leftBound: 0,
@@ -21,7 +21,7 @@ class ThumbCarousel extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { slide, leftBound, rightBound } = this.state;
+    const { leftBound, rightBound } = this.state;
     const {
       currProd, currStyle, allThumbs, currIndex,
     } = this.props;
