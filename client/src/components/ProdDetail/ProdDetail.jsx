@@ -52,6 +52,9 @@ class ProdDetail extends React.Component {
               defaultStyle = style;
             }
           });
+          if (!defaultStyle) {
+            defaultStyle = productStyles[0];
+          }
           this.setState({
             product,
             productStyles,
@@ -79,7 +82,9 @@ class ProdDetail extends React.Component {
   }
 
   render() {
-    const { product, productStyles, selectedStyle } = this.state;
+    const {
+      product, productStyles, selectedStyle, product: { id }, selectedStyle: { style_id },
+    } = this.state;
 
     const saleChecker = () => {
       const { sale_price, original_price } = selectedStyle;
@@ -97,7 +102,11 @@ class ProdDetail extends React.Component {
     return (
       <div>
         <section className="overview">
-          <ImageGallery selectedStyle={selectedStyle} />
+          <ImageGallery
+            selectedStyle={selectedStyle}
+            currProduct={id}
+            currStyle={style_id}
+          />
           <div className="prodSelect">
             <div className="rating">Rating.jsx</div>
             <span className="prodCategory">{product.category}</span>
