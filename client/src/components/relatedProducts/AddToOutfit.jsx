@@ -25,9 +25,9 @@ function AddToOutfit(props) {
 
   return (
     <button className="card" type="button" onClick={handleClick}>
-      &#43;
+      <div>&#43;</div>
       <br />
-      Add This Item to Your Outfit
+      <span>Add This Item to Your Outfit</span>
     </button>
   );
 }

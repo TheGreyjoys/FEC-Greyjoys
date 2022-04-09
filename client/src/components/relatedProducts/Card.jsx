@@ -12,7 +12,6 @@ import {
   getCurrentProduct, getProductStyles, getReviewsMeta, controller,
 } from '../../requests';
 import starRating from '../../starRating';
-import throttle from '../../helpers';
 import Comparison from './Comparison';
 
 function Card(props) {
@@ -65,6 +64,7 @@ function Card(props) {
       console.log(err);
     }
   };
+
   useEffect(() => {
     if (!loaded) {
       updateData(productID)
