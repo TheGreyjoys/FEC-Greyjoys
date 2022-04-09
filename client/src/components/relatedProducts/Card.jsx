@@ -105,12 +105,12 @@ function Card(props) {
       <div className="card">
         <li>
           <button type="button" className="imgLink" value={id} name={name} onClick={handleClick}>
-            <img src={photos[0].thumbnail_url} alt="product thumbnail" value={id} />
+            <img src={photos[0].thumbnail_url || 'https://source.unsplash.com/mher7uNJZwU'} alt="product thumbnail" value={id} className="cardImg" />
           </button>
-          <h6 className="productDetail">{category}</h6>
-          <h5 className="productDetail">{name}</h5>
-          <h6 className="productDetail">{salePrice || originalPrice}</h6>
-          <div>{ratings && starRating((parseRating(ratings)))}</div>
+          <h5 className="productDetail">{category}</h5>
+          <h4 className="productDetail">{name}</h4>
+          <h5 className="productDetail">{salePrice || originalPrice}</h5>
+          <div className="productDetail">{ratings && starRating((parseRating(ratings)))}</div>
           <div id={id} />
           {type === 'related' && <Comparison cardProduct={product} currentProductData={currentProductData} />}
           {type === 'outfit' && <button type="button" onClick={removeFromOutfit} className="actionButton" style={{ color: 'lightgrey' }}>&#88;</button>}
