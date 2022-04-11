@@ -5,6 +5,7 @@ import WriteReview from './WriteReview';
 import Graph from './Graph';
 import { getReviews, getReviewsMeta } from '../../requests';
 import starRating from '../../starRating';
+import Graph2 from './Graph2';
 
 class Reviews extends React.Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class Reviews extends React.Component {
     this.goToPage = this.goToPage.bind(this);
     this.writeReview = this.writeReview.bind(this);
     this.submitReview = this.submitReview.bind(this);
+    this.charGraph = this.charGraph.bind(this);
   }
 
   componentDidMount() {
@@ -49,6 +51,7 @@ class Reviews extends React.Component {
     const { page, sort, product_id } = this.state;
     getReviews(product_id, sort, page)
       .then((res) => {
+        console.log(res.data);
         this.setState({ reviews: res.data.results });
       })
       .catch(console.log);
@@ -59,6 +62,7 @@ class Reviews extends React.Component {
 
     getReviewsMeta(product_id)
       .then((res) => {
+        console.log(res.data);
         let sum = 0;
         let people = 0;
         for (var key in res.data.ratings) {
@@ -106,6 +110,14 @@ class Reviews extends React.Component {
     document.getElementById("writeReview").close();
   }
 
+  charGraph() {
+    var graph2 = [];
+    for(var key in this.state.meta.characteristics) {
+      graph2.push(<Graph2 chara={key} value={this.state.meta.characteristics[key].value}/>)
+    }
+    return graph2;
+  }
+
   renderReviews() {
     const { reviews, reading, page } = this.state;
     if (reviews.length === 0) {
@@ -124,7 +136,7 @@ class Reviews extends React.Component {
         <div>
           <Review key={reviews[0].review_id} review={reviews[0]} />
           <Review key={reviews[1].review_id} review={reviews[1]} />
-          <button type="submit" onClick={this.toggleExpandReviews}>More Reviews</button>
+          <button type="submit" onClick={this.toggleExpandReviews} className="bigButton">More Reviews</button>
         </div>
 
       );
@@ -132,10 +144,10 @@ class Reviews extends React.Component {
     return (
       <div>
         {reviews.map((review) => <Review key={review.review_id} review={review} />)}
-        <button type="submit" onClick={this.toggleExpandReviews}>Collapse</button>
         {page > 1 && <button type="submit" onClick={() => { this.goToPage(page - 1); }}>Previous Page</button> }
         <button type="submit" onClick={() => { this.goToPage(page + 1); }}>Next Page</button>
         <p>page {page}</p>
+        <button type="submit" onClick={this.toggleExpandReviews} className="bigButton">Collapse</button>
       </div>
     );
   }
@@ -146,32 +158,47 @@ class Reviews extends React.Component {
       <div className="reviews-container">
         { meta ?
           (
-          <div>
+          <div className="reviews-meta">
             <p>RATINGS & REVIEWS</p>
-            {rating}
+            <p style={{'fontSize': '40', 'display': 'inline-block', 'margin': '3px'}}><b>{rating}</b></p>
             {(rating !== 0) ? starRating(rating) : <div>☆☆☆☆☆</div> }
             <p>{recommended}% of reviews recommend this product</p>
             {overallRatings
             && (
-              <Graph
-                five={overallRatings[5] === undefined ? 0 : overallRatings[5]}
-                four={overallRatings[4] === undefined ? 0 : overallRatings[4]}
-                three={overallRatings[3] === undefined ? 0 : overallRatings[3]}
-                two={overallRatings[2] === undefined ? 0 : overallRatings[2]}
-                one={overallRatings[1] === undefined ? 0 : overallRatings[1]}
-                reviewNumber={reviewNumber || 1}
-              />
+              <div>
+                <Graph
+                  five={overallRatings[5] ? overallRatings[5] : 0}
+                  four={overallRatings[4] ? overallRatings[4] : 0}
+                  three={overallRatings[3] ? overallRatings[3] : 0}
+                  two={overallRatings[2] ? overallRatings[2] : 0}
+                  one={overallRatings[1] ? overallRatings[1] : 0}
+                  reviewNumber={reviewNumber || 1}
+                />
+                {this.charGraph()}
+              </div>
 
             ) }
-            <dialog id="writeReview"><WriteReview submit={this.submitReview} product_id={product_id} name={this.props.name}/></dialog>
-            <button type="submit" onClick={this.writeReview}>WriteReview</button>
+            <dialog id="writeReview">
+              <WriteReview
+                submit={this.submitReview}
+                product_id={product_id}
+                name={this.props.name}
+                category={this.props.category}
+                characteristics={meta.characteristics}
+              />
+            </dialog>
+            <button
+              className="bigButton"
+              type="submit"
+              onClick={this.writeReview}
+              >ADD A REVIEW +</button>
             <output></output>
           </div>
           ) : <div>loading...</div>
         }
         {reviews ?
           (
-            <div>
+            <div className="reviews-main">
               <div>
                 <p>{reviewNumber} reviews, sorted by <select value={sort} onChange={this.changeSort}>
                   <option value="relevant">most relevant</option>

@@ -1,12 +1,48 @@
-.reviews-container {
+.charContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: stretch;
+}
+
+.charKey {
+  flex-basis: 10%;
+  margin-right: 5px;
+}
+
+.charSelector {
+  flex-basis: 85%;
   display: flex;
   flex-direction: row;
 }
+.charInput{
+  flex-basis: 20%;
+  display: flex;
+  flex-direction: row;
+}
+.charSelector label {
+  font-size: 12;
+}
 
+#writeReview {
+  width: 60%;
+}
 
+.reviews-container {
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  color: rgb(85, 85, 85);
+}
 
-.half {
-  background-clip: text;
+.reviews-meta {
+  flex-basis: 30%;
+}
+.reviews-meta p {
+  font-size: 13px;
+}
+.reviews-main {
+  flex-basis: 70%
 }
 
 .star {
@@ -24,25 +60,92 @@
 
 /* .rating_graph
 {
-  width: 30%;
-} */
+
+ display: flex;
+ flex-direction: column;
+ margin-bottom: 40px;
+}
+
+.rating{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+}
 
 .rating p:nth-child(2)
 {
-  box-sizing: 100px;
   float: right;
   position: relative;
-  top: -50px;
+}
+.rating p {
+  display: inline-block;
+  line-height: normal;
 }
 
 .bar
 {
+  flex-shrink: 0;
+  flex-basis: 60%;
+  height: 8px;
   background-color: lightgrey;
-  box-sizing: border-box;
+  margin: 5px;
 }
 
 .filled
 {
   height: 8px;
-  background-color: grey;
+  background-color: rgb(85, 85, 85);
+}
+
+.dividingLine {
+  background-color: black;
+  height: 0.5px;
+  margin-top: 20px;
+}
+
+.charChartContainer {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+}
+.charBarContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+}
+
+ .charBarBars {
+  display: flex;
+  flex-direction: row;
+}
+
+.charBar {
+  flex-basis: 26%;
+  flex-shrink: 0;
+  height: 8px;
+  background-color: lightgrey;
+  margin-bottom: 5px;
+  margin-left: 3px;
+}
+.charBarKeys {
+  width: 82%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.charBarPointer {
+  font-size: 14px;
+  color: rgb(85, 85, 85);
+}
+
+.bigButton {
+  margin-top: 20px;
+  width: 130px;
+  height: 40px;
+  background-color: white;
+  border: 1px solid rgb(85, 85, 85);
+  color: rgb(85, 85, 85)
 }
