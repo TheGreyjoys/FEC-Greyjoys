@@ -34,16 +34,16 @@ function Card(props) {
   const [product, setProduct] = useState(loadingProduct);
 
   const {
-    name, category, id, ratings, originalPrice, salePrice, photos,
+    name, category, id, ratings, originalPrice, salePrice, photos, features,
   } = product;
 
   const updateData = async (prodID) => {
     try {
-      const { data: { name, category, id } } = await (getCurrentProduct(prodID));
+      const { data: { name, category, id, features } } = await (getCurrentProduct(prodID));
       const { data: { results } } = await (getProductStyles(prodID));
       const { data: { ratings } } = await (getReviewsMeta(prodID));
       const productData = {
-        name, category, id, ratings,
+        name, category, id, ratings, features,
       };
       if (results) {
         results.forEach((style) => {
