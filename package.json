@@ -8,7 +8,7 @@
     "client-dev": "npx webpack -w --config webpack.config.js",
     "start": "npx node server/index.js",
     "build": "npx webpack --config webpack.config.js",
-    "test": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --coverage",
     "test-prod": "jest ProdDetail.spec.jsx",
     "test:watch": "npm run test -- --watch"
   },
