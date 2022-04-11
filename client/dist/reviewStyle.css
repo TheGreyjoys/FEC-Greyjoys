@@ -38,9 +38,11 @@
 .reviews-meta {
   flex-basis: 30%;
 }
+
 .reviews-meta p {
   font-size: 13px;
 }
+
 .reviews-main {
   flex-basis: 70%
 }

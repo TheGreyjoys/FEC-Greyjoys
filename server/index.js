@@ -32,11 +32,9 @@ app.all('*', (req, res) => {
     console.log('put request sent !!!!!!!', url);
     axios.put(`http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp${url}`, {}, config)
       .then((response) => {
-        console.log('response>>>>>>>>>', response);
         res.send(response);
       })
       .catch((err) => {
-        console.log('err>>>>>>>>>>', err);
         res.send(err);
       });
   } else {

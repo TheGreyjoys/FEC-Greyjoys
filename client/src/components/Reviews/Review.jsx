@@ -49,7 +49,7 @@ class Review extends React.Component {
         .then(() => {
           localStorage.setItem('markedHelpful' + id, 'true');
         })
-        .then(()=> {
+        .then(() => {
           this.setState({ markedHelpful: localStorage.getItem('markedHelpful' + this.props.review.review_id)});
         })
         .catch(console.log);
@@ -59,7 +59,7 @@ class Review extends React.Component {
   report(id) {
     markReported(id)
      .then(() => {
-      this.setState({reported: true});
+      this.setState({ reported: true });
      })
      .catch(console.log);
   }
