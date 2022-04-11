@@ -10,7 +10,6 @@ function Nav() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    render(<h1>{searchBar}</h1>, document.getElementById('lilRoot'));
     setSearchBar('');
   };
 

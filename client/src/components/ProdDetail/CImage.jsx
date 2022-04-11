@@ -26,16 +26,16 @@ class CImage extends React.Component {
     }
   }
 
-
   render() {
     const { url, index, currIndex } = this.state;
     return (
-      <div
-        className={index === currIndex ? 'image-slide' : 'image-slide-out'}
-        style={{
-          backgroundImage: `url(${url})`,
-        }}
-      />
+      <div>
+        <img
+          className={index === currIndex ? 'image-slide' : 'image-slide-out'}
+          src={url}
+          alt={index}
+        />
+      </div>
     );
   }
 }

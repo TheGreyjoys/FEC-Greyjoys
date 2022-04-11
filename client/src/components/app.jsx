@@ -13,7 +13,7 @@ class App extends React.Component {
 
     this.state = {
       // dummy default product ID
-      currentProduct: 40351,
+      currentProduct: 40346,
       navDisplay: false,
       productData: null,
     };

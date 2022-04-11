@@ -76,7 +76,7 @@ class RelatedProductsAndOutfit extends React.Component {
   }
 
   render() {
-    if (this.state.relatedProducts) {
+    if (Array.isArray(this.state.relatedProducts)) {
       return (
         <div>
           <h3>Related Products</h3>
