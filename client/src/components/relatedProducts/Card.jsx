@@ -34,16 +34,16 @@ function Card(props) {
   const [product, setProduct] = useState(loadingProduct);
 
   const {
-    name, category, id, ratings, originalPrice, salePrice, photos,
+    name, category, id, ratings, originalPrice, salePrice, photos, features,
   } = product;
 
   const updateData = async (prodID) => {
     try {
-      const { data: { name, category, id } } = await (getCurrentProduct(prodID));
+      const { data: { name, category, id, features } } = await (getCurrentProduct(prodID));
       const { data: { results } } = await (getProductStyles(prodID));
       const { data: { ratings } } = await (getReviewsMeta(prodID));
       const productData = {
-        name, category, id, ratings,
+        name, category, id, ratings, features,
       };
       if (results) {
         results.forEach((style) => {
@@ -99,6 +99,18 @@ function Card(props) {
     return sum / total;
   }
 
+  function saleChecker(original, sale) {
+    if (sale) {
+      return (
+        <span style={{ color: 'red' }}>
+          <s style={{ color: 'black' }}>{original}</s>
+          {`  $${sale}`}
+        </span>
+      );
+    }
+    return <span>{`$${original}`}</span>;
+  }
+
   if (loaded) {
     return (
       // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
@@ -109,7 +121,7 @@ function Card(props) {
           </button>
           <h5 className="productDetail">{category}</h5>
           <h4 className="productDetail">{name}</h4>
-          <h5 className="productDetail">{salePrice || originalPrice}</h5>
+          <h5 className="productDetail">{saleChecker(originalPrice, salePrice)}</h5>
           <div className="productDetail">{ratings && starRating((parseRating(ratings)))}</div>
           <div id={id} />
           {type === 'related' && <Comparison cardProduct={product} currentProductData={currentProductData} />}
