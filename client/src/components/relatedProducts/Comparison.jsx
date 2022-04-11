@@ -36,7 +36,6 @@ function Comparison(props) {
   function populateTD(feature, list) {
     for (let i = 0; i < list.length; i++) {
       if (list[i].feature === feature) {
-        console.log((<td>{list[i].value}</td>));
         return (<td>{list[i].value}</td>);
       }
     }
@@ -52,8 +51,6 @@ function Comparison(props) {
       </tr>
     ));
   }
-
-  console.log(populateTD('fabric', compFeatures));
 
   if (!showComp) {
     return <button type="button" onClick={toggleShowComp} className="actionButton">☆</button>;
