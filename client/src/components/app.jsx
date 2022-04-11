@@ -96,6 +96,7 @@ class App extends React.Component {
   render() {
     const { currentProduct, productData } = this.state;
     if(productData) {
+      console.log(productData.category);
       return (
         <main>
           <Nav />
@@ -105,7 +106,7 @@ class App extends React.Component {
             changeProduct={this.changeProduct}
             currentProductData={this.state.productData}
           />
-          <Reviews id={productData.id} name={productData.name}/>
+          <Reviews id={productData.id} name={productData.name} category={productData.category}/>
         </main>
       );
     } else {

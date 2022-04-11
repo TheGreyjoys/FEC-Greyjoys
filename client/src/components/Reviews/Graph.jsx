@@ -1,52 +1,45 @@
 import React from 'react';
 
-class Graph extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  render() {
-    return (
-      <div className="rating_graph">
-        <div className="rating">
-          <p>5 stars</p>
-          <p>{this.props.five}</p>
-          <div className="bar">
-            <div className="filled" style={{ width: `${Number(this.props.five) / this.props.reviewNumber * 100}%` }}></div>
-          </div>
+function Graph (props) {
+  return (
+    <div className="rating_graph">
+      <div className="rating">
+        <p>5 stars</p>
+        <div className="bar">
+          <div className="filled" style={{ width: `${Number(props.five) / props.reviewNumber * 100}%` }}></div>
         </div>
-        <div className="rating">
-          <p>4 stars</p>
-          <p>{this.props.four}</p>
-          <div className="bar">
-            <div className="filled" style={{ width: `${Number(this.props.four) / this.props.reviewNumber * 100}%`  }}></div>
-          </div>
-        </div>
-        <div className="rating">
-          <p>3 stars</p>
-          <p>{this.props.three}</p>
-          <div className="bar">
-            <div className="filled" style={{ width: `${Number(this.props.three) / this.props.reviewNumber * 100}%` }}></div>
-          </div>
-        </div>
-        <div className="rating">
-          <p>2 stars</p>
-          <p>{this.props.two}</p>
-          <div className="bar">
-            <div className="filled" style={{ width: `${Number(this.props.two) / this.props.reviewNumber * 100}%` }}></div>
-          </div>
-        </div>
-        <div className="rating">
-          <p>1 stars</p>
-          <p>{this.props.one}</p>
-          <div className="bar">
-            <div className="filled" style={{ width: `${Number(this.props.one) / this.props.reviewNumber * 100}%` }}></div>
-          </div>
-        </div>
+        <p>{props.five}</p>
       </div>
-    );
-  }
+      <div className="rating">
+        <p>4 stars</p>
+        <div className="bar">
+          <div className="filled" style={{ width: `${Number(props.four) / props.reviewNumber * 100}%`  }}></div>
+        </div>
+        <p>{props.four}</p>
+      </div>
+      <div className="rating">
+        <p>3 stars</p>
+        <div className="bar">
+          <div className="filled" style={{ width: `${Number(props.three) / props.reviewNumber * 100}%` }}></div>
+        </div>
+        <p>{props.three}</p>
+      </div>
+      <div className="rating">
+        <p>2 stars</p>
+        <div className="bar">
+          <div className="filled" style={{ width: `${Number(props.two) / props.reviewNumber * 100}%` }}></div>
+        </div>
+        <p>{props.two}</p>
+      </div>
+      <div className="rating">
+        <p>1 stars</p>
+        <div className="bar">
+          <div className="filled" style={{ width: `${Number(props.one) / props.reviewNumber * 100}%` }}></div>
+        </div>
+        <p>{props.one}</p>
+      </div>
+    </div>
+  );
 }
 
 export default Graph;
