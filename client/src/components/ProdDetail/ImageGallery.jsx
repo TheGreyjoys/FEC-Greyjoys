@@ -74,7 +74,7 @@ class ImageGallery extends React.Component {
     const {
       allImgs, allThumbs, currIndex,
     } = this.state;
-    const { currProduct, currStyle } = this.props;
+    const { currProduct, selectedStyle } = this.props;
 
     return (
       <div className="image-window">
@@ -93,7 +93,7 @@ class ImageGallery extends React.Component {
               allThumbs={allThumbs}
               currIndex={currIndex}
               currProduct={currProduct}
-              currStyle={currStyle}
+              currStyle={selectedStyle.style_id}
               handleThumbClick={this.handleThumbClick}
             />
           )}
