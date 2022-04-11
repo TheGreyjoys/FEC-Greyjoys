@@ -18,7 +18,7 @@ class StyleSelector extends React.Component {
     this.sizeFinder = this.sizeFinder.bind(this);
     this.handleSizeChange = this.handleSizeChange.bind(this);
     this.handleQtyChange = this.handleQtyChange.bind(this);
-    this.handleCartClick = this.handleCartClick.bind(this);
+    this.handleCartSubmit = this.handleCartSubmit.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -59,9 +59,9 @@ class StyleSelector extends React.Component {
     });
   }
 
-  handleCartClick(e) {
+  handleCartSubmit(e) {
     e.preventDefault();
-    const { selSize, selQty, currentStyle: { skus } } = this.state;
+    const { selSize, selQty, currStyle: { skus } } = this.state;
     const { handleCartAdd } = this.props;
     Object.entries(skus).forEach((pair) => {
       if (pair[1].size === selSize) {
@@ -144,7 +144,7 @@ class StyleSelector extends React.Component {
           <button
             type="submit"
             className="cartAdd"
-            onClick={this.handleCartClick}
+            // onClick={this.handleCartClick}
           >
             Add To Cart
           </button>
@@ -162,7 +162,7 @@ class StyleSelector extends React.Component {
     };
 
     return (
-      <form className="styleSelector">
+      <form className="styleSelector" onSubmit={this.handleCartSubmit}>
         <div className="selector">
           <span className="styleName">
             Style &rarr;
