@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { postReview } from '../../requests';
-import { CLOUDINARY_UPLOAD_PRESET } from '../../../../config';
+//import { CLOUDINARY_UPLOAD_PRESET } from '../../../../config';
 
 class WriteReview extends React.Component {
   constructor(props) {
@@ -74,7 +74,7 @@ class WriteReview extends React.Component {
     const { uploadImg } = this.state;
     const formData = new FormData();
     formData.append('file', e.target.files[0]);
-    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    formData.append('upload_preset', 'cug53iht');
     axios.post('https://api.cloudinary.com/v1_1/cloverhong/image/upload', formData)
       .then((res) => {
         uploadImg.push(res.data.secure_url);

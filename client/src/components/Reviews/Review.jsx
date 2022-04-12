@@ -126,7 +126,7 @@ class Review extends React.Component {
           </div>
           )}
           <div>
-            {photos.length !== 0 && photos.map((photo) => { console.log(photo.url); return <img className="reviewPhoto" id={photo.id} src={photo.url} alt="review photo" onClick={this.toggleExpandImg} />})}
+            {photos.length !== 0 && photos.slice(0, 5).map((photo) => { return <img className="reviewPhoto" id={photo.id} src={photo.url} alt="review photo" onClick={this.toggleExpandImg} />})}
           </div>
           {markedHelpful === 'true'
             ? (
@@ -181,6 +181,9 @@ class Review extends React.Component {
           {response}
         </div>
         )}
+        <div>
+          {photos.length !== 0 && photos.slice(0, 5).map((photo) => {return <img className="reviewPhoto" id={photo.id} src={photo.url} alt="review photo" onClick={this.toggleExpandImg} />})}
+        </div>
         {markedHelpful === 'true'
           ? (
             <button className="smallButton" style={{ borderBottom: '0px' }} disabled>
