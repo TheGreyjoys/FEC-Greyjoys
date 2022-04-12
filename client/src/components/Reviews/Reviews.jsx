@@ -159,7 +159,7 @@ class Reviews extends React.Component {
   render() {
     const { reviews, sort, rating, meta, recommended, reviewNumber, overallRatings, product_id } = this.state;
     return (
-      <div className="reviews-container">
+      <div className="reviews-container" id="Reviews">
         { meta ?
           (
           <div className="reviews-meta">

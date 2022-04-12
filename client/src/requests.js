@@ -46,6 +46,10 @@ function getCart() {
   return axios.get('/cart');
 }
 
+function logClick(clickData) {
+  return axios.post('/interactions', clickData);
+}
+
 // NOT CURRENTLY WORKING
 function addCart(sku, qty) {
   const repeatPost = axios.post('/cart', { sku_id: sku });
@@ -55,5 +59,5 @@ function addCart(sku, qty) {
 
 export {
   // eslint-disable-next-line max-len
-  getCurrentProduct, getAllProducts, getProductStyles, getRelatedProducts, getReviews, getReviewsMeta, postReview, markHelpful, markReported, getCart, addCart, controller,
+  getCurrentProduct, getAllProducts, getProductStyles, getRelatedProducts, getReviews, getReviewsMeta, postReview, markHelpful, markReported, getCart, addCart, controller, logClick,
 };

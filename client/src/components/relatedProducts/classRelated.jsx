@@ -77,7 +77,7 @@ class RelatedProductsAndOutfit extends React.Component {
   render() {
     if (Array.isArray(this.state.relatedProducts)) {
       return (
-        <div>
+        <div id="Related Products and Outfit">
           <h3>Related Products</h3>
           <RelatedProducts
             products={this.state.relatedProducts.filter((id, i, arr) => arr.indexOf(id) === i)}
