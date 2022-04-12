@@ -50,8 +50,10 @@
   flex-basis: 70%;
   flex-grow: 0;
   flex-shrink: 0;
+}
+.render-reviews{
   overflow: scroll;
-  height: 650px;
+  height: 620px;
 }
 
 .star {
