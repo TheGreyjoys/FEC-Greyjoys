@@ -113,7 +113,7 @@ class Reviews extends React.Component {
   charGraph() {
     var graph2 = [];
     for(var key in this.state.meta.characteristics) {
-      graph2.push(<Graph2 chara={key} value={this.state.meta.characteristics[key].value}/>)
+      graph2.push(<Graph2 chara={key} key={key} value={this.state.meta.characteristics[key].value}/>)
     }
     return graph2;
   }

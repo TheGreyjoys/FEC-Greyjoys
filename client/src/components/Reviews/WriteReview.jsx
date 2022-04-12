@@ -141,7 +141,7 @@ class WriteReview extends React.Component {
     for (const key in this.props.characteristics) {
       if (Object.prototype.hasOwnProperty.call(this.props.characteristics, key)) {
         charaArr.push(
-          <div className="charContainer">
+          <div key={key} className="charContainer">
             <p className="charKey">{key}</p>
             <div className="charSelector">
               <form className="charInput">
