@@ -34,7 +34,7 @@ class Thumb extends React.Component {
         type="image"
         className={index === currIndex ? 'thumb-sel' : 'thumb'}
         src={url}
-        alt={`img${index}`}
+        alt={`thumb${index}`}
         value={index}
         onClick={handleThumbClick}
       />

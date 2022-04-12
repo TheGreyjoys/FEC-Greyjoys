@@ -10,9 +10,9 @@ class StyleSelector extends React.Component {
       currStyle: {},
       styles: [],
       styleSizes: [],
-      selSize: null,
-      availQty: null,
-      selQty: null,
+      selSize: 0,
+      availQty: 0,
+      selQty: 0,
     };
     this.handleStyleClick = this.handleStyleClick.bind(this);
     this.sizeFinder = this.sizeFinder.bind(this);
@@ -87,21 +87,13 @@ class StyleSelector extends React.Component {
     } = this.state;
 
     const renderSizes = () => {
-      // const sizes = {
-      //   XS: 'X-SMALL',
-      //   S: 'SMALL',
-      //   M: 'MEDIUM',
-      //   L: 'LARGE',
-      //   XL: 'X-LARGE',
-      //   XXL: 'XX-LARGE',
-      // };
-
       if (styleSizes.length) {
         return (
           <select
             name="selSize"
             className="sizeSelect"
             value={selSize}
+            data-testid="size-select"
             onChange={this.handleSizeChange}
           >
             <option disabled>Size</option>
@@ -130,6 +122,7 @@ class StyleSelector extends React.Component {
           name="selQty"
           className="qtySelect"
           value={selQty}
+          data-testid="qty-select"
           onChange={this.handleQtyChange}
         >
           <option disabled>Qty</option>
@@ -175,8 +168,9 @@ class StyleSelector extends React.Component {
                 className={style.style_id === currStyle.style_id ? 'selStyle' : 'style'}
                 src={style.photos[0].thumbnail_url}
                 alt={style.name}
+                key={style.name}
                 name={style.style_id}
-                data-testid="styleOption"
+                data-testid="style-option"
                 onClick={this.handleStyleClick}
               />
             ))}
