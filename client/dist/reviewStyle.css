@@ -38,9 +38,11 @@
 .reviews-meta {
   flex-basis: 30%;
 }
+
 .reviews-meta p {
   font-size: 13px;
 }
+
 .reviews-main {
   flex-basis: 70%
 }
@@ -58,7 +60,7 @@
   padding: 20px;
 }
 
-/* .rating_graph
+.rating_graph
 {
 
  display: flex;
