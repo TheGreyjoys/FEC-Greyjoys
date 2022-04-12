@@ -21,6 +21,16 @@ class ImageGallery extends React.Component {
     this.handleThumbClick = this.handleThumbClick.bind(this);
   }
 
+  componentDidMount() {
+    const { selectedStyle: { photos } } = this.props;
+    const images = this.imgPuller(photos);
+    this.setState({
+      allImgs: images[0],
+      allThumbs: images[1],
+      currIndex: 0,
+    });
+  }
+
   componentDidUpdate(prevProps) {
     const newId = this.props.selectedStyle.style_id;
     const prevId = prevProps.selectedStyle.style_id;
