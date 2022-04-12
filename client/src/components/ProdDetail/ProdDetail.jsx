@@ -16,6 +16,7 @@ class ProdDetail extends React.Component {
     this.state = {
       product: {},
       prodRating: 0,
+      ratingCount: 0,
       productStyles: [],
       selectedStyle: {},
     };
@@ -38,7 +39,8 @@ class ProdDetail extends React.Component {
         const prodRating = this.calcRating(results[2].data.ratings);
         this.setState({
           product,
-          prodRating,
+          prodRating: prodRating[0],
+          ratingCount: prodRating[1],
           productStyles,
           selectedStyle: defaultStyle,
         });
@@ -64,7 +66,8 @@ class ProdDetail extends React.Component {
           const prodRating = this.calcRating(results[2].data.ratings);
           this.setState({
             product,
-            prodRating,
+            prodRating: prodRating[0],
+            ratingCount: prodRating[1],
             productStyles,
             selectedStyle: defaultStyle,
           });
@@ -99,13 +102,14 @@ class ProdDetail extends React.Component {
       subtotal += (counter * value);
       count += counter;
     });
-    return (subtotal / count).toFixed(2);
+    return [(subtotal / count).toFixed(2), count];
   }
 
   render() {
     const {
-      product, prodRating, productStyles, selectedStyle, product: { id },
+      product, prodRating, ratingCount, productStyles, selectedStyle, product: { id },
     } = this.state;
+    const { handleReviewScroll } = this.props;
 
     const saleChecker = () => {
       const { sale_price, original_price } = selectedStyle;
@@ -123,17 +127,25 @@ class ProdDetail extends React.Component {
     return (
       <div>
         <section className="overview">
-          <ImageGallery
-            selectedStyle={selectedStyle}
-            currProduct={id}
-          />
+          {selectedStyle.photos
+            && (
+            <ImageGallery
+              selectedStyle={selectedStyle}
+              currProduct={id}
+            />
+            )}
           <div className="prodSelect">
             <div className="rating">
               <div className="prod-stars">
                 {starRating(prodRating)}
               </div>
               <span>{`(${prodRating})`}</span>
-              <span>See all ratings</span>
+              <span
+                className="reviews-link"
+                onClick={handleReviewScroll}
+              >
+                {`See all (${ratingCount}) ratings`}
+              </span>
             </div>
             <span className="prodCategory">{product.category}</span>
             <span className="productName">{product.name}</span>
@@ -156,7 +168,10 @@ class ProdDetail extends React.Component {
           <div className="productFeatures">
             {!!productStyles.length
             && product.features.map((feature) => (
-              <span className="productFeature">
+              <span
+                className="productFeature"
+                key={feature.feature}
+              >
                 <b>{feature.feature}</b>
                 {`:     ${feature.value}`}
               </span>
@@ -170,6 +185,7 @@ class ProdDetail extends React.Component {
 
 ProdDetail.propTypes = {
   id: PropTypes.number.isRequired,
+  handleReviewScroll: PropTypes.func.isRequired,
 };
 
 export default ProdDetail;

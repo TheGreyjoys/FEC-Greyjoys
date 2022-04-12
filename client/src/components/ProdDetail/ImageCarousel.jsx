@@ -12,6 +12,7 @@ function ImageCarousel(props) {
         type="button"
         className="left-arrow"
         onClick={prevImg}
+        data-testid="i-larr"
       >
         &larr;
       </button>
@@ -20,12 +21,14 @@ function ImageCarousel(props) {
           url={url}
           index={index}
           currIndex={currIndex}
+          key={url}
         />
       ))}
       <button
         type="button"
         className="right-arrow"
         onClick={nextImg}
+        data-testid="i-rarr"
       >
         &rarr;
       </button>

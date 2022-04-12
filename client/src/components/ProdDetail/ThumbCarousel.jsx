@@ -184,6 +184,7 @@ class ThumbCarousel extends React.Component {
                 url={allThumbs[index]}
                 index={index}
                 currIndex={currIndex}
+                key={allThumbs[index]}
                 handleThumbClick={handleThumbClick}
                 style={{
                   'grid-column': index + 1,

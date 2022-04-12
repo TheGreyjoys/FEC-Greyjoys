@@ -33,7 +33,7 @@ class CImage extends React.Component {
         <img
           className={index === currIndex ? 'image-slide' : 'image-slide-out'}
           src={url}
-          alt={index}
+          alt={`img${index}`}
         />
       </div>
     );
