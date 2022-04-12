@@ -58,7 +58,6 @@ class RelatedProductsAndOutfit extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.id !== this.props.id) {
-      console.log('getting related products');
       getRelatedProducts(this.props.id)
         .then((res) => {
           this.setState({

@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/no-access-state-in-setstate */
 import React from 'react';
@@ -80,6 +82,10 @@ class App extends React.Component {
     });
   }
 
+  clickTracker(e) {
+    console.log(e);
+  }
+
   renderNav() {
     const navState = !this.state.navDisplay;
     this.setState({
@@ -87,12 +93,13 @@ class App extends React.Component {
     });
   }
 
+
   render() {
     const { currentProduct, productData } = this.state;
 
     if (productData) {
       return (
-        <main>
+        <main onClick={this.clickTracker.bind(this)}>
           <Nav />
           <ProdDetail id={currentProduct} />
           <RelatedProductsAndOutfit

@@ -2,7 +2,7 @@ body {
   display: flex;
   justify-content: center;
   font-family: 'Roboto', sans-serif;
-  background-color:rgb(252, 246, 238);
+  background-color:rgb(245, 243, 239);
 }
 
 main {
@@ -23,7 +23,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: grey;
+  background-color: rgb(123, 129, 120);
 }
 
 .logo {

@@ -77,7 +77,6 @@ function Card(props) {
   }, []);
 
   function handleClick(e) {
-    console.log('you clicked: ', (e.target));
     if (!Number.isNaN(Object.values(e.target)[1].value)) {
       changeProduct(Object.values(e.target)[1].value);
     }
