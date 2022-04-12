@@ -30,7 +30,6 @@ function App() {
   };
 
   const reviewRef = useRef(null);
-  console.log(reviewRef);
   const handleReviewScroll = () => {
     reviewRef.current.scrollIntoView();
   };
