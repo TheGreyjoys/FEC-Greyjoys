@@ -89,6 +89,7 @@ class App extends React.Component {
 
   render() {
     const { currentProduct, productData } = this.state;
+
     if (productData) {
       return (
         <main>
@@ -99,7 +100,7 @@ class App extends React.Component {
             changeProduct={this.changeProduct}
             currentProductData={this.state.productData}
           />
-          <Reviews id={productData.id} name={productData.name} />
+          <Reviews id={productData.id} name={productData.name} category={productData.category}/>
         </main>
       );
     }

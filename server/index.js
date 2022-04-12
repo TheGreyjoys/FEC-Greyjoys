@@ -29,22 +29,22 @@ app.all('*', (req, res) => {
       })
       .catch((err) => res.send(err));
   } else if (method === 'PUT') {
-    axios.put(`http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp${url}`, config)
+    console.log('put request sent !!!!!!!', url);
+    axios.put(`http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp${url}`, {}, config)
       .then((response) => {
         res.send(response);
       })
-      .catch((err) => res.send(err));
+      .catch((err) => {
+        res.send(err);
+      });
   } else {
-    console.log(body);
     axios.post(`http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp${url}`, body, config)
       .then((response) => {
         console.log('response: ', response.data);
         res.send(response);
       })
       .catch((err) => {
-        console.log('err: ', err);
-
-        res.send(err)
+        res.send(err);
       });
   }
 });
