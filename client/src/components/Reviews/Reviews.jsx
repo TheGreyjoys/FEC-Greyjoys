@@ -14,7 +14,7 @@ class Reviews extends React.Component {
       /* need current product id */
       /* need current product name */
       reviews: null,
-      product_id: this.props.id || '40351',
+      product_id: this.props.id,
       page: 1,
       sort: 'relevant',
       reading: false,
@@ -207,7 +207,9 @@ class Reviews extends React.Component {
                 </select>
                 </p>
               </div>
-              {this.renderReviews()}
+              <div className="render-reviews">
+                {this.renderReviews()}
+              </div>
             </div>
           ) : <div>loading...</div>
         }
