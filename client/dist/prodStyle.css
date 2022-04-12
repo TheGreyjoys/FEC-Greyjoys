@@ -1,6 +1,7 @@
 .overview {
   height: 600px;
   width: 100%;
+  margin: 15px 0 0 0;
   display: flex;
   justify-content: space-between;
   flex-direction: row;
@@ -153,6 +154,11 @@
   align-items: center;
 }
 
+.reviews-link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .prodCategory {
   padding: 10px 0 10px 0;
 }
@@ -249,6 +255,7 @@
 
 .productDetails {
   margin-top: 40px;
+  margin-bottom: 15px;
 
   display: flex;
   flex-direction: row;
