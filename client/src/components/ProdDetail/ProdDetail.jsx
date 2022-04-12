@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import ImageGallery from './ImageGallery';
 import StyleSelector from './StyleSelector';
 import starRating from '../../starRating';
-import { getCurrentProduct, getProductStyles, addCart, getReviewsMeta } from '../../requests';
+import {
+  getCurrentProduct, getProductStyles, addCart, getReviewsMeta,
+} from '../../requests';
 
 class ProdDetail extends React.Component {
   constructor(props) {
@@ -102,7 +104,7 @@ class ProdDetail extends React.Component {
 
   render() {
     const {
-      product, prodRating, productStyles, selectedStyle, product: { id }, selectedStyle: { style_id },
+      product, prodRating, productStyles, selectedStyle, product: { id },
     } = this.state;
 
     const saleChecker = () => {
@@ -124,7 +126,6 @@ class ProdDetail extends React.Component {
           <ImageGallery
             selectedStyle={selectedStyle}
             currProduct={id}
-            currStyle={style_id}
           />
           <div className="prodSelect">
             <div className="rating">
