@@ -2,117 +2,146 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/no-access-state-in-setstate */
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Nav from './Nav';
 import RelatedProductsAndOutfit from './relatedProducts/classRelated';
 import Reviews from './Reviews/Reviews';
 import ProdDetail from './ProdDetail/ProdDetail';
 import { getCurrentProduct } from '../requests';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
+function App() {
+  const [currentProduct, setCurrentProduct] = useState(null);
+  const [productData, setProductData] = useState(null);
+  const [newProduct, setNewProduct] = useState(40346);
 
-    this.state = {
-      // dummy default product ID
-      currentProduct: 40346,
-      navDisplay: false,
-      productData: null,
-    };
-    this.renderNav = this.renderNav.bind(this);
-    this.changeProduct = this.changeProduct.bind(this);
-    // this.sampleData = {
-    //   id: 40349,
-    //   campus: 'hr-rfp',
-    //   name: 'Pumped Up Kicks',
-    //   slogan: 'Faster than a just about anything',
-    //   description: 'The Pumped Up serves up crisp court style with a modern look. These shoes show off tennis-whites shades and are constructed with a supple leather upper and a classic rubber cupsole.',
-    //   category: 'Kicks',
-    //   default_price: '89.00',
-    //   created_at: '2021-08-13T14:38:44.509Z',
-    //   updated_at: '2021-08-13T14:38:44.509Z',
-    //   features: [
-    //     {
-    //       feature: 'Sole',
-    //       value: 'Rubber',
-    //     },
-    //     {
-    //       feature: 'Material',
-    //       value: 'FullControlSkin',
-    //     },
-    //     {
-    //       feature: 'Mid-Sole',
-    //       value: 'ControlSupport Arch Bridge',
-    //     },
-    //     {
-    //       feature: 'Stitching',
-    //       value: 'Double Stitch',
-    //     },
-    //   ],
-    // };
-  }
-
-  componentDidMount() {
-    getCurrentProduct(this.state.currentProduct)
-      .then((res) => {
-        this.setState({
-          currentProduct: res.data.id,
-          productData: res.data,
-        });
-      })
-      .catch((err) => console.log(err));
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.currentProduct !== this.state.currentProduct) {
-      getCurrentProduct(this.state.currentProduct)
+  useEffect(() => {
+    if (newProduct !== currentProduct) {
+      getCurrentProduct(newProduct)
         .then((res) => {
-          this.setState({
-            currentProduct: res.data.id,
-            productData: res.data,
-          });
+          setCurrentProduct(res.data.id);
+          setProductData(res.data);
         })
         .catch((err) => console.log(err));
     }
+  }, [newProduct]);
+
+  const changeProduct = (id) => {
+    setNewProduct(id);
+  };
+
+  const reviewRef = useRef(null);
+  console.log(reviewRef);
+  const handleReviewScroll = () => {
+    reviewRef.current.scrollIntoView();
+  };
+
+  if (productData) {
+    return (
+      <main>
+        <Nav />
+        <ProdDetail
+          id={currentProduct}
+          handleReviewScroll={handleReviewScroll}
+        />
+        <hr />
+        <RelatedProductsAndOutfit
+          id={currentProduct}
+          changeProduct={changeProduct}
+          currentProductData={productData}
+        />
+        <hr ref={reviewRef} />
+        <Reviews
+          id={productData.id}
+          name={productData.name}
+          category={productData.category}
+        />
+      </main>
+    );
   }
-
-  changeProduct(id) {
-    this.setState({
-      currentProduct: id,
-    });
-  }
-
-  clickTracker(e) {
-    console.log(e);
-  }
-
-  renderNav() {
-    const navState = !this.state.navDisplay;
-    this.setState({
-      navDisplay: navState,
-    });
-  }
-
-
-  render() {
-    const { currentProduct, productData } = this.state;
-
-    if (productData) {
-      return (
-        <main onClick={this.clickTracker.bind(this)}>
-          <Nav />
-          <ProdDetail id={currentProduct} />
-          <RelatedProductsAndOutfit
-            id={currentProduct}
-            changeProduct={this.changeProduct}
-            currentProductData={this.state.productData}
-          />
-          <Reviews id={productData.id} name={productData.name} category={productData.category}/>
-        </main>
-      );
-    }
-    return <div>loading...</div>;
-  }
+  return <div>loading...</div>;
 }
+
+// class App extends React.Component {
+//   constructor(props) {
+//     super(props);
+
+//     this.state = {
+//       // dummy default product ID
+//       currentProduct: 40346,
+//       productData: null,
+//     };
+
+//     this.reviewRef = React.createRef();
+
+//     this.changeProduct = this.changeProduct.bind(this);
+//     this.handleReviewScroll = this.handleReviewScroll.bind(this);
+//   }
+
+//   componentDidMount() {
+//     getCurrentProduct(this.state.currentProduct)
+//       .then((res) => {
+//         this.setState({
+//           currentProduct: res.data.id,
+//           productData: res.data,
+//         });
+//       })
+//       .catch((err) => console.log(err));
+//     // this.reviewRef = React.createRef();
+//   }
+
+//   componentDidUpdate(prevProps, prevState) {
+//     if (prevState.currentProduct !== this.state.currentProduct) {
+//       getCurrentProduct(this.state.currentProduct)
+//         .then((res) => {
+//           this.setState({
+//             currentProduct: res.data.id,
+//             productData: res.data,
+//           });
+//         })
+//         .catch((err) => console.log(err));
+//     }
+//     // this.reviewRef = React.createRef();
+//   }
+
+//   handleReviewScroll() {
+//     this.reviewRef.current.scrollIntoView();
+//   }
+
+//   changeProduct(id) {
+//     this.setState({
+//       currentProduct: id,
+//     });
+//   }
+
+//   render() {
+//     const { currentProduct, productData } = this.state;
+//     console.log(this.reviewRef)
+
+//     if (productData) {
+//       return (
+//         <main>
+//           <Nav />
+//           <button onClick={this.handleReviewScroll}>Scroll</button>
+//           <ProdDetail
+//             id={currentProduct}
+//             handleReviewScroll={this.handleReviewScroll}
+//           />
+//           <RelatedProductsAndOutfit
+//             id={currentProduct}
+//             changeProduct={this.changeProduct}
+//             currentProductData={this.state.productData}
+//           />
+//           <Reviews
+//             id={productData.id}
+//             name={productData.name}
+//             category={productData.category}
+//             ref={this.reviewRef}
+//           />
+//         </main>
+//       );
+//     }
+//     return <div>loading...</div>;
+//   }
+// }
 
 export default App;

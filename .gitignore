@@ -17,3 +17,5 @@ client/dist/bundle.js.map
 coverage/
 
 .DS_store
+
+config.js

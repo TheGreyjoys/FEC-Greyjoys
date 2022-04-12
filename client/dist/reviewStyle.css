@@ -33,10 +33,13 @@
   flex-direction: row;
   padding: 20px;
   color: rgb(85, 85, 85);
+  justify-content: space-between;
 }
 
 .reviews-meta {
   flex-basis: 30%;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 
 .reviews-meta p {
@@ -44,7 +47,11 @@
 }
 
 .reviews-main {
-  flex-basis: 70%
+  flex-basis: 70%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  overflow: scroll;
+  height: 650px;
 }
 
 .star {
@@ -58,7 +65,9 @@
 .review {
   box-sizing: border-box;
   padding: 20px;
+  overflow-wrap: break-word;
 }
+
 
 .rating_graph
 {
@@ -73,6 +82,7 @@
   flex-direction: row;
   align-items: center;
   padding: 0px;
+  justify-content:left;
 }
 
 .rating p:nth-child(2)
@@ -150,4 +160,53 @@
   background-color: white;
   border: 1px solid rgb(85, 85, 85);
   color: rgb(85, 85, 85)
+}
+
+.bigButton:hover {
+  margin-top: 20px;
+  width: 130px;
+  height: 40px;
+  background-color: lightgrey;
+  border: 1px solid rgb(85, 85, 85);
+  color: rgb(85, 85, 85)
+}
+
+.smallButton {
+  border: 0px;
+  border-bottom: 1px solid grey;
+  background-color: white;
+  margin: 5px;
+}
+
+.smallButton:hover {
+  color: lightgrey;
+}
+
+.mediumButton {
+  padding: 5px;
+  background-color: white;
+  border: 1px solid rgb(85, 85, 85);
+  border-radius: 4px;
+  color:rgb(85, 85, 85);
+}
+
+.mediumButton:hover {
+  background-color: lightgrey;
+  border: 1px solid rgb(85, 85, 85);
+  border-radius: 4px;
+  color: rgb(85, 85, 85);
+}
+
+.reviewResponse {
+  background-color: lightgrey;
+  color: black;
+  width: 70%;
+}
+
+.reviewPhoto {
+  width: 20%;
+}
+
+.reviewThumbnails {
+  width: 10%;
 }

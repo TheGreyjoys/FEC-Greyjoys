@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import { postReview } from '../../requests';
+import { CLOUDINARY_UPLOAD_PRESET } from '../../../../config';
 
 class WriteReview extends React.Component {
   constructor(props) {
@@ -14,6 +16,7 @@ class WriteReview extends React.Component {
       nickname: '',
       email: '',
       cannotPost: false,
+      uploadImg: [],
     };
 
     this.clickStar = this.clickStar.bind(this);
@@ -22,6 +25,7 @@ class WriteReview extends React.Component {
     this.postCurrReview = this.postCurrReview.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleChara = this.handleChara.bind(this);
+    this.uploadImg = this.uploadImg.bind(this);
   }
 
   clickStar(rating) {
@@ -66,19 +70,35 @@ class WriteReview extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  uploadImg(e) {
+    const { uploadImg } = this.state;
+    const formData = new FormData();
+    formData.append('file', e.target.files[0]);
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    axios.post('https://api.cloudinary.com/v1_1/cloverhong/image/upload', formData)
+      .then((res) => {
+        uploadImg.push(res.data.secure_url);
+      })
+      .then(() => {
+        this.setState({ uploadImg });
+      })
+      .catch(console.log);
+  }
+
   postCurrReview() {
     const {
-      rating, recommend, summary, body, nickname, email, characteristics
+      rating, recommend, summary, body, nickname, email, characteristics, uploadImg
     } = this.state;
     postReview({
       product_id: Number(this.props.product_id),
       rating: Number(rating),
       recommend: (recommend === 'true'),
       characteristics: characteristics,
-      summary,
-      body,
+      summary: summary,
+      body: body,
       name: nickname,
-      email,
+      email: email,
+      photos: uploadImg,
     })
       .then((res) => {
         console.log(res.data);
@@ -141,7 +161,7 @@ class WriteReview extends React.Component {
     for (const key in this.props.characteristics) {
       if (Object.prototype.hasOwnProperty.call(this.props.characteristics, key)) {
         charaArr.push(
-          <div className="charContainer">
+          <div key={key} className="charContainer">
             <p className="charKey">{key}</p>
             <div className="charSelector">
               <form className="charInput">
@@ -177,7 +197,7 @@ class WriteReview extends React.Component {
     const { submit } = this.props;
     return (
       <div>
-        <button style={{ float: 'right' }} onClick={this.props.submit}>✕</button>
+        <button className="mediumButton" style={{ float: 'right' }} onClick={this.props.submit}>✕</button>
         <h1>Write Your Review</h1>
         <h3>
           About
@@ -208,7 +228,7 @@ class WriteReview extends React.Component {
         </div>
         <div>
           <p>Review summary (required)</p>
-          <input style={{ width: '80%' }} type="text" value={this.state.summary} placeholder="Example: Best purchase ever!" onChange={this.handleChange} maxLength="60" name="summary" />
+          <input style={{ width: '100%' }} type="text" value={this.state.summary} placeholder="Example: Best purchase ever!" onChange={this.handleChange} maxLength="60" name="summary" />
           <p>
             {this.state.summary.length}
             /60
@@ -222,6 +242,12 @@ class WriteReview extends React.Component {
             /1000
           </p>
         </div>
+        <div>
+          <p>Upload your photos</p>
+          <input name="uploadImg" type="file" onChange={this.uploadImg}></input>
+        </div>
+        {this.state.uploadImg.map((img) =>
+          <img className="reviewThumbnails" key={img} src={img}/>)}
         <div>
           <p>What is your nickname? (required)</p>
           <input style={{ width: '40%' }} type="text" value={this.state.nickname} placeholder="Example: jackson11!" onChange={this.handleChange} name="nickname" />
