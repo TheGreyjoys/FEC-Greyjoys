@@ -7,20 +7,20 @@ function Stars(props) {
   }
   if (props.filled === '2') {
     const halfStar = (
-      <div  className="half star">★</div>
+      <div className="halfStar star"
+        style={{background: `linear-gradient(to right,
+          rgb(85, 85, 85) 0% ${props.color * 100}%,
+          white ${props.color * 100}% 100%)`,
+        WebkitTextFillColor: 'transparent',
+        WebkitTextStrokeWidth: '1px',
+        WebkitTextStrokeColor: 'rgb(85, 85, 85)',
+        fontSize: '13px',
+        top: '-1px',
+        position: 'relative',
+        'WebkitBackgroundClip': 'text'}}
+      >★</div>
     );
-    $('.half').css({
-      background: `linear-gradient(to right,
-        black 0% ${props.color * 100}%,
-        white ${props.color * 100}%)`,
-      WebkitTextFillColor: 'transparent',
-      WebkitTextStrokeWidth: '1px',
-      WebkitTextStrokeColor: 'black',
-      fontSize: '13px',
-      top: '-1px',
-      position: 'relative',
-    });
-    $('.half').css('webkit-background-clip', 'text');
+    $('.halfStar').css('webkit-background-clip', 'text');
     return halfStar;
   }
   return <div className="star">☆</div>;

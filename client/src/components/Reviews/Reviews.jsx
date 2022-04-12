@@ -62,7 +62,6 @@ class Reviews extends React.Component {
 
     getReviewsMeta(product_id)
       .then((res) => {
-        console.log(res.data);
         let sum = 0;
         let people = 0;
         for (var key in res.data.ratings) {
@@ -105,7 +104,6 @@ class Reviews extends React.Component {
   }
 
   submitReview(input) {
-    console.log(input);
     this.setState({reviewed: true});
     document.getElementById("writeReview").close();
   }
@@ -124,8 +122,9 @@ class Reviews extends React.Component {
       if (page > 1) {
         return (
           <div>
-            No more reviews!
-            <button type="submit" onClick={() => { this.goToPage(1); }}>back to first page</button>
+            <p>No more reviews!</p>
+            <button className="mediumButton" type="submit" onClick={() => { this.goToPage(page - 1); }}>back</button>
+            <button className="mediumButton" type="submit" onClick={() => { this.goToPage(1); }}>back to first page</button>
           </div>
         );
       }
@@ -135,8 +134,8 @@ class Reviews extends React.Component {
       return (
         <div>
           <Review key={reviews[0].review_id} review={reviews[0]} />
-          <Review key={reviews[1].review_id} review={reviews[1]} />
-          <button type="submit" onClick={this.toggleExpandReviews} className="bigButton">More Reviews</button>
+          {reviews[1] && <Review key={reviews[1].review_id} review={reviews[1]} />}
+          <button className="bigButton" type="submit" onClick={this.toggleExpandReviews} >More Reviews</button>
         </div>
 
       );
@@ -144,8 +143,9 @@ class Reviews extends React.Component {
     return (
       <div>
         {reviews.map((review) => <Review key={review.review_id} review={review} />)}
-        {page > 1 && <button type="submit" onClick={() => { this.goToPage(page - 1); }}>Previous Page</button> }
-        <button type="submit" onClick={() => { this.goToPage(page + 1); }}>Next Page</button>
+        {page > 1 && <button className="mediumButton" type="submit" onClick={() => { this.goToPage(page - 1); }}>Previous Page</button> }
+        <button className="mediumButton" type="submit" onClick={() => { this.goToPage(page + 1); }}>Next Page</button>
+        {page > 1 && <button className="mediumButton" type="submit" onClick={() => { this.goToPage(1); }}>back to first page</button>}
         <p>page {page}</p>
         <button type="submit" onClick={this.toggleExpandReviews} className="bigButton">Collapse</button>
       </div>
