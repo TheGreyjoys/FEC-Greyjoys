@@ -14,6 +14,7 @@ class ProdDetail extends React.Component {
     super(props);
 
     this.state = {
+      loaded: false,
       product: {},
       prodRating: 0,
       ratingCount: 0,
@@ -38,6 +39,7 @@ class ProdDetail extends React.Component {
         });
         const prodRating = this.calcRating(results[2].data.ratings);
         this.setState({
+          loaded: true,
           product,
           prodRating: prodRating[0],
           ratingCount: prodRating[1],
@@ -107,7 +109,7 @@ class ProdDetail extends React.Component {
 
   render() {
     const {
-      product, prodRating, ratingCount, productStyles, selectedStyle, product: { id },
+      loaded, product, prodRating, ratingCount, productStyles, selectedStyle, product: { id },
     } = this.state;
     const { handleReviewScroll } = this.props;
 
@@ -116,7 +118,7 @@ class ProdDetail extends React.Component {
       if (selectedStyle.sale_price) {
         return (
           <span style={{ color: 'red' }}>
-            <s style={{ color: 'black' }}>{original_price}</s>
+            <s style={{ color: 'black' }}>{`$${original_price}`}</s>
             {`  $${sale_price}`}
           </span>
         );
@@ -152,12 +154,16 @@ class ProdDetail extends React.Component {
             <div className="price">
               {saleChecker()}
             </div>
-            <StyleSelector
-              selectedStyle={selectedStyle}
-              productStyles={productStyles}
-              handleStyleChange={this.handleStyleChange}
-              handleCartAdd={this.handleCartAdd}
-            />
+            {loaded
+              && (
+              <StyleSelector
+                currProduct={id}
+                selectedStyle={selectedStyle}
+                productStyles={productStyles}
+                handleStyleChange={this.handleStyleChange}
+                handleCartAdd={this.handleCartAdd}
+              />
+              )}
           </div>
         </section>
         <section className="productDetails">

@@ -10,9 +10,9 @@ class StyleSelector extends React.Component {
       currStyle: {},
       styles: [],
       styleSizes: [],
-      selSize: 0,
+      selSize: null,
       availQty: 0,
-      selQty: 0,
+      selQty: null,
     };
     this.handleStyleClick = this.handleStyleClick.bind(this);
     this.sizeFinder = this.sizeFinder.bind(this);
@@ -21,7 +21,25 @@ class StyleSelector extends React.Component {
     this.handleCartSubmit = this.handleCartSubmit.bind(this);
   }
 
+  componentDidMount() {
+    const { selectedStyle, productStyles, selectedStyle: { skus } } = this.props;
+
+    console.log('styles mounting')
+
+    let sizes = [];
+    if (Object.keys(skus).length) {
+      sizes = this.sizeFinder(skus);
+    }
+    this.setState({
+      currStyle: selectedStyle,
+      styles: productStyles,
+      styleSizes: sizes,
+    });
+  }
+
   componentDidUpdate(prevProps) {
+    console.log('styles updating')
+
     const { selectedStyle, productStyles, selectedStyle: { skus } } = this.props;
     const newId = selectedStyle.style_id;
     const oldId = prevProps.selectedStyle.style_id;
@@ -34,6 +52,9 @@ class StyleSelector extends React.Component {
         currStyle: selectedStyle,
         styles: productStyles,
         styleSizes: sizes,
+        selSize: null,
+        availQty: 0,
+        selQty: null,
       });
     }
   }
@@ -46,10 +67,12 @@ class StyleSelector extends React.Component {
   }
 
   handleSizeChange(e) {
-    const options = e.target.value.split(',');
+    const { styleSizes } = this.state;
+    const sizeIndex = e.target.value;
     this.setState({
-      selSize: options[0],
-      availQty: Number(options[1]) < 15 ? Number(options[1]) : 15,
+      selSize: styleSizes[sizeIndex][0],
+      availQty: styleSizes[sizeIndex][1],
+      selQty: null,
     });
   }
 
@@ -86,24 +109,26 @@ class StyleSelector extends React.Component {
       currStyle, styles, styleSizes, selSize, availQty, selQty,
     } = this.state;
 
+    console.log('rendering styles')
+
     const renderSizes = () => {
-      if (styleSizes.length) {
+      if (!styleSizes.length) {
         return (
-          <select
-            name="selSize"
-            className="sizeSelect"
-            value={selSize}
-            data-testid="size-select"
-            onChange={this.handleSizeChange}
-          >
-            <option disabled>Size</option>
-            {styleSizes.map((option) => <option value={option}>{option[0]}</option>)}
+          <select className="sizeSelect" disabled>
+            <option>OUT OF STOCK</option>
           </select>
         );
       }
       return (
-        <select className="sizeSelect" disabled>
-          <option>OUT OF STOCK</option>
+        <select
+          name="selSize"
+          className="sizeSelect"
+          value={selSize}
+          data-testid="size-select"
+          onChange={this.handleSizeChange}
+        >
+          <option value="default">Size</option>
+          {styleSizes.map((option, index) => <option value={index}>{option[0]}</option>)}
         </select>
       );
     };
@@ -125,7 +150,7 @@ class StyleSelector extends React.Component {
           data-testid="qty-select"
           onChange={this.handleQtyChange}
         >
-          <option disabled>Qty</option>
+          <option value="default" disabled hidden>Qty</option>
           {qtyArray.map((val, index) => <option value={index + 1}>{index + 1}</option>)}
         </select>
       );

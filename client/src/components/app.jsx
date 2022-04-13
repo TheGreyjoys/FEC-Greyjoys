@@ -4,7 +4,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import Nav from './Nav';
 import RelatedProductsAndOutfit from './relatedProducts/classRelated';
 import Reviews from './Reviews/Reviews';
-import ProdDetail from './ProdDetail/ProdDetail';
+// import ProdDetail from './ProdDetail/ProdDetail';
+import ProdDetail from './ProdDetail/ProdDetail2';
 import { getCurrentProduct } from '../requests';
 
 function App() {
@@ -28,7 +29,6 @@ function App() {
   };
 
   const reviewRef = useRef(null);
-  console.log(reviewRef);
   const handleReviewScroll = () => {
     reviewRef.current.scrollIntoView();
   };
