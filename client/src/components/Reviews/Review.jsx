@@ -105,20 +105,20 @@ class Review extends React.Component {
         <ul className="review">
           <div>
             {this.stars(rating)}
-            <div style={{ float: 'right', display: 'inline-block' }}>
+            <div className="reviewNameAndDate">
               {reviewer_name}
               ,
               {' '}
               {this.getDate()}
             </div>
           </div>
-          <h4>{summary.slice(0, 61)}</h4>
+          <p className="reviewSummary">{summary.slice(0, 61)}</p>
           <p>
             {summary.slice(61)}
             {body.slice(0, 251)}
           </p>
           {body.length > 250 && <button className="smallButton" type="submit" onClick={this.expand}>show more</button>}
-          {recommend ? <div>✓ I recommend this product.</div> : <div>✖ I don't recommend this product.</div>}
+          {recommend ? <div className="reviewRecommend">✓ I recommend this product.</div> : <div className="reviewRecommend">✖ I don't recommend this product.</div>}
           {response && (
           <div className="reviewResponse">
             Response:
@@ -164,17 +164,17 @@ class Review extends React.Component {
       <ul className="review">
         <div>
           {this.stars(rating)}
-          <div style={{ float: 'right', display: 'inline-block' }}>
+          <div className="reviewNameAndDate">
             {reviewer_name}
             ,
             {' '}
             {this.getDate()}
           </div>
         </div>
-        <p><b>{summary}</b></p>
+        <p className="reviewSummary">{summary}</p>
         <p>{body}</p>
         <button className="smallButton" type="submit" onClick={this.expand}>show less</button>
-        {recommend ? <div>v I recommend this product.</div> : <div>x No I don't recommend this product.</div>}
+        {recommend ? <div className="reviewRecommend">✓ I recommend this product.</div> : <div className="reviewRecommend">✖ I don't recommend this product.</div>}
         {response && (
         <div>
           Response:
