@@ -77,6 +77,11 @@
   overflow-wrap: break-word;
 }
 
+.reviewSummary {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
 
 .rating_graph
 {
@@ -218,4 +223,9 @@
 
 .reviewThumbnails {
   width: 10%;
+}
+
+.reviewNameAndDate {
+  float: right;
+  font-size: small;
 }
