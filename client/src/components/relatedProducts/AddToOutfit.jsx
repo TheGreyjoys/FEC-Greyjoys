@@ -18,16 +18,15 @@ function AddToOutfit(props) {
       alert('Item is already in your outfit');
     } else {
       sessionStorage.setItem(`${currentProduct}`, `${currentProduct}`);
-      console.log('item added to sessionStorage ', sessionStorage);
       updateOutfit();
     }
   }
 
   return (
-    <button className="card" type="button" onClick={handleClick}>
-      <div>&#43;</div>
+    <button className="card" type="button" style={{ height: '302.5px', width: '202px', fontFamily: 'Fira sans' }} onClick={handleClick}>
+      <div style={{ fontSize: '30px' }}>&#43;</div>
       <br />
-      <span>Add This Item to Your Outfit</span>
+      <p>Add This Item to Your Outfit</p>
     </button>
   );
 }

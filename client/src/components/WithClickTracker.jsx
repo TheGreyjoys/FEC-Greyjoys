@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import React from 'react';
 import { logClick } from '../requests';
 
@@ -22,9 +23,6 @@ function WithClickTracker(Component) {
       clickData.widget = this.moduleParser(e.nativeEvent.path);
       if (clickData.element) {
         logClick(clickData)
-          .then((res) => {
-            console.log(res);
-          })
           .catch((err) => console.log(err));
       }
     }

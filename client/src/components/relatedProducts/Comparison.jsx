@@ -44,7 +44,7 @@ function Comparison(props) {
 
   function populateRows(featuresList) {
     return featuresList.map((feature) => (
-      <tr>
+      <tr key={feature}>
         {populateTD(feature, compFeatures)}
         <td>{feature}</td>
         {populateTD(feature, currFeatures)}

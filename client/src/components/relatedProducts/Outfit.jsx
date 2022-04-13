@@ -29,7 +29,7 @@ function Outfit(props) {
         && <button type="button" className="leftArrow" onClick={scrollLeft}>&larr;</button>
         }
         <div className="carousel-content-wrapper">
-          <div className="carousel-content" style={{ transform: `translateX(-${currentIndex * 25}%)` }}>
+          <div className="carousel-content" style={{ transform: `translateX(-${(currentIndex * 100) / length}%)` }}>
             <AddToOutfit currentProduct={currentProduct} updateOutfit={updateOutfit} />
             {products.map((product) => (
               <Card
@@ -44,7 +44,7 @@ function Outfit(props) {
           </div>
         </div>
         {
-        currentIndex < (length - 1)
+        currentIndex <= (length - 3)
         && <button type="button" className="rightArrow" onClick={scrollRight}>&rarr;</button>
         }
       </div>
