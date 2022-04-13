@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import React from 'react';
+import $ from 'jquery';
 import Review from './Review';
 import WriteReview from './WriteReview';
 import Graph from './Graph';
@@ -98,7 +99,13 @@ class Reviews extends React.Component {
 
   toggleExpandReviews() {
     const { reading } = this.state;
-    this.setState({ reading: !reading });
+    this.setState({ reading: !reading }, () => {
+      if (!this.state.reading) {
+        $('.render-reviews').css({ height: 'auto', position: 'relative' });
+      } else {
+        $('.render-reviews').css({ height: '80vh', position: 'relative' });
+      }
+    });
   }
 
   goToPage(p) {

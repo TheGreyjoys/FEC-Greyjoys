@@ -47,7 +47,7 @@ function Graph2(props) {
   };
   return (
     <div className="charChartContainer">
-      {props.chara}
+      <div className="charChartKeys">{props.chara}</div>
       <div className="charBarContainer">
           <div className="charBarBars">
             <div className="charBar"></div>
