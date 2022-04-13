@@ -54,7 +54,7 @@ function Graph2(props) {
             <div className="charBar"></div>
             <div className="charBar"></div>
           </div>
-          <div className="charBarPointer" style={{'position': 'relative', 'left': `${(Number(props.value) - 1) / 4 * 78}%`, 'top': '-15px'}}>▼</div>
+          <div className="charBarPointer" style={{'position': 'relative', 'left': `${(Number(props.value) - 1) / 4 * 78}%`, 'top': '-12px'}}>▼</div>
           <div className="charBarkeys">
             <div>{meaning[props.chara][1]}</div>
             <div>{meaning[props.chara][5]}</div>

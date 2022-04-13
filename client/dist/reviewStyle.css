@@ -151,23 +151,25 @@
   flex-shrink: 0;
   height: 8px;
   background-color: lightgrey;
-  margin-bottom: 5px;
   margin-left: 3px;
 }
+
 .charBarKeys {
   width: 82%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: small;
+  margin-top: 0px;
 }
 
 .charBarPointer {
   font-size: 14px;
   color: rgb(85, 85, 85);
+  margin-bottom: -12px;
 }
 
-.bigButton {
+.bigReviewButton {
   margin-top: 20px;
   width: 130px;
   height: 40px;
@@ -176,7 +178,7 @@
   color: rgb(85, 85, 85)
 }
 
-.bigButton:hover {
+.bigReviewButton:hover {
   margin-top: 20px;
   width: 130px;
   height: 40px;
@@ -185,18 +187,32 @@
   color: rgb(85, 85, 85)
 }
 
-.smallButton {
+.bigReviewButton:disabled {
+  border: 1px solid lightgrey;
+  color: lightgrey;
+}
+
+.bigReviewButton:disabled:hover {
+  background-color: white;
+}
+
+.smallReviewButton {
   border: 0px;
   border-bottom: 1px solid grey;
   background-color: white;
   margin: 5px;
+  color: rgb(85, 85, 85)
 }
 
-.smallButton:hover {
+.smallReviewButton:disabled {
   color: lightgrey;
 }
 
-.mediumButton {
+.smallReviewButton:hover {
+  color: lightgrey;
+}
+
+.mediumReviewButton {
   padding: 5px;
   background-color: white;
   border: 1px solid rgb(85, 85, 85);
@@ -204,7 +220,7 @@
   color:rgb(85, 85, 85);
 }
 
-.mediumButton:hover {
+.mediumReviewButton:hover {
   background-color: lightgrey;
   border: 1px solid rgb(85, 85, 85);
   border-radius: 4px;
@@ -227,5 +243,14 @@
 
 .reviewNameAndDate {
   float: right;
+  font-size: small;
+}
+
+.writeReviewForm {
+  color:rgb(85, 85, 85);
+}
+
+.reviewCannotPostMessage {
+  color: red;
   font-size: small;
 }

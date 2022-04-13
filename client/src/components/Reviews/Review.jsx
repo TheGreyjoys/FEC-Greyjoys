@@ -117,7 +117,7 @@ class Review extends React.Component {
             {summary.slice(61)}
             {body.slice(0, 251)}
           </p>
-          {body.length > 250 && <button className="smallButton" type="submit" onClick={this.expand}>show more</button>}
+          {body.length > 250 && <button className="smallReviewButton" type="submit" onClick={this.expand}>show more</button>}
           {recommend ? <div className="reviewRecommend">✓ I recommend this product.</div> : <div className="reviewRecommend">✖ I don't recommend this product.</div>}
           {response && (
           <div className="reviewResponse">
@@ -130,7 +130,7 @@ class Review extends React.Component {
           </div>
           {markedHelpful === 'true'
             ? (
-              <button className="smallButton" style={{ borderBottom: '0px' }} disabled>
+              <button className="smallReviewButton" style={{ borderBottom: '0px' }} disabled>
                 Helpful(
                 {helpful}
                 )
@@ -138,7 +138,7 @@ class Review extends React.Component {
             )
             : (
               <button
-                className="smallButton"
+                className="smallReviewButton"
                 type="submit"
                 onClick={() => { this.helpful(review_id); }}
               >
@@ -149,7 +149,7 @@ class Review extends React.Component {
               </button>
             ) }
           <button
-            className="smallButton"
+            className="smallReviewButton"
             type="submit"
             onClick={() => { this.report(review_id); }}
           >
@@ -173,7 +173,7 @@ class Review extends React.Component {
         </div>
         <p className="reviewSummary">{summary}</p>
         <p>{body}</p>
-        <button className="smallButton" type="submit" onClick={this.expand}>show less</button>
+        <button className="smallReviewButton" type="submit" onClick={this.expand}>show less</button>
         {recommend ? <div className="reviewRecommend">✓ I recommend this product.</div> : <div className="reviewRecommend">✖ I don't recommend this product.</div>}
         {response && (
         <div>
@@ -186,7 +186,7 @@ class Review extends React.Component {
         </div>
         {markedHelpful === 'true'
           ? (
-            <button className="smallButton" style={{ borderBottom: '0px' }} disabled>
+            <button className="smallReviewButton" style={{ borderBottom: '0px' }} disabled>
               Helpful(
               {helpful}
               )
@@ -194,7 +194,7 @@ class Review extends React.Component {
           )
           : (
             <button
-              className="smallButton"
+              className="smallReviewButton"
               type="submit"
               onClick={() => { this.helpful(review_id); }}
             >
@@ -205,7 +205,7 @@ class Review extends React.Component {
             </button>
           ) }
         <button
-          className="smallButton"
+          className="smallReviewButton"
           type="submit"
           onClick={() => { this.report(review_id); }}
         >
