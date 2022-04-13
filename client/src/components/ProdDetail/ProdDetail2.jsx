@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 import React from 'react';
-// import { productTest, productStylesTest } from './testProduct';
 import PropTypes from 'prop-types';
 import ImageGallery from './ImageGallery';
 import StyleSelector from './StyleSelector2';
@@ -65,6 +64,16 @@ class ProdDetail extends React.Component {
     }
   }
 
+  handleStyleChange(styleId) {
+    this.setState({ selectedStyle: styleId });
+  }
+
+  handleCartAdd(sku, qty) {
+    addCart(sku, qty)
+      .then(() => console.log('YAY CART ADDED'))
+      .catch((err) => console.log(err));
+  }
+
   styleRepacker(style) {
     const {
       name, original_price, sale_price, photos, skus, style_id,
@@ -90,25 +99,6 @@ class ProdDetail extends React.Component {
       }
     });
     return [defaultStyle, styleObj];
-  }
-
-  handleStyleChange(styleId) {
-    const { selectedStyle, productStyles } = this.state;
-    this.setState({ selectedStyle: styleId });
-    // if (styleId !== selectedStyle.style_id) {
-    //   productStyles.forEach((style) => {
-    //     if (styleId === style.style_id) {
-    //       this.setState({ selectedStyle: style });
-    //     }
-    //   });
-    // }
-  }
-
-  handleCartAdd(sku, qty) {
-    // eslint-disable-next-line no-alert
-    addCart(sku, qty)
-      .then(() => console.log('YAY CART ADDED'))
-      .catch((err) => console.log(err));
   }
 
   calcRating(ratings) {
@@ -147,15 +137,12 @@ class ProdDetail extends React.Component {
       return (
         <div>
           <section className="overview">
-            {loaded
-              && (
-              <ImageGallery
-                selectedStyle={productStyles[selectedStyle]}
-                currProduct={id}
-              />
-              )}
+            <ImageGallery
+              selectedStyle={productStyles[selectedStyle]}
+              currProduct={id}
+            />
             <div className="prodSelect">
-              <div className="rating">
+              <div className="prod-rating">
                 <div className="prod-stars">
                   {starRating(prodRating)}
                 </div>
@@ -172,16 +159,13 @@ class ProdDetail extends React.Component {
               <div className="price">
                 {saleChecker()}
               </div>
-              {loaded
-                && (
-                <StyleSelector
-                  currProduct={id}
-                  selectedStyle={selectedStyle}
-                  productStyles={productStyles}
-                  handleStyleChange={this.handleStyleChange}
-                  handleCartAdd={this.handleCartAdd}
-                />
-                )}
+              <StyleSelector
+                currProduct={id}
+                selectedStyle={selectedStyle}
+                productStyles={productStyles}
+                handleStyleChange={this.handleStyleChange}
+                handleCartAdd={this.handleCartAdd}
+              />
             </div>
           </section>
           <section className="productDetails">
@@ -190,8 +174,7 @@ class ProdDetail extends React.Component {
             </span>
             <div className="vl" />
             <div className="productFeatures">
-              {loaded
-              && product.features.map((feature) => (
+              {product.features.map((feature) => (
                 <span
                   className="productFeature"
                   key={feature.feature}
