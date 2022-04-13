@@ -125,7 +125,7 @@ class ProdDetail extends React.Component {
     };
 
     return (
-      <div>
+      <div id="Product Detail">
         <section className="overview">
           {selectedStyle.photos
             && (
