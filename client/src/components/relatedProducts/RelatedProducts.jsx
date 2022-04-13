@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Card from './Card';
 
 function RelatedProducts(props) {
   const { products, changeProduct, currentProductData } = props;
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [length] = useState(products.length);
+  const [length, setLength] = useState(products.length);
+
+  useEffect(() => {
+    setLength(products.length);
+    setCurrentIndex(0);
+  }, [products]);
 
   const scrollRight = () => {
     if (currentIndex < (length - 1)) {
@@ -27,7 +32,7 @@ function RelatedProducts(props) {
         && <button type="button" className="leftArrow" onClick={scrollLeft}>&larr;</button>
         }
         <div className="carousel-content-wrapper">
-          <div className="carousel-content" style={{ transform: `translateX(-${currentIndex * 25}%)` }}>
+          <div className="carousel-content" style={{ transform: `translateX(-${(currentIndex * 100) / length}%)` }}>
             {products.map((product) => (
               <Card
                 key={product}
@@ -40,7 +45,7 @@ function RelatedProducts(props) {
           </div>
         </div>
         {
-        currentIndex < (length - 1)
+        currentIndex < (length - 4)
         && <button type="button" className="rightArrow" onClick={scrollRight}>&rarr;</button>
         }
       </div>

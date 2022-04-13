@@ -77,7 +77,6 @@ function Card(props) {
   }, []);
 
   function handleClick(e) {
-    console.log('you clicked: ', (e.target));
     if (!Number.isNaN(Object.values(e.target)[1].value)) {
       changeProduct(Object.values(e.target)[1].value);
     }
@@ -104,11 +103,18 @@ function Card(props) {
       return (
         <span style={{ color: 'red' }}>
           <s style={{ color: 'black' }}>{original}</s>
-          {`  $${sale}`}
+          {`$${sale}`}
         </span>
       );
     }
     return <span>{`$${original}`}</span>;
+  }
+
+  function photoChecker() {
+    if (photos && photos[0].thumbnail_url) {
+      return photos[0].thumbnail_url;
+    }
+    return 'https://source.unsplash.com/mher7uNJZwU';
   }
 
   if (loaded) {
@@ -117,10 +123,10 @@ function Card(props) {
       <div className="card">
         <li>
           <button type="button" className="imgLink" value={id} name={name} onClick={handleClick}>
-            <img src={photos[0].thumbnail_url || 'https://source.unsplash.com/mher7uNJZwU'} alt="product thumbnail" value={id} className="cardImg" />
+            <img src={photoChecker()} alt="product thumbnail" value={id} className="cardImg" />
           </button>
           <h5 className="productDetail">{category}</h5>
-          <h4 className="productDetail">{name}</h4>
+          <h4 className="productDetail"><b>{name}</b></h4>
           <h5 className="productDetail">{saleChecker(originalPrice, salePrice)}</h5>
           <div className="productDetail">{ratings && starRating((parseRating(ratings)))}</div>
           <div id={id} />

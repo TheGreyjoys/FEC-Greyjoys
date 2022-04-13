@@ -52,9 +52,11 @@
   flex-shrink: 0;
 }
 .render-reviews{
-  overflow: scroll;
-  height: 620px;
+  overflow: auto;
+  width: 100%;
+  height: 590px;
 }
+
 
 .star {
   display: inline-block;
@@ -64,10 +66,20 @@
   font-size: xx-large;
 }
 
+.review p {
+  word-break: break-word;
+}
 .review {
   box-sizing: border-box;
   padding: 20px;
+  width: 100%;
+  position: relative;
   overflow-wrap: break-word;
+}
+
+.reviewSummary {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
 }
 
 
@@ -211,4 +223,9 @@
 
 .reviewThumbnails {
   width: 10%;
+}
+
+.reviewNameAndDate {
+  float: right;
+  font-size: small;
 }

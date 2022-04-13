@@ -6,8 +6,8 @@ function starRating(rating) {
   for (var i = 0; i < Math.floor(rating); i ++) {
     ratingStars.push(<Stars key={i + 10} filled="1" />);
   }
-  if(rating > Math.floor(rating)) {
-    console.log('here');
+  if (rating > Math.floor(rating)) {
+    // console.log('here');
     ratingStars.push(<Stars key={20} filled="2" color={rating - Math.floor(rating)} />);
   }
   for (var i = Math.ceil(rating); i < 5; i ++) {

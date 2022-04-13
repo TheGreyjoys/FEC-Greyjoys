@@ -2,7 +2,7 @@ body {
   display: flex;
   justify-content: center;
 
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Fira sans', sans-serif;
   color: rgb(85, 85, 85);
 }
 
@@ -33,7 +33,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: grey;
+  background-color: rgb(123, 129, 120);
 }
 
 .logo {

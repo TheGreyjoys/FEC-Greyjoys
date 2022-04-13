@@ -58,7 +58,6 @@ class RelatedProductsAndOutfit extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.id !== this.props.id) {
-      console.log('getting related products');
       getRelatedProducts(this.props.id)
         .then((res) => {
           this.setState({
@@ -78,7 +77,7 @@ class RelatedProductsAndOutfit extends React.Component {
   render() {
     if (Array.isArray(this.state.relatedProducts)) {
       return (
-        <div>
+        <div id="Related Products and Outfit">
           <h3>Related Products</h3>
           <RelatedProducts
             products={this.state.relatedProducts.filter((id, i, arr) => arr.indexOf(id) === i)}
@@ -98,9 +97,7 @@ class RelatedProductsAndOutfit extends React.Component {
     }
     return (
       <div>
-        <div>loading </div>
-        <div>Related Productz</div>
-        <div> Outfitz </div>
+        <div>loading... </div>
       </div>
     );
   }

@@ -133,20 +133,24 @@ class Reviews extends React.Component {
     if (!reading) {
       return (
         <div>
-          <Review key={reviews[0].review_id} review={reviews[0]} />
-          {reviews[1] && <Review key={reviews[1].review_id} review={reviews[1]} />}
-          <button className="bigButton" type="submit" onClick={this.toggleExpandReviews} >More Reviews</button>
+          <div className="render-reviews">
+            <Review key={reviews[0].review_id} review={reviews[0]} />
+            {reviews[1] && <Review key={reviews[1].review_id} review={reviews[1]} />}
+          </div>
+          <button className="bigButton" type="submit" onClick={this.toggleExpandReviews}>More Reviews</button>
         </div>
 
       );
     }
     return (
       <div>
-        {reviews.map((review) => <Review key={review.review_id} review={review} />)}
-        {page > 1 && <button className="mediumButton" type="submit" onClick={() => { this.goToPage(page - 1); }}>Previous Page</button> }
-        <button className="mediumButton" type="submit" onClick={() => { this.goToPage(page + 1); }}>Next Page</button>
-        {page > 1 && <button className="mediumButton" type="submit" onClick={() => { this.goToPage(1); }}>back to first page</button>}
-        <p>page {page}</p>
+        <div className="render-reviews">
+          {reviews.map((review) => <Review key={review.review_id} review={review} />)}
+          {page > 1 && <button className="mediumButton" type="submit" onClick={() => { this.goToPage(page - 1); }}>Previous Page</button> }
+          <button className="mediumButton" type="submit" onClick={() => { this.goToPage(page + 1); }}>Next Page</button>
+          {page > 1 && <button className="mediumButton" type="submit" onClick={() => { this.goToPage(1); }}>back to first page</button>}
+          <p>page {page}</p>
+        </div>
         <button type="submit" onClick={this.toggleExpandReviews} className="bigButton">Collapse</button>
       </div>
     );
@@ -155,7 +159,7 @@ class Reviews extends React.Component {
   render() {
     const { reviews, sort, rating, meta, recommended, reviewNumber, overallRatings, product_id } = this.state;
     return (
-      <div className="reviews-container">
+      <div className="reviews-container" id="Reviews">
         { meta ?
           (
           <div className="reviews-meta">
@@ -207,7 +211,7 @@ class Reviews extends React.Component {
                 </select>
                 </p>
               </div>
-              <div className="render-reviews">
+              <div>
                 {this.renderReviews()}
               </div>
             </div>

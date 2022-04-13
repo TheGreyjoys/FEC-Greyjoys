@@ -21,7 +21,6 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 test('classRelated will render 2 components', async () => {
-  console.log(App);
   render(<RelatedProductsAndOutfit id={40344} changeProduct={App} />);
 
   await waitFor(() => screen.getByText('Related Products'));
