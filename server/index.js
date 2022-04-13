@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+const configJS = require('./config')
 const express = require('express');
 const path = require('path');
 const axios = require('axios');
@@ -18,7 +19,7 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 
 // a route that will forward all incoming HTTP requests to the API
 app.all('*', (req, res) => {
-  const config = { headers: { authorization: process.env.TOKEN } };
+  const config = { headers: { authorization: configJS.TOKEN } };
   const { method, url, body } = req;
   // const target = path.join('http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp', url);
   if (method === 'GET') {
