@@ -103,7 +103,7 @@ function Card(props) {
       return (
         <span style={{ color: 'red' }}>
           <s style={{ color: 'black' }}>{original}</s>
-          {`  $${sale}`}
+          {`$${sale}`}
         </span>
       );
     }

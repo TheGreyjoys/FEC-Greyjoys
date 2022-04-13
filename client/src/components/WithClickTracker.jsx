@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import { logClick } from '../requests';

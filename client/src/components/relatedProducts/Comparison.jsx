@@ -34,7 +34,7 @@ function Comparison(props) {
   }
 
   function populateTD(feature, list) {
-    for (let i = 0; i < list.length; i++) {
+    for (let i = 0; i < list.length; i += 1) {
       if (list[i].feature === feature) {
         return (<td>{list[i].value}</td>);
       }
