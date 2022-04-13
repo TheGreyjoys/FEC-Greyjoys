@@ -34,7 +34,7 @@ function Comparison(props) {
   }
 
   function populateTD(feature, list) {
-    for (let i = 0; i < list.length; i++) {
+    for (let i = 0; i < list.length; i += 1) {
       if (list[i].feature === feature) {
         return (<td>{list[i].value}</td>);
       }
@@ -44,7 +44,7 @@ function Comparison(props) {
 
   function populateRows(featuresList) {
     return featuresList.map((feature) => (
-      <tr>
+      <tr key={feature}>
         {populateTD(feature, compFeatures)}
         <td>{feature}</td>
         {populateTD(feature, currFeatures)}
