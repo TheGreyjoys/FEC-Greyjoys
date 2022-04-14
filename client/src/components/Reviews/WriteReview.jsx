@@ -9,13 +9,13 @@ class WriteReview extends React.Component {
     super(props);
     this.state = {
       rating: 0,
-      recommend: 'false',
+      recommend: null,
       characteristics: {},
       summary: '',
       body: '',
       nickname: '',
       email: '',
-      cannotPost: false,
+      cannotPost: '',
       uploadImg: [],
     };
 
@@ -28,8 +28,31 @@ class WriteReview extends React.Component {
     this.uploadImg = this.uploadImg.bind(this);
   }
 
+  handleChara(e) {
+    const { name } = e.target;
+    const key = this.props.characteristics[name].id;
+    this.setState({
+      characteristics:
+      {
+        ...this.state.characteristics,
+        [key]: Number(e.target.value),
+      },
+      cannotPost: '',
+    });
+  }
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
+      cannotPost: '',
+    });
+  }
+
   clickStar(rating) {
-    this.setState({ rating });
+    this.setState({
+      rating,
+      cannotPost: '',
+    });
   }
 
   showStar(position) {
@@ -52,24 +75,6 @@ class WriteReview extends React.Component {
     }
   }
 
-  handleChara(e) {
-    const { name } = e.target;
-    console.log(name);
-    console.log(this.props.characteristics);
-    const key = this.props.characteristics[name].id;
-    this.setState({
-      characteristics:
-      {
-        ...this.state.characteristics,
-        [key]: Number(e.target.value),
-      },
-    });
-  }
-
-  handleChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-  }
-
   uploadImg(e) {
     const { uploadImg } = this.state;
     const formData = new FormData();
@@ -87,24 +92,28 @@ class WriteReview extends React.Component {
 
   postCurrReview() {
     const {
-      rating, recommend, summary, body, nickname, email, characteristics, uploadImg
+      rating, recommend, summary, body, nickname, email, characteristics, uploadImg,
     } = this.state;
-    postReview({
-      product_id: Number(this.props.product_id),
-      rating: Number(rating),
-      recommend: (recommend === 'true'),
-      characteristics: characteristics,
-      summary: summary,
-      body: body,
-      name: nickname,
-      email: email,
-      photos: uploadImg,
-    })
-      .then((res) => {
-        console.log(res.data);
+    if (rating === 0 || recommend === null || summary === '' || body.length < 50 || nickname === '' || !email.includes('@') || !email.includes('.') || Object.keys(characteristics).length !== Object.keys(this.props.characteristics).length) {
+      this.setState({ cannotPost: 'Plase make sure all the fields are filled in correctly :)' });
+    } else {
+      postReview({
+        product_id: Number(this.props.product_id),
+        rating: Number(rating),
+        recommend: (recommend === 'true'),
+        characteristics: characteristics,
+        summary: summary,
+        body: body,
+        name: nickname,
+        email: email,
+        photos: uploadImg,
       })
-      .then(this.props.submit)
-      .catch(console.log);
+        .then((res) => {
+          console.log(res.data);
+        })
+        .then(this.props.submit)
+        .catch(console.log);
+    }
   }
 
   renderChara() {
@@ -196,8 +205,8 @@ class WriteReview extends React.Component {
     const { placeholder } = this.state;
     const { submit } = this.props;
     return (
-      <div>
-        <button className="mediumButton" style={{ float: 'right' }} onClick={this.props.submit}>✕</button>
+      <div className="writeReviewForm">
+        <button className="mediumReviewButton" style={{ float: 'right' }} onClick={this.props.close}>✕</button>
         <h1>Write Your Review</h1>
         <h3>
           About
@@ -223,7 +232,7 @@ class WriteReview extends React.Component {
         </div>
 
         <div>
-          <p>Characteristics</p>
+          <p>Characteristics (required)</p>
           {this.renderChara()}
         </div>
         <div>
@@ -235,7 +244,7 @@ class WriteReview extends React.Component {
           </p>
         </div>
         <div>
-          <p>Review body (required)</p>
+          <p>Review body (required, 50 characters minimum)</p>
           <textarea style={{ width: '100%', height: '200px' }} type="text" value={this.state.body} placeholder="Why did you like the product or not?" onChange={this.handleChange} maxLength="1000" name="body" />
           <p>
             {this.state.body.length}
@@ -256,8 +265,9 @@ class WriteReview extends React.Component {
         <div>
           <p>What is your email? (required)</p>
           <input style={{ width: '40%' }} type="text" value={this.state.email} placeholder="Example: jackson11@email.com!" onChange={this.handleChange} name="email" />
-          <p>For authentication reasons, you will not be emailed</p>
+          <p>For authentication only, you will not be emailed</p>
         </div>
+        <p className="reviewCannotPostMessage">{this.state.cannotPost}</p>
         <button onClick={this.postCurrReview}>Submit</button>
       </div>
     );
