@@ -121,7 +121,7 @@ class Reviews extends React.Component {
 
   charGraph() {
     const graph2 = [];
-    for (const key in this.state.meta.characteristics) {
+    for (let key in this.state.meta.characteristics) {
       graph2.push(<Graph2 chara={key} key={key} value={this.state.meta.characteristics[key].value} />);
     }
     return graph2;
@@ -129,29 +129,13 @@ class Reviews extends React.Component {
 
   selectPage() {
     const { page, reviews } = this.state;
-    if (page > 3) {
-      return (
-        <div className="reviewPageSelector">
-          <p>...</p>
-          <button className="smallReviewButton" type="submit" onClick={() => { this.goToPage(page - 3); }}>{page - 3}</button>
-          <button className="smallReviewButton" type="submit" onClick={() => { this.goToPage(page - 2); }}>{page - 2}</button>
-          <button className="smallReviewButton" type="submit" onClick={() => { this.goToPage(page - 1); }}>{page - 1}</button>
-          <p style={{ fontWeight: 'bold' }}>{page}</p>
-          {reviews.length === 5 && (
-          <p>
-            <button className="smallReviewButton" type="submit" onClick={() => { this.goToPage(page + 1); }}>{page + 1}</button>
-            ...
-          </p>
-          )}
-        </div>
-      );
-    }
     const pagesArr = [];
-    for (let i = 1; i < page; i += 1) {
+    for (let i = page > 3 ? page - 3 : 1; i < page; i += 1) {
       pagesArr.push(<button className="smallReviewButton" key={i} type="submit" onClick={() => { this.goToPage(i); }}>{i}</button>);
     }
     return (
       <div className="reviewPageSelector">
+        {page > 3 && <p>...</p>}
         {pagesArr}
         <p style={{ fontWeight: 'bold' }}>{page}</p>
         {reviews.length === 5 && (
