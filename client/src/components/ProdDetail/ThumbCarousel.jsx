@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import Thumb from './Thumb';
 
 function ThumbCarousel(props) {
@@ -54,7 +54,6 @@ function ThumbCarousel(props) {
       setRightBound(rightBound + 1);
     }
   };
-
 
   const thumbCount = allThumbs.length;
   const thumbGrid = {
@@ -158,5 +157,13 @@ function ThumbCarousel(props) {
     </div>
   );
 }
+
+ThumbCarousel.propTypes = {
+  allThumbs: PropTypes.arrayOf(PropTypes.string).isRequired,
+  currIndex: PropTypes.number.isRequired,
+  currProduct: PropTypes.number.isRequired,
+  currStyle: PropTypes.number.isRequired,
+  handleThumbClick: PropTypes.func.isRequired,
+};
 
 export default ThumbCarousel;
