@@ -6,8 +6,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Nav from './Nav';
 import RelatedProductsAndOutfit from './relatedProducts/classRelated';
 import Reviews from './Reviews/Reviews';
-// import ProdDetail from './ProdDetail/ProdDetail';
-import ProdDetail from './ProdDetail/ProdDetail2';
+import ProdDetail from './ProdDetail/ProdDetail';
 import { getCurrentProduct } from '../requests';
 
 function App() {

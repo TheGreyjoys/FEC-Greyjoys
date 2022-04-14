@@ -21,17 +21,16 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 app.all('*', (req, res) => {
   const config = { headers: { authorization: configJS.TOKEN } };
   const { method, url, body } = req;
-  // const target = path.join('http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp', url);
+  const apiPath = `http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp${url}`;
   if (method === 'GET') {
-    // console.log(target);
-    axios.get(`http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp${url}`, config)
+    axios.get(apiPath, config)
       .then((response) => {
         res.send(response.data);
       })
       .catch((err) => res.send(err));
   } else if (method === 'PUT') {
     console.log('put request sent !!!!!!!', url);
-    axios.put(`http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp${url}`, {}, config)
+    axios.put(apiPath, {}, config)
       .then((response) => {
         res.send(response);
       })
@@ -39,7 +38,7 @@ app.all('*', (req, res) => {
         res.send(err);
       });
   } else {
-    axios.post(`http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp${url}`, body, config)
+    axios.post(apiPath, body, config)
       .then((response) => {
         console.log('response: ', response.data);
         res.send(response);

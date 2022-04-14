@@ -1,221 +1,165 @@
-/* eslint-disable react/forbid-prop-types */
-import React from 'react';
+/* eslint-disable camelcase */
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import Style from './Style';
 
-class StyleSelector extends React.Component {
-  constructor(props) {
-    super(props);
+function StyleSelector(props) {
+  const {
+    currProduct, selectedStyle, productStyles, handleStyleChange, handleCartAdd,
+  } = props;
 
-    this.state = {
-      currStyle: {},
-      styles: [],
-      styleSizes: [],
-      selSize: null,
-      availQty: 0,
-      selQty: null,
-    };
-    this.handleStyleClick = this.handleStyleClick.bind(this);
-    this.sizeFinder = this.sizeFinder.bind(this);
-    this.handleSizeChange = this.handleSizeChange.bind(this);
-    this.handleQtyChange = this.handleQtyChange.bind(this);
-    this.handleCartSubmit = this.handleCartSubmit.bind(this);
-  }
-
-  componentDidMount() {
-    const { selectedStyle, productStyles, selectedStyle: { skus } } = this.props;
-
-    console.log('styles mounting')
-
-    let sizes = [];
-    if (Object.keys(skus).length) {
-      sizes = this.sizeFinder(skus);
-    }
-    this.setState({
-      currStyle: selectedStyle,
-      styles: productStyles,
-      styleSizes: sizes,
+  const skuRepacker = (skus) => {
+    const newSkus = {};
+    Object.entries(skus).forEach(([sku, sizeQty]) => {
+      const { size, quantity } = sizeQty;
+      newSkus[size] = { sku, quantity };
     });
-  }
+    return newSkus;
+  };
 
-  componentDidUpdate(prevProps) {
-    console.log('styles updating')
+  const [currStyle, setCurrStyle] = useState(selectedStyle);
+  const [styles, setStyles] = useState(productStyles);
+  const [styleSizes, setStyleSizes] = useState(skuRepacker(styles[currStyle].skus));
+  const [selSize, setSelSize] = useState('default');
+  const [availQty, setAvailQty] = useState(null);
+  const [selQty, setSelQty] = useState('default');
 
-    const { selectedStyle, productStyles, selectedStyle: { skus } } = this.props;
-    const newId = selectedStyle.style_id;
-    const oldId = prevProps.selectedStyle.style_id;
-    if (newId !== oldId) {
-      let sizes = [];
-      if (Object.keys(skus).length) {
-        sizes = this.sizeFinder(skus);
-      }
-      this.setState({
-        currStyle: selectedStyle,
-        styles: productStyles,
-        styleSizes: sizes,
-        selSize: null,
-        availQty: 0,
-        selQty: null,
-      });
-    }
-  }
+  useEffect(() => {
+    setCurrStyle(selectedStyle);
+    setStyles(productStyles);
+    setStyleSizes(skuRepacker(productStyles[selectedStyle].skus));
+    setSelSize('default');
+    setAvailQty(null);
+    setSelQty('default');
+  }, [currProduct, productStyles]);
 
-  handleStyleClick(e) {
+  useEffect(() => {
+    setCurrStyle(selectedStyle);
+    setStyles(productStyles);
+    setStyleSizes(skuRepacker(productStyles[selectedStyle].skus));
+    setSelSize('default');
+    setAvailQty(null);
+    setSelQty('default');
+  }, [selectedStyle]);
+
+  const handleStyleClick = (e) => {
     e.preventDefault();
-    const { handleStyleChange } = this.props;
+    const clickedStyle = Number(e.target.name);
+    if (clickedStyle !== currStyle) {
+      handleStyleChange(clickedStyle);
+    }
+  };
 
-    handleStyleChange(Number(e.target.name));
-  }
+  const handleSizeChange = (e) => {
+    const size = e.target.value;
 
-  handleSizeChange(e) {
-    const { styleSizes } = this.state;
-    const sizeIndex = e.target.value;
-    this.setState({
-      selSize: styleSizes[sizeIndex][0],
-      availQty: styleSizes[sizeIndex][1],
-      selQty: null,
-    });
-  }
+    setSelSize(size);
+    setAvailQty(styleSizes[size].quantity);
+    setSelQty('default');
+  };
 
-  handleQtyChange(e) {
-    this.setState({
-      selQty: e.target.value,
-    });
-  }
+  const handleQtyChange = (e) => {
+    setSelQty(e.target.value);
+  };
 
-  handleCartSubmit(e) {
+  const handleCartSubmit = (e) => {
     e.preventDefault();
-    const { selSize, selQty, currStyle: { skus } } = this.state;
-    const { handleCartAdd } = this.props;
-    Object.entries(skus).forEach((pair) => {
-      if (pair[1].size === selSize) {
-        handleCartAdd(pair[0], selQty);
-      }
-    });
-  }
+    handleCartAdd(styleSizes[selSize].sku, selQty);
+  };
 
-  sizeFinder(skus) {
-    const availSizes = [];
-    Object.entries(skus).forEach((sku) => {
-      const { quantity, size } = sku[1];
-      if (quantity) {
-        availSizes.push([size, quantity]);
-      }
-    });
-    return availSizes;
-  }
+  const renderSizes = () => {
+    const availSizes = Object.keys(styleSizes);
 
-  render() {
-    const {
-      currStyle, styles, styleSizes, selSize, availQty, selQty,
-    } = this.state;
-
-    console.log('rendering styles')
-
-    const renderSizes = () => {
-      if (!styleSizes.length) {
-        return (
-          <select className="sizeSelect" disabled>
-            <option>OUT OF STOCK</option>
-          </select>
-        );
-      }
+    if (!availSizes[0] || Object.values(styleSizes).every((size) => !size.quantity)) {
       return (
-        <select
-          name="selSize"
-          className="sizeSelect"
-          value={selSize}
-          data-testid="size-select"
-          onChange={this.handleSizeChange}
-        >
-          <option value="default">Size</option>
-          {styleSizes.map((option, index) => <option value={index}>{option[0]}</option>)}
+        <select className="sizeSelect" disabled>
+          <option>OUT OF STOCK</option>
         </select>
       );
-    };
+    }
+    return (
+      <select
+        name="selSize"
+        className="sizeSelect"
+        value={selSize}
+        data-testid="size-select"
+        onChange={handleSizeChange}
+      >
+        <option value="default" disabled hidden>Size</option>
+        {availSizes.map((option) => <option value={option}>{option}</option>)}
+      </select>
+    );
+  };
 
-    const renderQty = () => {
-      if (!selSize) {
-        return (
-          <select className="qtySelect" disabled>
-            <option>-</option>
-          </select>
-        );
-      }
-      const qtyArray = (new Array(availQty)).fill(0);
+  const renderQty = () => {
+    if (selSize === 'default') {
       return (
-        <select
-          name="selQty"
-          className="qtySelect"
-          value={selQty}
-          data-testid="qty-select"
-          onChange={this.handleQtyChange}
-        >
-          <option value="default" disabled hidden>Qty</option>
-          {qtyArray.map((val, index) => <option value={index + 1}>{index + 1}</option>)}
+        <select className="qtySelect" disabled>
+          <option>-</option>
         </select>
       );
-    };
+    }
+    const qtyArray = (new Array(availQty)).fill(0);
+    return (
+      <select
+        name="selQty"
+        className="qtySelect"
+        value={selQty}
+        data-testid="qty-select"
+        onChange={handleQtyChange}
+      >
+        <option value="default" disabled hidden>Qty</option>
+        {qtyArray.map((val, index) => <option value={index + 1}>{index + 1}</option>)}
+      </select>
+    );
+  };
 
-    const renderCart = () => {
-      if (selSize && selQty) {
-        return (
-          <button
-            type="submit"
-            className="cartAdd"
-            // onClick={this.handleCartClick}
-          >
-            Add To Cart
-          </button>
-        );
-      }
+  const renderCart = () => {
+    if (selSize !== 'default' && selQty !== 'default') {
       return (
         <button
           type="submit"
           className="cartAdd"
-          disabled
         >
           Add To Cart
         </button>
       );
-    };
-
+    }
     return (
-      <form className="styleSelector" onSubmit={this.handleCartSubmit}>
-        <div className="selector">
-          <span className="styleName">
-            Style &rarr;
-            {` ${currStyle.name}`}
-          </span>
-          <div className="select">
-            {styles.map((style) => (
-              <input
-                type="image"
-                className={style.style_id === currStyle.style_id ? 'selStyle' : 'style'}
-                src={style.photos[0].thumbnail_url}
-                alt={style.name}
-                key={style.name}
-                name={style.style_id}
-                data-testid="style-option"
-                onClick={this.handleStyleClick}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="size-qty">
-          {renderSizes()}
-          {renderQty()}
-        </div>
-        {renderCart()}
-      </form>
+      <button
+        type="submit"
+        className="cartAdd"
+        disabled
+      >
+        Add To Cart
+      </button>
     );
-  }
-}
+  };
 
-StyleSelector.propTypes = {
-  selectedStyle: PropTypes.object.isRequired,
-  productStyles: PropTypes.array.isRequired,
-  handleStyleChange: PropTypes.func.isRequired,
-  handleCartAdd: PropTypes.func.isRequired,
-};
+  return (
+    <form className="styleSelector" onSubmit={handleCartSubmit}>
+      <div className="selector">
+        <span className="styleName">
+          Style &rarr;
+          {` ${styles[currStyle].name}`}
+        </span>
+        <div className="select">
+          {Object.values(styles).map((style) => (
+            <Style
+              currStyle={currStyle}
+              style={style}
+              handleStyleClick={handleStyleClick}
+            />
+          ))}
+        </div>
+      </div>
+      <div className="size-qty">
+        {renderSizes()}
+        {renderQty()}
+      </div>
+      {renderCart()}
+    </form>
+  );
+}
 
 export default StyleSelector;
