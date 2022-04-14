@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Graph (props) {
+function Graph(props) {
   return (
     <div className="rating_graph">
       <div className="rating">

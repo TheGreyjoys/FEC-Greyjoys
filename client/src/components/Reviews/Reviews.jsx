@@ -23,7 +23,6 @@ class Reviews extends React.Component {
       reviewNumber: 0,
       recommended: 0,
       overallRatings: null,
-      reviewed: false,
     };
     this.getPageReview = this.getPageReview.bind(this);
     this.changeSort = this.changeSort.bind(this);
@@ -34,6 +33,8 @@ class Reviews extends React.Component {
     this.writeReview = this.writeReview.bind(this);
     this.submitReview = this.submitReview.bind(this);
     this.charGraph = this.charGraph.bind(this);
+    this.closeWrite = this.closeWrite.bind(this);
+    this.selectPage = this.selectPage.bind(this);
   }
 
   componentDidMount() {
@@ -42,8 +43,13 @@ class Reviews extends React.Component {
   }
 
   componentDidUpdate() {
-     if(this.state.product_id !== this.props.id) {
-      this.setState({product_id: this.props.id}, () => { this.getMeta(); this.getPageReview(); });
+    if (this.state.product_id !== this.props.id) {
+      this.setState({
+        product_id: this.props.id,
+        page: 1,
+        sort: 'relevant',
+        reading: false,
+      }, () => { this.getMeta(); this.getPageReview(); });
     }
   }
 
@@ -51,7 +57,6 @@ class Reviews extends React.Component {
     const { page, sort, product_id } = this.state;
     getReviews(product_id, sort, page)
       .then((res) => {
-        console.log(res.data);
         this.setState({ reviews: res.data.results });
       })
       .catch(console.log);
@@ -64,7 +69,7 @@ class Reviews extends React.Component {
       .then((res) => {
         let sum = 0;
         let people = 0;
-        for (var key in res.data.ratings) {
+        for (const key in res.data.ratings) {
           sum += key * res.data.ratings[key];
           people += Number(res.data.ratings[key]);
         }
@@ -92,7 +97,9 @@ class Reviews extends React.Component {
 
   toggleExpandReviews() {
     const { reading } = this.state;
-    this.setState({ reading: !reading });
+    this.setState({ reading: !reading }, () => {
+
+    });
   }
 
   goToPage(p) {
@@ -100,74 +107,109 @@ class Reviews extends React.Component {
   }
 
   writeReview() {
-    document.getElementById("writeReview").showModal();
+    document.getElementById('writeReview').showModal();
   }
 
-  submitReview(input) {
-    this.setState({reviewed: true});
-    document.getElementById("writeReview").close();
+  submitReview() {
+    this.closeWrite();
+    this.setState({ page: 1 }, () => { this.getPageReview(); this.getMeta(); });
+  }
+
+  closeWrite() {
+    document.getElementById('writeReview').close();
   }
 
   charGraph() {
-    var graph2 = [];
-    for(var key in this.state.meta.characteristics) {
-      graph2.push(<Graph2 chara={key} key={key} value={this.state.meta.characteristics[key].value}/>)
+    const graph2 = [];
+    for (let key in this.state.meta.characteristics) {
+      graph2.push(<Graph2 chara={key} key={key} value={this.state.meta.characteristics[key].value} />);
     }
     return graph2;
   }
 
+  selectPage() {
+    const { page, reviews } = this.state;
+    const pagesArr = [];
+    for (let i = page > 3 ? page - 3 : 1; i < page; i += 1) {
+      pagesArr.push(<button className="smallReviewButton" key={i} type="submit" onClick={() => { this.goToPage(i); }}>{i}</button>);
+    }
+    return (
+      <div className="reviewPageSelector">
+        {page > 3 && <p>...</p>}
+        {pagesArr}
+        <p style={{ fontWeight: 'bold' }}>{page}</p>
+        {reviews.length === 5 && (
+        <p>
+          <button className="smallReviewButton" type="submit" onClick={() => { this.goToPage(page + 1); }}>{page + 1}</button>
+          ...
+        </p>
+        )}
+      </div>
+    );
+  }
+
   renderReviews() {
     const { reviews, reading, page } = this.state;
-    if (reviews.length === 0) {
-      if (page > 1) {
-        return (
-          <div>
-            <p>No more reviews!</p>
-            <button className="mediumButton" type="submit" onClick={() => { this.goToPage(page - 1); }}>back</button>
-            <button className="mediumButton" type="submit" onClick={() => { this.goToPage(1); }}>back to first page</button>
-          </div>
-        );
-      }
-      return 'no reviews';
+    if (reviews.length === 0 && page === 1) {
+      return 'No Reviews';
     }
     if (!reading) {
       return (
         <div>
-          <div className="render-reviews">
-            <Review key={reviews[0].review_id} review={reviews[0]} />
+          <div className="render-reviews" style={{ height: 'auto' }}>
+            {reviews.length === 0 && <p>No More Reviews</p>}
+            {reviews[0] && <Review key={reviews[0].review_id} review={reviews[0]} />}
             {reviews[1] && <Review key={reviews[1].review_id} review={reviews[1]} />}
           </div>
-          <button className="bigButton" type="submit" onClick={this.toggleExpandReviews}>More Reviews</button>
+          {
+          reviews.length > 2 || page > 1
+            ? <button className="bigReviewButton" type="submit" onClick={this.toggleExpandReviews}>MORE REVIEWS</button>
+            : <button className="bigReviewButton" type="submit" disabled>No More Reviews</button>
+          }
         </div>
 
       );
     }
     return (
       <div>
-        <div className="render-reviews">
+        <div className="render-reviews" style={{ height: '80vh' }}>
+          {reviews.length === 0 && <p>No More Reviews</p>}
           {reviews.map((review) => <Review key={review.review_id} review={review} />)}
-          {page > 1 && <button className="mediumButton" type="submit" onClick={() => { this.goToPage(page - 1); }}>Previous Page</button> }
-          <button className="mediumButton" type="submit" onClick={() => { this.goToPage(page + 1); }}>Next Page</button>
-          {page > 1 && <button className="mediumButton" type="submit" onClick={() => { this.goToPage(1); }}>back to first page</button>}
-          <p>page {page}</p>
+          {
+          page > 1
+            ? <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(1); }}>&#171; BACK TO FIRST PAGE</button>
+            : <button className="mediumReviewButton" disabled>BACK TO FIRST PAGE</button>
+          }
+          {
+          page > 1
+            ? <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(page - 1); }}>&#8249; PREVIOUS PAGE</button>
+            : <button className="mediumReviewButton" disabled>PREVIOUS PAGE</button>
+          }
+          {this.selectPage()}
+          {reviews.length === 5 ? <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(page + 1); }}>NEXT PAGE &#8250;</button> : <button className="mediumReviewButton" disabled>NEXT PAGE</button>}
         </div>
-        <button type="submit" onClick={this.toggleExpandReviews} className="bigButton">Collapse</button>
+        <button type="submit" onClick={this.toggleExpandReviews} className="bigReviewButton">COLLAPSE</button>
       </div>
     );
   }
 
   render() {
-    const { reviews, sort, rating, meta, recommended, reviewNumber, overallRatings, product_id } = this.state;
+    const {
+      reviews, sort, rating, meta, recommended, reviewNumber, overallRatings, product_id,
+    } = this.state;
     return (
-      <div className="reviews-container" id="Reviews">
-        { meta ?
-          (
-          <div className="reviews-meta">
-            <p>RATINGS & REVIEWS</p>
-            <p style={{'fontSize': '40', 'display': 'inline-block', 'margin': '3px'}}><b>{rating}</b></p>
-            {(rating !== 0) ? starRating(rating) : <div>☆☆☆☆☆</div> }
-            <p>{recommended}% of reviews recommend this product</p>
-            {overallRatings
+      <div className="reviews-container">
+        { meta
+          ? (
+            <div className="reviews-meta">
+              <p>RATINGS & REVIEWS</p>
+              <p style={{ fontSize: '40', display: 'inline-block', margin: '3px' }}><b>{rating === 0 ? '' : rating}</b></p>
+              {(rating !== 0) ? starRating(rating) : <div>☆☆☆☆☆</div> }
+              <p>
+                {recommended}
+                % of reviews recommend this product
+              </p>
+              {overallRatings
             && (
               <div>
                 <Graph
@@ -182,41 +224,49 @@ class Reviews extends React.Component {
               </div>
 
             ) }
-            <dialog id="writeReview">
-              <WriteReview
-                submit={this.submitReview}
-                product_id={product_id}
-                name={this.props.name}
-                category={this.props.category}
-                characteristics={meta.characteristics}
-              />
-            </dialog>
-            <button
-              className="bigButton"
-              type="submit"
-              onClick={this.writeReview}
-              >ADD A REVIEW +</button>
-            <output></output>
-          </div>
-          ) : <div>loading...</div>
-        }
-        {reviews ?
-          (
-            <div className="reviews-main">
               <div>
-                <p>{reviewNumber} reviews, sorted by <select value={sort} onChange={this.changeSort}>
-                  <option value="relevant">most relevant</option>
-                  <option value="newest">newest</option>
-                  <option value="helpful">most helpful</option>
-                </select>
+                <dialog id="writeReview">
+                  <WriteReview
+                    submit={this.submitReview}
+                    product_id={product_id}
+                    name={this.props.name}
+                    category={this.props.category}
+                    characteristics={meta.characteristics}
+                    close={this.closeWrite}
+                  />
+                </dialog>
+                <button
+                  className="bigReviewButton"
+                  type="submit"
+                  onClick={this.writeReview}
+                >
+                  ADD A REVIEW +
+                </button>
+                <output />
+              </div>
+            </div>
+          ) : <div>loading...</div>}
+        {reviews
+          ? (
+            <div className="reviews-main">
+              <div className="review-sort">
+                <p>
+                  {reviewNumber}
+                  {' '}
+                  reviews, sorted by
+                  {' '}
+                  <select value={sort} onChange={this.changeSort}>
+                    <option value="relevant">most relevant</option>
+                    <option value="newest">newest</option>
+                    <option value="helpful">most helpful</option>
+                  </select>
                 </p>
               </div>
               <div>
                 {this.renderReviews()}
               </div>
             </div>
-          ) : <div>loading...</div>
-        }
+          ) : <div>loading...</div>}
       </div>
     );
   }

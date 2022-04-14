@@ -1,21 +1,22 @@
 import React from 'react';
+import $ from 'jquery';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { postReview } from '../../requests';
-//import { CLOUDINARY_UPLOAD_PRESET } from '../../../../config';
+// import { CLOUDINARY_UPLOAD_PRESET } from '../../../../config';
 
 class WriteReview extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       rating: 0,
-      recommend: 'false',
+      recommend: null,
       characteristics: {},
       summary: '',
       body: '',
       nickname: '',
       email: '',
-      cannotPost: false,
+      cannotPost: '',
       uploadImg: [],
     };
 
@@ -28,8 +29,31 @@ class WriteReview extends React.Component {
     this.uploadImg = this.uploadImg.bind(this);
   }
 
+  handleChara(e) {
+    const { name } = e.target;
+    const key = this.props.characteristics[name].id;
+    this.setState({
+      characteristics:
+      {
+        ...this.state.characteristics,
+        [key]: Number(e.target.value),
+      },
+      cannotPost: '',
+    });
+  }
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
+      cannotPost: '',
+    });
+  }
+
   clickStar(rating) {
-    this.setState({ rating });
+    this.setState({
+      rating,
+      cannotPost: '',
+    });
   }
 
   showStar(position) {
@@ -52,24 +76,6 @@ class WriteReview extends React.Component {
     }
   }
 
-  handleChara(e) {
-    const { name } = e.target;
-    console.log(name);
-    console.log(this.props.characteristics);
-    const key = this.props.characteristics[name].id;
-    this.setState({
-      characteristics:
-      {
-        ...this.state.characteristics,
-        [key]: Number(e.target.value),
-      },
-    });
-  }
-
-  handleChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-  }
-
   uploadImg(e) {
     const { uploadImg } = this.state;
     const formData = new FormData();
@@ -87,24 +93,39 @@ class WriteReview extends React.Component {
 
   postCurrReview() {
     const {
-      rating, recommend, summary, body, nickname, email, characteristics, uploadImg
+      rating, recommend, summary, body, nickname, email, characteristics, uploadImg,
     } = this.state;
-    postReview({
-      product_id: Number(this.props.product_id),
-      rating: Number(rating),
-      recommend: (recommend === 'true'),
-      characteristics: characteristics,
-      summary: summary,
-      body: body,
-      name: nickname,
-      email: email,
-      photos: uploadImg,
-    })
-      .then((res) => {
-        console.log(res.data);
+    if (rating === 0 || recommend === null || summary === '' || body.length < 50 || nickname === '' || !email.includes('@') || !email.includes('.') || Object.keys(characteristics).length !== Object.keys(this.props.characteristics).length) {
+      this.setState({ cannotPost: 'Plase make sure all the fields are filled in correctly :)' });
+    } else {
+      postReview({
+        product_id: Number(this.props.product_id),
+        rating: Number(rating),
+        recommend: (recommend === 'true'),
+        characteristics,
+        summary,
+        body,
+        name: nickname,
+        email,
+        photos: uploadImg,
       })
-      .then(this.props.submit)
-      .catch(console.log);
+        .then(() => {
+          $('input:radio').prop('checked', false);
+          this.setState({
+            rating: 0,
+            recommend: null,
+            characteristics: {},
+            summary: '',
+            body: '',
+            nickname: '',
+            email: '',
+            cannotPost: '',
+            uploadImg: [],
+          });
+        })
+        .then(this.props.submit)
+        .catch(console.log);
+    }
   }
 
   renderChara() {
@@ -164,26 +185,26 @@ class WriteReview extends React.Component {
           <div key={key} className="charContainer">
             <p className="charKey">{key}</p>
             <div className="charSelector">
-              <form className="charInput">
+              <div className="charInput">
                 <input type="radio" name={key} value={1} id={1} onChange={this.handleChara} />
                 <label htmlFor={1}>{meaning[key][1]}</label>
-              </form>
-              <form className="charInput">
+              </div>
+              <div className="charInput">
                 <input type="radio" name={key} value={2} id={2} onChange={this.handleChara} />
                 <label htmlFor={2}>{meaning[key][2]}</label>
-              </form>
-              <form className="charInput">
+              </div>
+              <div className="charInput">
                 <input type="radio" name={key} value={3} id={3} onChange={this.handleChara} />
                 <label htmlFor={3}>{meaning[key][3]}</label>
-              </form>
-              <form className="charInput">
+              </div>
+              <div className="charInput">
                 <input type="radio" name={key} value={4} id={4} onChange={this.handleChara} />
                 <label htmlFor={4}>{meaning[key][4]}</label>
-              </form>
-              <form className="charInput">
+              </div>
+              <div className="charInput">
                 <input type="radio" name={key} value={5} id={5} onChange={this.handleChara} />
                 <label htmlFor={5}>{meaning[key][5]}</label>
-              </form>
+              </div>
             </div>
           </div>,
         );
@@ -193,11 +214,9 @@ class WriteReview extends React.Component {
   }
 
   render() {
-    const { placeholder } = this.state;
-    const { submit } = this.props;
     return (
-      <div>
-        <button className="mediumButton" style={{ float: 'right' }} onClick={this.props.submit}>✕</button>
+      <div className="writeReviewForm">
+        <button className="mediumReviewButton" style={{ float: 'right' }} onClick={this.props.close}>✕</button>
         <h1>Write Your Review</h1>
         <h3>
           About
@@ -223,7 +242,7 @@ class WriteReview extends React.Component {
         </div>
 
         <div>
-          <p>Characteristics</p>
+          <p>Characteristics (required)</p>
           {this.renderChara()}
         </div>
         <div>
@@ -235,7 +254,7 @@ class WriteReview extends React.Component {
           </p>
         </div>
         <div>
-          <p>Review body (required)</p>
+          <p>Review body (required, 50 characters minimum)</p>
           <textarea style={{ width: '100%', height: '200px' }} type="text" value={this.state.body} placeholder="Why did you like the product or not?" onChange={this.handleChange} maxLength="1000" name="body" />
           <p>
             {this.state.body.length}
@@ -244,10 +263,9 @@ class WriteReview extends React.Component {
         </div>
         <div>
           <p>Upload your photos</p>
-          <input name="uploadImg" type="file" onChange={this.uploadImg}></input>
+          <input name="uploadImg" type="file" onChange={this.uploadImg} />
         </div>
-        {this.state.uploadImg.map((img) =>
-          <img className="reviewThumbnails" key={img} src={img}/>)}
+        {this.state.uploadImg.map((img) => <img className="reviewThumbnails" key={img} src={img} />)}
         <div>
           <p>What is your nickname? (required)</p>
           <input style={{ width: '40%' }} type="text" value={this.state.nickname} placeholder="Example: jackson11!" onChange={this.handleChange} name="nickname" />
@@ -256,9 +274,10 @@ class WriteReview extends React.Component {
         <div>
           <p>What is your email? (required)</p>
           <input style={{ width: '40%' }} type="text" value={this.state.email} placeholder="Example: jackson11@email.com!" onChange={this.handleChange} name="email" />
-          <p>For authentication reasons, you will not be emailed</p>
+          <p>For authentication only, you will not be emailed</p>
         </div>
-        <button onClick={this.postCurrReview}>Submit</button>
+        <p className="reviewCannotPostMessage">{this.state.cannotPost}</p>
+        <button className="bigReviewButton" type="submit" onClick={this.postCurrReview}>Submit</button>
       </div>
     );
   }
