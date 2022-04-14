@@ -8,6 +8,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 require('dotenv').config();
 
+const TOKEN = configJS.TOKEN || process.env.TOKEN;
+
 app.use(express.json());
 
 app.use('/', (req, res, next) => {
@@ -19,7 +21,7 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 
 // a route that will forward all incoming HTTP requests to the API
 app.all('*', (req, res) => {
-  const config = { headers: { authorization: configJS.TOKEN } };
+  const config = { headers: { authorization: TOKEN } };
   const { method, url, body } = req;
   // const target = path.join('http://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp', url);
   if (method === 'GET') {
