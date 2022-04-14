@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Card from './Card';
 import AddToOutfit from './AddToOutfit';
@@ -8,7 +8,13 @@ function Outfit(props) {
     products, changeProduct, currentProduct, updateOutfit, currentProductData,
   } = props;
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [length] = useState(products.length);
+  const [length, setLength] = useState(products.length);
+
+  useEffect(() => {
+    setLength(products.length);
+    setCurrentIndex(0);
+  }, [products]);
+
   const scrollRight = () => {
     if (currentIndex < (length - 1)) {
       setCurrentIndex(currentIndex + 1);
@@ -44,7 +50,7 @@ function Outfit(props) {
           </div>
         </div>
         {
-        currentIndex <= (length - 3)
+        currentIndex < (length - 3)
         && <button type="button" className="rightArrow" onClick={scrollRight}>&rarr;</button>
         }
       </div>
