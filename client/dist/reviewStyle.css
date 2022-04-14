@@ -31,10 +31,10 @@
 .reviews-container {
   display: flex;
   flex-direction: row;
-  padding: 20px;
   color: rgb(85, 85, 85);
   justify-content: space-between;
   height: 95vh;
+  margin: 20px;
 }
 
 .reviews-meta {
@@ -70,13 +70,16 @@
 
 .review p {
   word-break: break-word;
+  line-height: 120%;
 }
 .review {
   box-sizing: border-box;
-  padding: 20px;
+  padding: 20px 0 20px 20px;
   width: 100%;
   position: relative;
   overflow-wrap: break-word;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 .reviewSummary {
@@ -185,15 +188,12 @@
   color: rgb(85, 85, 85);
   bottom: 0px;
   position: relative;
+  display:block;
+  margin: 20px auto;
 }
 
 .bigReviewButton:hover {
-  margin-top: 20px;
-  width: 130px;
-  height: 40px;
   background-color: lightgrey;
-  border: 1px solid rgb(85, 85, 85);
-  color: rgb(85, 85, 85)
 }
 
 .bigReviewButton:disabled {
@@ -214,32 +214,51 @@
 }
 
 .smallReviewButton:disabled {
+  border-bottom: 0px;
   color: lightgrey;
 }
 
 .smallReviewButton:hover {
   color: lightgrey;
+  border-bottom: 1px solid lightgrey;
+}
+
+.smallReviewButton:disabled:hover {
+  border-bottom: 0px;
 }
 
 .mediumReviewButton {
-  padding: 5px;
+  margin: 5px;
   background-color: white;
-  border: 1px solid rgb(85, 85, 85);
-  border-radius: 4px;
+  border: 0px;
   color:rgb(85, 85, 85);
 }
 
 .mediumReviewButton:hover {
-  background-color: lightgrey;
-  border: 1px solid rgb(85, 85, 85);
-  border-radius: 4px;
-  color: rgb(85, 85, 85);
+  color: lightgrey;
 }
 
+.mediumReviewButton:disabled {
+  color: lightgrey;
+}
+
+
 .reviewResponse {
-  background-color: lightgrey;
-  color: black;
-  width: 70%;
+  background-color: rgb(235, 235, 235);
+  padding: 20px;
+  margin: 20px 0px 10px 0px;
+}
+
+.reviewResponse h5 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: small;
+  margin: 0px;
+}
+
+.reviewResponse p {
+  font-size: small;
+  margin: 12px 0px 0px 0px;
 }
 
 .reviewPhoto {
@@ -262,4 +281,31 @@
 .reviewCannotPostMessage {
   color: red;
   font-size: small;
+}
+
+.review-sort {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+.review-sort select {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  color:rgb(85, 85, 85);
+  border: 0px;
+  border-bottom: 1px solid rgb(85, 85, 85)
+}
+
+.reviewPageSelector {
+  display: inline-block;
+  margin: 0px 5px 0px 5px;
+}
+
+.reviewPageSelector p {
+  display: inline-block;
+}
+
+.reviewBackButton {
+  align-self: end;
+  position: relative;
 }

@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import $ from 'jquery';
 import Review from './Review';
 import WriteReview from './WriteReview';
 import Graph from './Graph';
@@ -24,7 +23,6 @@ class Reviews extends React.Component {
       reviewNumber: 0,
       recommended: 0,
       overallRatings: null,
-      reviewed: false,
     };
     this.getPageReview = this.getPageReview.bind(this);
     this.changeSort = this.changeSort.bind(this);
@@ -36,6 +34,7 @@ class Reviews extends React.Component {
     this.submitReview = this.submitReview.bind(this);
     this.charGraph = this.charGraph.bind(this);
     this.closeWrite = this.closeWrite.bind(this);
+    this.selectPage = this.selectPage.bind(this);
   }
 
   componentDidMount() {
@@ -58,7 +57,6 @@ class Reviews extends React.Component {
     const { page, sort, product_id } = this.state;
     getReviews(product_id, sort, page)
       .then((res) => {
-        console.log(res.data);
         this.setState({ reviews: res.data.results });
       })
       .catch(console.log);
@@ -100,11 +98,7 @@ class Reviews extends React.Component {
   toggleExpandReviews() {
     const { reading } = this.state;
     this.setState({ reading: !reading }, () => {
-      if (!this.state.reading) {
-        $('.render-reviews').css({ height: 'auto', position: 'relative' });
-      } else {
-        $('.render-reviews').css({ height: '80vh', position: 'relative' });
-      }
+
     });
   }
 
@@ -117,9 +111,8 @@ class Reviews extends React.Component {
   }
 
   submitReview() {
-    this.setState({ reviewed: true });
     this.closeWrite();
-    this.getPageReview();
+    this.setState({ page: 1 }, () => { this.getPageReview(); this.getMeta(); });
   }
 
   closeWrite() {
@@ -128,59 +121,81 @@ class Reviews extends React.Component {
 
   charGraph() {
     const graph2 = [];
-    for (const key in this.state.meta.characteristics) {
+    for (let key in this.state.meta.characteristics) {
       graph2.push(<Graph2 chara={key} key={key} value={this.state.meta.characteristics[key].value} />);
     }
     return graph2;
   }
 
+  selectPage() {
+    const { page, reviews } = this.state;
+    const pagesArr = [];
+    for (let i = page > 3 ? page - 3 : 1; i < page; i += 1) {
+      pagesArr.push(<button className="smallReviewButton" key={i} type="submit" onClick={() => { this.goToPage(i); }}>{i}</button>);
+    }
+    return (
+      <div className="reviewPageSelector">
+        {page > 3 && <p>...</p>}
+        {pagesArr}
+        <p style={{ fontWeight: 'bold' }}>{page}</p>
+        {reviews.length === 5 && (
+        <p>
+          <button className="smallReviewButton" type="submit" onClick={() => { this.goToPage(page + 1); }}>{page + 1}</button>
+          ...
+        </p>
+        )}
+      </div>
+    );
+  }
+
   renderReviews() {
     const { reviews, reading, page } = this.state;
-    if (reviews.length === 0) {
-      if (page > 1) {
-        return (
-          <div>
-            <p>No more reviews!</p>
-            <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(page - 1); }}>back</button>
-            <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(1); }}>back to first page</button>
-          </div>
-        );
-      }
-      return 'no reviews';
+    if (reviews.length === 0 && page === 1) {
+      return 'No Reviews';
     }
     if (!reading) {
       return (
         <div>
-          <div className="render-reviews">
-            <Review key={reviews[0].review_id} review={reviews[0]} />
+          <div className="render-reviews" style={{ height: 'auto' }}>
+            {reviews.length === 0 && <p>No More Reviews</p>}
+            {reviews[0] && <Review key={reviews[0].review_id} review={reviews[0]} />}
             {reviews[1] && <Review key={reviews[1].review_id} review={reviews[1]} />}
           </div>
-          <button className="bigReviewButton" type="submit" onClick={this.toggleExpandReviews}>More Reviews</button>
+          {
+          reviews.length > 2 || page > 1
+            ? <button className="bigReviewButton" type="submit" onClick={this.toggleExpandReviews}>MORE REVIEWS</button>
+            : <button className="bigReviewButton" type="submit" disabled>No More Reviews</button>
+          }
         </div>
 
       );
     }
     return (
       <div>
-        <div className="render-reviews">
+        <div className="render-reviews" style={{ height: '80vh' }}>
+          {reviews.length === 0 && <p>No More Reviews</p>}
           {reviews.map((review) => <Review key={review.review_id} review={review} />)}
-          {page > 1 && <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(page - 1); }}>Previous Page</button> }
-          <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(page + 1); }}>Next Page</button>
-          {page > 1 && <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(1); }}>back to first page</button>}
-          <p>
-            page
-            {' '}
-            {page}
-          </p>
+          {
+          page > 1
+            ? <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(1); }}>&#171; BACK TO FIRST PAGE</button>
+            : <button className="mediumReviewButton" disabled>BACK TO FIRST PAGE</button>
+          }
+          {
+          page > 1
+            ? <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(page - 1); }}>&#8249; PREVIOUS PAGE</button>
+            : <button className="mediumReviewButton" disabled>PREVIOUS PAGE</button>
+          }
+          {this.selectPage()}
+          {reviews.length === 5 ? <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(page + 1); }}>NEXT PAGE &#8250;</button> : <button className="mediumReviewButton" disabled>NEXT PAGE</button>}
         </div>
-        <button type="submit" onClick={this.toggleExpandReviews} className="bigReviewButton">Collapse</button>
+        <button type="submit" onClick={this.toggleExpandReviews} className="bigReviewButton">COLLAPSE</button>
       </div>
     );
   }
 
   render() {
     const {
-      reviews, sort, rating, meta, recommended, reviewNumber, overallRatings, product_id, reviewed,
+      reviews, sort, rating, meta, recommended, reviewNumber, overallRatings, product_id,
     } = this.state;
     return (
       <div className="reviews-container">
@@ -188,7 +203,7 @@ class Reviews extends React.Component {
           ? (
             <div className="reviews-meta">
               <p>RATINGS & REVIEWS</p>
-              <p style={{ fontSize: '40', display: 'inline-block', margin: '3px' }}><b>{rating}</b></p>
+              <p style={{ fontSize: '40', display: 'inline-block', margin: '3px' }}><b>{rating === 0 ? '' : rating}</b></p>
               {(rating !== 0) ? starRating(rating) : <div>☆☆☆☆☆</div> }
               <p>
                 {recommended}
@@ -209,44 +224,32 @@ class Reviews extends React.Component {
               </div>
 
             ) }
-              { !reviewed ? (
-                <div>
-                  <dialog id="writeReview">
-                    <WriteReview
-                      submit={this.submitReview}
-                      product_id={product_id}
-                      name={this.props.name}
-                      category={this.props.category}
-                      characteristics={meta.characteristics}
-                      close={this.closeWrite}
-                    />
-                  </dialog>
-                  <button
-                    className="bigReviewButton"
-                    type="submit"
-                    onClick={this.writeReview}
-                  >
-                    ADD A REVIEW +
-                  </button>
-                  <output />
-                </div>
-              )
-                : (
-                  <button
-                    disabled
-                    className="bigReviewButton"
-                    type="submit"
-                    onClick={this.writeReview}
-                  >
-                    ADD A REVIEW +
-                  </button>
-                )}
+              <div>
+                <dialog id="writeReview">
+                  <WriteReview
+                    submit={this.submitReview}
+                    product_id={product_id}
+                    name={this.props.name}
+                    category={this.props.category}
+                    characteristics={meta.characteristics}
+                    close={this.closeWrite}
+                  />
+                </dialog>
+                <button
+                  className="bigReviewButton"
+                  type="submit"
+                  onClick={this.writeReview}
+                >
+                  ADD A REVIEW +
+                </button>
+                <output />
+              </div>
             </div>
           ) : <div>loading...</div>}
         {reviews
           ? (
             <div className="reviews-main">
-              <div>
+              <div className="review-sort">
                 <p>
                   {reviewNumber}
                   {' '}

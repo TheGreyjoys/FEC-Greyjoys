@@ -23,20 +23,25 @@ class Review extends React.Component {
     this.toggleExpandImg = this.toggleExpandImg.bind(this);
   }
 
-  expand() {
-    const { clicked } = this.state;
-    this.setState({ clicked: !clicked });
+  getDate() {
+    let time = new Date(this.props.review.date);
+    time = time.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    return time;
+  }
+
+  report(id) {
+    markReported(id)
+      .then(() => {
+        this.setState({ reported: true });
+      })
+      .catch(console.log);
   }
 
   helpful(id) {
-    console.log(id);
     const { helpful } = this.state;
-    console.log(localStorage.getItem(`markedHelpful${id}`));
     if (localStorage.getItem(`markedHelpful${id}`) !== 'true') {
-      console.log('helpful');
       markHelpful(id)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           this.setState({ helpful: Number(helpful) + 1 });
         })
         .then(() => {
@@ -49,26 +54,17 @@ class Review extends React.Component {
     }
   }
 
-  report(id) {
-    markReported(id)
-      .then(() => {
-        this.setState({ reported: true });
-      })
-      .catch(console.log);
-  }
-
-  getDate() {
-    let time = new Date(this.props.review.date);
-    time = time.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-    return time;
+  expand() {
+    const { clicked } = this.state;
+    this.setState({ clicked: !clicked });
   }
 
   stars(rating) {
     let ratingStars = '';
-    for (var i = 0; i < rating; i++) {
+    for (let i = 0; i < rating; i += 1) {
       ratingStars += '★';
     }
-    for (var i = rating; i < 5; i++) {
+    for (let i = rating; i < 5; i += 1) {
       ratingStars += '☆';
     }
     return ratingStars;
@@ -82,7 +78,6 @@ class Review extends React.Component {
         if (oldImg !== '') {
           $(`#${oldImg}`).css('width', '20%');
         }
-        console.log(this.state.expandedImg);
       });
     } else {
       this.setState({ expandedImg: '' }, () => { $(`#${e.target.id}`).css('width', '20%'); });
@@ -98,7 +93,12 @@ class Review extends React.Component {
       rating, reviewer_name, summary, body, recommend, response, review_id, photos,
     } = review;
     if (reported === true) {
-      return <div>reported</div>;
+      return (
+        <div className="review" style={{ color: 'lightgrey' }}>
+          reported
+          <div className="dividingLine" />
+        </div>
+      );
     }
     if (clicked === false) {
       return (
@@ -118,19 +118,26 @@ class Review extends React.Component {
             {body.slice(0, 251)}
           </p>
           {body.length > 250 && <button className="smallReviewButton" type="submit" onClick={this.expand}>show more</button>}
-          {recommend ? <div className="reviewRecommend">✓ I recommend this product.</div> : <div className="reviewRecommend">✖ I don't recommend this product.</div>}
+          {
+          recommend
+            ? <div className="reviewRecommend">✓ I recommend this product.</div>
+            : <div className="reviewRecommend">✖ I don't recommend this product.</div>
+          }
           {response && (
           <div className="reviewResponse">
-            Response:
-            {response}
+            <h5>Response:</h5>
+            <p>{response}</p>
           </div>
           )}
           <div>
-            {photos.length !== 0 && photos.slice(0, 5).map((photo) => { return <img className="reviewPhoto" id={photo.id} src={photo.url} alt="review photo" onClick={this.toggleExpandImg} />})}
+            {
+            photos.length !== 0
+              && photos.slice(0, 5).map((photo) => <img className="reviewPhoto" key={photo.id} id={photo.id} src={photo.url} alt="review" onClick={this.toggleExpandImg} />)
+            }
           </div>
           {markedHelpful === 'true'
             ? (
-              <button className="smallReviewButton" style={{ borderBottom: '0px' }} disabled>
+              <button className="smallReviewButton" type="submit" disabled>
                 Helpful(
                 {helpful}
                 )
@@ -176,17 +183,20 @@ class Review extends React.Component {
         <button className="smallReviewButton" type="submit" onClick={this.expand}>show less</button>
         {recommend ? <div className="reviewRecommend">✓ I recommend this product.</div> : <div className="reviewRecommend">✖ I don't recommend this product.</div>}
         {response && (
-        <div>
-          Response:
-          {response}
+        <div className="reviewResponse">
+          <h5>Response:</h5>
+          <p>{response}</p>
         </div>
         )}
         <div>
-          {photos.length !== 0 && photos.slice(0, 5).map((photo) => {return <img className="reviewPhoto" id={photo.id} src={photo.url} alt="review photo" onClick={this.toggleExpandImg} />})}
+          {
+          photos.length !== 0
+            && photos.slice(0, 5).map((photo) => <img className="reviewPhoto" id={photo.id} src={photo.url} alt="review photo" onClick={this.toggleExpandImg} />)
+          }
         </div>
         {markedHelpful === 'true'
           ? (
-            <button className="smallReviewButton" style={{ borderBottom: '0px' }} disabled>
+            <button className="smallReviewButton" type="submit" disabled>
               Helpful(
               {helpful}
               )
