@@ -4,25 +4,29 @@ import { cache, checkCache } from './dataCache';
 const controller = new AbortController();
 const { signal } = controller;
 
-// this file does not yet contain requests for Q&A section or Cart API or Interactions API
+// this file does not yet contain requests for Q&A section
 
 const dataPacker = (rawData) => (
   { data: rawData }
 );
 
-function getCurrentProduct(id) {
-  return new Promise((res, rej) => {
-    const data = checkCache(id, 'info');
+const requestPromise = (id, type, url) => (
+  new Promise((res) => {
+    const data = checkCache(id, type);
     if (!data) {
-      axios.get(`/products/${id}`, { signal })
+      axios.get(url, { signal })
         .then((result) => {
-          cache(id, 'info', result.data);
+          cache(id, type, result.data);
           res(result);
         });
     } else {
       res(dataPacker(data));
     }
-  });
+  })
+);
+
+function getCurrentProduct(id) {
+  return requestPromise(id, 'info', `/products/${id}`);
 }
 
 function getAllProducts() {
@@ -30,33 +34,11 @@ function getAllProducts() {
 }
 
 function getProductStyles(id) {
-  return new Promise((res, rej) => {
-    const data = checkCache(id, 'styles');
-    if (!data) {
-      axios.get(`/products/${id}/styles`, { signal })
-        .then((result) => {
-          cache(id, 'styles', result.data);
-          res(result);
-        });
-    } else {
-      res(dataPacker(data));
-    }
-  });
+  return requestPromise(id, 'styles', `/products/${id}/styles`);
 }
 
 function getRelatedProducts(id) {
-  return new Promise((res, rej) => {
-    const data = checkCache(id, 'related');
-    if (!data) {
-      axios.get(`/products/${id}/related`, { signal })
-        .then((result) => {
-          cache(id, 'related', result.data);
-          res(result);
-        });
-    } else {
-      res(dataPacker(data));
-    }
-  });
+  return requestPromise(id, 'related', `/products/${id}/related`);
 }
 
 function getReviews(id, sort, page) {
@@ -64,18 +46,7 @@ function getReviews(id, sort, page) {
 }
 
 function getReviewsMeta(id) {
-  return new Promise((res, rej) => {
-    const data = checkCache(id, 'reviewsMeta');
-    if (!data) {
-      axios.get(`/reviews/meta?product_id=${id}`, { signal })
-        .then((result) => {
-          cache(id, 'reviewsMeta', result.data);
-          res(result);
-        });
-    } else {
-      res(dataPacker(data));
-    }
-  });
+  return requestPromise(id, 'reviewsMeta', `/reviews/meta?product_id=${id}`);
 }
 
 function postReview(review) {
