@@ -28,6 +28,7 @@ class ProdDetail extends React.Component {
     const { id } = this.props;
     Promise.all([getCurrentProduct(id), getProductStyles(id), getReviewsMeta(id)])
       .then((results) => {
+        console.log(results)
         const product = results[0].data;
         const defaultStyle = this.findDefault(results[1].data.results)[0];
         const productStyles = this.findDefault(results[1].data.results)[1];

@@ -31,13 +31,17 @@ prodId: {
 */
 
 const cache = (prodId, section, data) => {
+  const prodCache = dataCache[prodId];
+  if (!prodCache) {
+    dataCache[prodId] = { [section]: {} };
+  }
   dataCache[prodId][section] = data;
 };
 
 const checkCache = (prodId, section) => {
-  const cachedData = dataCache[prodId][section];
-  if (cachedData) {
-    return cachedData;
+  const cachedData = dataCache[prodId];
+  if (dataCache[prodId]) {
+    return cachedData[section];
   }
   return false;
 };
@@ -47,4 +51,4 @@ const checkCache = (prodId, section) => {
 
 // };
 
-export { cache, checkCache };
+export { dataCache, cache, checkCache };

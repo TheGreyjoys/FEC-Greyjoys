@@ -1,28 +1,12 @@
 import axios from 'axios';
-import { cache, checkCache } from './dataCache';
 
 const controller = new AbortController();
 const { signal } = controller;
 
 // this file does not yet contain requests for Q&A section or Cart API or Interactions API
 
-const dataPacker = (rawData) => (
-  { data: rawData }
-);
-
 function getCurrentProduct(id) {
-  return new Promise((res, rej) => {
-    const data = checkCache(id, 'info');
-    if (!data) {
-      axios.get(`/products/${id}`, { signal })
-        .then((result) => {
-          cache(id, 'info', result.data);
-          res(result);
-        });
-    } else {
-      res(dataPacker(data));
-    }
-  });
+  return axios.get(`/products/${id}`, { signal });
 }
 
 function getAllProducts() {
@@ -30,33 +14,11 @@ function getAllProducts() {
 }
 
 function getProductStyles(id) {
-  return new Promise((res, rej) => {
-    const data = checkCache(id, 'styles');
-    if (!data) {
-      axios.get(`/products/${id}/styles`, { signal })
-        .then((result) => {
-          cache(id, 'styles', result.data);
-          res(result);
-        });
-    } else {
-      res(dataPacker(data));
-    }
-  });
+  return axios.get(`/products/${id}/styles`, { signal });
 }
 
 function getRelatedProducts(id) {
-  return new Promise((res, rej) => {
-    const data = checkCache(id, 'related');
-    if (!data) {
-      axios.get(`/products/${id}/related`, { signal })
-        .then((result) => {
-          cache(id, 'related', result.data);
-          res(result);
-        });
-    } else {
-      res(dataPacker(data));
-    }
-  });
+  return axios.get(`/products/${id}/related`, { signal });
 }
 
 function getReviews(id, sort, page) {
@@ -64,18 +26,7 @@ function getReviews(id, sort, page) {
 }
 
 function getReviewsMeta(id) {
-  return new Promise((res, rej) => {
-    const data = checkCache(id, 'reviewsMeta');
-    if (!data) {
-      axios.get(`/reviews/meta?product_id=${id}`, { signal })
-        .then((result) => {
-          cache(id, 'reviewsMeta', result.data);
-          res(result);
-        });
-    } else {
-      res(dataPacker(data));
-    }
-  });
+  return axios.get(`/reviews/meta?product_id=${id}`, { signal });
 }
 
 function postReview(review) {
