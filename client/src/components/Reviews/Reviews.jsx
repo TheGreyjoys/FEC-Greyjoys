@@ -13,6 +13,7 @@ class Reviews extends React.Component {
     this.state = {
       /* need current product id */
       /* need current product name */
+      allReviews: null,
       reviews: null,
       product_id: this.props.id,
       page: 1,
@@ -23,8 +24,9 @@ class Reviews extends React.Component {
       reviewNumber: 0,
       recommended: 0,
       overallRatings: null,
+      filter: 0,
     };
-    this.getPageReview = this.getPageReview.bind(this);
+    //this.getPageReview = this.getPageReview.bind(this);
     this.changeSort = this.changeSort.bind(this);
     this.renderReviews = this.renderReviews.bind(this);
     this.toggleExpandReviews = this.toggleExpandReviews.bind(this);
@@ -35,11 +37,13 @@ class Reviews extends React.Component {
     this.charGraph = this.charGraph.bind(this);
     this.closeWrite = this.closeWrite.bind(this);
     this.selectPage = this.selectPage.bind(this);
+    this.getAllReviews = this.getAllReviews.bind(this);
   }
 
   componentDidMount() {
-    this.getMeta();
-    this.getPageReview();
+    this.getMeta(this.getAllReviews);
+    //this.getPageReview();
+
   }
 
   componentDidUpdate() {
@@ -49,20 +53,33 @@ class Reviews extends React.Component {
         page: 1,
         sort: 'relevant',
         reading: false,
-      }, () => { this.getMeta(); this.getPageReview(); });
+      }, () => { this.getMeta(this.getAllReviews); });
     }
   }
 
   getPageReview() {
-    const { page, sort, product_id } = this.state;
-    getReviews(product_id, sort, page)
+    const { page, sort, product_id, filter, allReviews } = this.state;
+/*     getReviews(product_id, sort, page)
       .then((res) => {
         this.setState({ reviews: res.data.results });
+      })
+      .catch(console.log); */
+    if (filter === 0) {
+      this.setState({ reviews: allReviews.slice((page - 1) * 5, page * 5) });
+    }
+  }
+
+  getAllReviews() {
+    const { sort, product_id, reviewNumber, page } = this.state;
+    getReviews(product_id, sort, 1, reviewNumber)
+      .then((res) => {
+        console.log(res.data);
+        this.setState({ allReviews: res.data.results, reviews: res.data.results.slice((page - 1) * 5, page * 5) });
       })
       .catch(console.log);
   }
 
-  getMeta() {
+  getMeta(callback) {
     const { product_id } = this.state;
 
     getReviewsMeta(product_id)
@@ -88,11 +105,12 @@ class Reviews extends React.Component {
           ).toFixed(1),
         });
       })
+      .then(callback)
       .catch(console.log);
   }
 
   changeSort(e) {
-    this.setState({ sort: e.target.value, reading: true, page: 1 }, this.getPageReview);
+    this.setState({ sort: e.target.value, reading: true, page: 1 }, this.getAllReviews);
   }
 
   toggleExpandReviews() {
@@ -112,7 +130,7 @@ class Reviews extends React.Component {
 
   submitReview() {
     this.closeWrite();
-    this.setState({ page: 1 }, () => { this.getPageReview(); this.getMeta(); });
+    this.setState({ page: 1 }, () => { this.getMeta(this.getAllReviews); });
   }
 
   closeWrite() {
