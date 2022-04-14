@@ -1,8 +1,9 @@
 import React from 'react';
+import $ from 'jquery';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { postReview } from '../../requests';
-//import { CLOUDINARY_UPLOAD_PRESET } from '../../../../config';
+// import { CLOUDINARY_UPLOAD_PRESET } from '../../../../config';
 
 class WriteReview extends React.Component {
   constructor(props) {
@@ -101,15 +102,26 @@ class WriteReview extends React.Component {
         product_id: Number(this.props.product_id),
         rating: Number(rating),
         recommend: (recommend === 'true'),
-        characteristics: characteristics,
-        summary: summary,
-        body: body,
+        characteristics,
+        summary,
+        body,
         name: nickname,
-        email: email,
+        email,
         photos: uploadImg,
       })
-        .then((res) => {
-          console.log(res.data);
+        .then(() => {
+          $('input:radio').prop('checked', false);
+          this.setState({
+            rating: 0,
+            recommend: null,
+            characteristics: {},
+            summary: '',
+            body: '',
+            nickname: '',
+            email: '',
+            cannotPost: '',
+            uploadImg: [],
+          });
         })
         .then(this.props.submit)
         .catch(console.log);
@@ -173,26 +185,26 @@ class WriteReview extends React.Component {
           <div key={key} className="charContainer">
             <p className="charKey">{key}</p>
             <div className="charSelector">
-              <form className="charInput">
+              <div className="charInput">
                 <input type="radio" name={key} value={1} id={1} onChange={this.handleChara} />
                 <label htmlFor={1}>{meaning[key][1]}</label>
-              </form>
-              <form className="charInput">
+              </div>
+              <div className="charInput">
                 <input type="radio" name={key} value={2} id={2} onChange={this.handleChara} />
                 <label htmlFor={2}>{meaning[key][2]}</label>
-              </form>
-              <form className="charInput">
+              </div>
+              <div className="charInput">
                 <input type="radio" name={key} value={3} id={3} onChange={this.handleChara} />
                 <label htmlFor={3}>{meaning[key][3]}</label>
-              </form>
-              <form className="charInput">
+              </div>
+              <div className="charInput">
                 <input type="radio" name={key} value={4} id={4} onChange={this.handleChara} />
                 <label htmlFor={4}>{meaning[key][4]}</label>
-              </form>
-              <form className="charInput">
+              </div>
+              <div className="charInput">
                 <input type="radio" name={key} value={5} id={5} onChange={this.handleChara} />
                 <label htmlFor={5}>{meaning[key][5]}</label>
-              </form>
+              </div>
             </div>
           </div>,
         );
@@ -202,8 +214,6 @@ class WriteReview extends React.Component {
   }
 
   render() {
-    const { placeholder } = this.state;
-    const { submit } = this.props;
     return (
       <div className="writeReviewForm">
         <button className="mediumReviewButton" style={{ float: 'right' }} onClick={this.props.close}>✕</button>
@@ -253,10 +263,9 @@ class WriteReview extends React.Component {
         </div>
         <div>
           <p>Upload your photos</p>
-          <input name="uploadImg" type="file" onChange={this.uploadImg}></input>
+          <input name="uploadImg" type="file" onChange={this.uploadImg} />
         </div>
-        {this.state.uploadImg.map((img) =>
-          <img className="reviewThumbnails" key={img} src={img}/>)}
+        {this.state.uploadImg.map((img) => <img className="reviewThumbnails" key={img} src={img} />)}
         <div>
           <p>What is your nickname? (required)</p>
           <input style={{ width: '40%' }} type="text" value={this.state.nickname} placeholder="Example: jackson11!" onChange={this.handleChange} name="nickname" />
@@ -268,7 +277,7 @@ class WriteReview extends React.Component {
           <p>For authentication only, you will not be emailed</p>
         </div>
         <p className="reviewCannotPostMessage">{this.state.cannotPost}</p>
-        <button onClick={this.postCurrReview}>Submit</button>
+        <button className="bigReviewButton" type="submit" onClick={this.postCurrReview}>Submit</button>
       </div>
     );
   }
