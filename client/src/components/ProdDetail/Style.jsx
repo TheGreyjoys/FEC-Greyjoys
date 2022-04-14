@@ -1,14 +1,11 @@
 /* eslint-disable camelcase */
 import React from 'react';
-
-// style_id: {
-//   name, original_price, sale_price, photos, skus, style_id
-// },
+import PropTypes from 'prop-types';
 
 function Style(props) {
   const {
     style: {
-      name, original_price, sale_price, photos, skus, style_id,
+      name, photos, style_id,
     }, handleStyleClick, currStyle,
   } = props;
   return (
@@ -24,5 +21,17 @@ function Style(props) {
     />
   );
 }
+
+Style.propTypes = {
+  currStyle: PropTypes.number.isRequired,
+  handleStyleClick: PropTypes.func.isRequired,
+  style: PropTypes.shape({
+    name: PropTypes.string,
+    style_id: PropTypes.number,
+    photos: PropTypes.arrayOf(PropTypes.shape({
+      thumbnail_url: PropTypes.string,
+    })),
+  }).isRequired,
+};
 
 export default Style;
