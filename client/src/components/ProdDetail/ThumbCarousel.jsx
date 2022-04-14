@@ -141,7 +141,7 @@ function ThumbCarousel(props) {
         >
           {allThumbs.map((img, index) => (
             <Thumb
-              url={allThumbs[index]}
+              thumbUrl={allThumbs[index]}
               index={index}
               currIndex={currIndex}
               key={allThumbs[index]}
