@@ -5,9 +5,9 @@
   "main": "server/index.js",
   "scripts": {
     "server-dev": "npx nodemon --watch server server/index.js",
-    "client-dev": "npx webpack -w --config webpack.config.js",
+    "client-dev": "npx webpack -w --config webpack.dev.js",
     "start": "npx node server/index.js",
-    "build": "npx webpack --config webpack.config.js",
+    "build": "npx webpack --config webpack.prod.js",
     "test": "jest --detectOpenHandles",
     "test-prod": "jest ProdDetail.spec.jsx",
     "test:watch": "npm run test -- --watch"
@@ -24,6 +24,7 @@
   "homepage": "https://github.com/TheGreyjoys/FEC-Greyjoys#readme",
   "dependencies": {
     "axios": "^0.26.1",
+    "compression-webpack-plugin": "^9.2.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "jquery": "^3.6.0",
@@ -31,7 +32,9 @@
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "regenerator-runtime": "^0.13.9"
+    "regenerator-runtime": "^0.13.9",
+    "terser-webpack-plugin": "^5.3.1",
+    "webpack-merge": "^5.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.8",
