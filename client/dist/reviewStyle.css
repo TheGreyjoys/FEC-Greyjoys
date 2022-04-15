@@ -90,7 +90,6 @@
 
 .rating_graph
 {
-
  display: flex;
  flex-direction: column;
  margin-bottom: 40px;
@@ -104,11 +103,11 @@
   justify-content:left;
 }
 
-.rating p:nth-child(2)
-{
+.rating p:nth-child(2) {
   float: right;
   position: relative;
 }
+
 .rating p {
   display: inline-block;
   line-height: normal;
@@ -133,6 +132,10 @@
   background-color: black;
   height: 0.5px;
   margin-top: 20px;
+}
+
+.char_graph {
+  margin-top: 40px;
 }
 
 .charChartContainer {
@@ -293,7 +296,8 @@
   font-weight: bold;
   color:rgb(85, 85, 85);
   border: 0px;
-  border-bottom: 1px solid rgb(85, 85, 85)
+  border-bottom: 1px solid rgb(85, 85, 85);
+  background-color: white;
 }
 
 .reviewPageSelector {
@@ -308,4 +312,16 @@
 .reviewBackButton {
   align-self: end;
   position: relative;
+}
+
+.reviewSearchBar {
+  display: inline-block;
+  margin-left: 20px;
+  border: 1px solid rgb(85, 85, 85);
+  border-radius: 10px;
+}
+
+.reviewSearchBar input{
+  border: 0px;
+  outline: none;
 }
