@@ -41,8 +41,8 @@ function getRelatedProducts(id, forced) {
   return requestPromise(id, 'related', `/products/${id}/related`, forced);
 }
 
-function getReviews(id, sort, page) {
-  return axios.get(`/reviews?product_id=${id}&sort=${sort}&page=${page}`, { signal });
+function getReviews(id, sort, page, count = 5) {
+  return axios.get(`/reviews?product_id=${id}&sort=${sort}&page=${page}&count=${count}`, { signal });
 }
 
 function getReviewsMeta(id) {

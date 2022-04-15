@@ -34,6 +34,7 @@ class Review extends React.Component {
       .then(() => {
         this.setState({ reported: true });
       })
+      .then(this.props.getAllReviews)
       .catch(console.log);
   }
 
@@ -50,6 +51,7 @@ class Review extends React.Component {
         .then(() => {
           this.setState({ markedHelpful: localStorage.getItem(`markedHelpful${this.props.review.review_id}`) });
         })
+        .then(this.props.getAllReviews)
         .catch(console.log);
     }
   }
