@@ -86,7 +86,7 @@ function StyleSelector(props) {
         onChange={handleSizeChange}
       >
         <option value="default" disabled hidden>Size</option>
-        {availSizes.map((option) => <option value={option}>{option}</option>)}
+        {availSizes.map((option) => <option key={option} value={option}>{option}</option>)}
       </select>
     );
   };
@@ -109,7 +109,7 @@ function StyleSelector(props) {
         onChange={handleQtyChange}
       >
         <option value="default" disabled hidden>Qty</option>
-        {qtyArray.map((val, index) => <option value={index + 1}>{index + 1}</option>)}
+        {qtyArray.map((val, index) => <option key={index + 1} value={index + 1}>{index + 1}</option>)}
       </select>
     );
   };
