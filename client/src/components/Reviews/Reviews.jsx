@@ -220,7 +220,7 @@ class Reviews extends React.Component {
     while ((i <= 5 || i <= page + 2) && i <= maxPage) {
       const j = i;
       if (i === page) {
-        pagesArr.push(<p style={{ fontWeight: 'bold' }}>{page}</p>);
+        pagesArr.push(<p key={i} style={{ fontWeight: 'bold' }}>{page}</p>);
       } else {
         pagesArr.push(<button className="smallReviewButton" key={i} type="submit" onClick={() => { this.goToPage(j); }}>{i}</button>);
       }
