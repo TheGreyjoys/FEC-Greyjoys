@@ -146,6 +146,7 @@ function StyleSelector(props) {
         <div className="select">
           {Object.values(styles).map((style) => (
             <Style
+              key={style.style_id}
               currStyle={currStyle}
               style={style}
               handleStyleClick={handleStyleClick}
