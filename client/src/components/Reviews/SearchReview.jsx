@@ -9,6 +9,12 @@ class SearchReview extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.product_id !== prevProps.product_id) {
+      this.setState({ search: '' });
+    }
+  }
+
   handleChange(e) {
     this.setState({ search: e.target.value });
   }

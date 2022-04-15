@@ -54,11 +54,14 @@ class Reviews extends React.Component {
 
   componentDidUpdate() {
     if (this.state.product_id !== this.props.id) {
+      $(`#filter-rating-${this.state.filter}`).css({ color: 'rgb(85, 85, 85)', 'border-bottom': '1px solid rgb(85, 85, 85)' });
       this.setState({
         product_id: this.props.id,
         page: 1,
         sort: 'relevant',
         reading: false,
+        filter: 0,
+        search: '',
       }, () => { this.getMeta(() => { this.getAllReviews(this.getPageReview); }); });
     }
   }
@@ -291,7 +294,7 @@ class Reviews extends React.Component {
 
   render() {
     const {
-      reviews, sort, rating, meta, recommended, reviewNumber, overallRatings, product_id,
+      reviews, sort, rating, meta, recommended, reviewNumber, product_id,
     } = this.state;
     return (
       <div className="reviews-container">
@@ -348,7 +351,7 @@ class Reviews extends React.Component {
                     <option value="helpful">most helpful</option>
                   </select>
                 </p>
-                <SearchReview search={this.search} />
+                <SearchReview search={this.search} product_id={product_id} />
               </div>
               <div>
                 {this.renderReviews()}

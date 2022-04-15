@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const configJS = require('./config')
+const configJS = require('./config');
 const express = require('express');
 const path = require('path');
 const axios = require('axios');
