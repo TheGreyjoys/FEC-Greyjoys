@@ -74,7 +74,7 @@
   align-items: center;
   justify-items: center;
 
-  transition: all 100ms linear;
+  transition: all 200ms linear;
 }
 
 .thumb, .thumb-sel {
@@ -186,6 +186,7 @@
 }
 
 .selector {
+  align-self: flex-start;
   display: flex;
   flex-direction: column;
 }
