@@ -3,6 +3,7 @@ import $ from 'jquery';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { postReview } from '../../requests';
+import meaning from './meaning';
 // import { CLOUDINARY_UPLOAD_PRESET } from '../../../../config';
 
 class WriteReview extends React.Component {
@@ -43,17 +44,11 @@ class WriteReview extends React.Component {
   }
 
   handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value,
-      cannotPost: '',
-    });
+    this.setState({ [e.target.name]: e.target.value, cannotPost: '' });
   }
 
   clickStar(rating) {
-    this.setState({
-      rating,
-      cannotPost: '',
-    });
+    this.setState({ rating, cannotPost: '' });
   }
 
   showStar(position) {
@@ -131,50 +126,6 @@ class WriteReview extends React.Component {
 
   renderChara() {
     const charaArr = [];
-    const meaning = {
-      Size: {
-        1: 'A size too small',
-        2: '½ a size too small',
-        3: 'Perfect',
-        4: '½ a size too big',
-        5: 'A size too wide',
-      },
-      Width: {
-        1: 'Too narrow',
-        2: 'Slightly narrow',
-        3: 'Perfect',
-        4: 'Slightly wide',
-        5: 'Too wide',
-      },
-      Comfort: {
-        1: 'Uncomfortable',
-        2: 'Slightly uncomfortable',
-        3: 'Ok',
-        4: 'Comfortable',
-        5: 'Perfect',
-      },
-      Quality: {
-        1: 'Poor',
-        2: 'Below average',
-        3: 'What I expected',
-        4: 'Pretty great',
-        5: 'Perfect',
-      },
-      Length: {
-        1: 'Runs Short',
-        2: 'Runs slightly short',
-        3: 'Perfect',
-        4: 'Runs slightly long',
-        5: 'Runs long',
-      },
-      Fit: {
-        1: 'Runs tight',
-        2: 'Runs slightly tight',
-        3: 'Perfect',
-        4: 'Runs slightly long',
-        5: 'Runs long',
-      },
-    };
     // eslint-disable-next-line no-restricted-syntax
     // eslint-disable-next-line guard-for-in
     // eslint-disable-next-line no-restricted-syntax

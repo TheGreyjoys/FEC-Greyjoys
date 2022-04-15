@@ -45,8 +45,8 @@ function getReviews(id, sort, page, count = 5) {
   return axios.get(`/reviews?product_id=${id}&sort=${sort}&page=${page}&count=${count}`, { signal });
 }
 
-function getReviewsMeta(id) {
-  return requestPromise(id, 'reviewsMeta', `/reviews/meta?product_id=${id}`);
+function getReviewsMeta(id, forced) {
+  return requestPromise(id, 'reviewsMeta', `/reviews/meta?product_id=${id}`, forced);
 }
 
 function postReview(review) {
