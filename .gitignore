@@ -5,6 +5,10 @@ jspm_packages/
 # Bundle files
 client/dist/bundle.js
 client/dist/bundle.js.map
+client/dist/bundle.js.gz
+client/dist/bundle.js.map.gz
+client/dist/bundle.js.LICENSE.txt
+client/dist/bundle.js.LICENSE.txt.gz
 
 # Optional eslint cache
 .eslintrc.js
