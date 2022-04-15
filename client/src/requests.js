@@ -10,10 +10,10 @@ const dataPacker = (rawData) => (
   { data: rawData }
 );
 
-const requestPromise = (id, type, url) => (
+const requestPromise = (id, type, url, forced) => (
   new Promise((res) => {
     const data = checkCache(id, type);
-    if (!data) {
+    if (!data || forced) {
       axios.get(url, { signal })
         .then((result) => {
           cache(id, type, result.data);
@@ -25,20 +25,20 @@ const requestPromise = (id, type, url) => (
   })
 );
 
-function getCurrentProduct(id) {
-  return requestPromise(id, 'info', `/products/${id}`);
+function getCurrentProduct(id, forced) {
+  return requestPromise(id, 'info', `/products/${id}`, forced);
 }
 
 function getAllProducts() {
   return axios.get('/products', { signal });
 }
 
-function getProductStyles(id) {
-  return requestPromise(id, 'styles', `/products/${id}/styles`);
+function getProductStyles(id, forced) {
+  return requestPromise(id, 'styles', `/products/${id}/styles`, forced);
 }
 
-function getRelatedProducts(id) {
-  return requestPromise(id, 'related', `/products/${id}/related`);
+function getRelatedProducts(id, forced) {
+  return requestPromise(id, 'related', `/products/${id}/related`, forced);
 }
 
 function getReviews(id, sort, page) {
