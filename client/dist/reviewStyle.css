@@ -111,6 +111,11 @@
 .rating p {
   display: inline-block;
   line-height: normal;
+  margin: 0;
+}
+
+.rating button {
+  margin-left: 0;
 }
 
 .bar

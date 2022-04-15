@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const configJS = require('./config')
+const configJS = require('./config');
 const express = require('express');
 const expressStaticGzip = require('express-static-gzip');
 const path = require('path');

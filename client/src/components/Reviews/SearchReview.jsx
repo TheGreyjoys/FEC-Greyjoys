@@ -9,6 +9,12 @@ class SearchReview extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.product_id !== prevProps.product_id) {
+      this.setState({ search: '' });
+    }
+  }
+
   handleChange(e) {
     this.setState({ search: e.target.value });
   }
@@ -17,8 +23,26 @@ class SearchReview extends React.Component {
     return (
       <div className="reviewSearchBar">
         <input type="search" value={this.state.search} onChange={this.handleChange} minLength="3" placeholder="Search reviews..." />
-        <button className="mediumReviewButton" style={{ borderLeft: '1px solid rgb(85, 85, 58)' }} type="submit" onClick={() => { this.setState({ search: '' }, () => { this.props.search(''); }); }}>Clear</button>
-        <button className="mediumReviewButton" style={{ borderLeft: '1px solid rgb(85, 85, 58)' }} type="submit" onClick={() => { this.props.search(this.state.search); }}>Search</button>
+        <button
+          className="mediumReviewButton"
+          style={{ borderLeft: '1px solid rgb(85, 85, 58)' }}
+          type="submit"
+          onClick={() => {
+            this.setState(
+              { search: '' },
+              () => { this.props.search(''); },
+            );
+          }}
+        >Clear</button>
+        <button
+          className="mediumReviewButton"
+          style={{ borderLeft: '1px solid rgb(85, 85, 58)' }}
+          type="submit"
+          onClick={() => { this.props.search(this.state.search); }}
+        >
+          Search
+
+        </button>
       </div>
     );
   }
