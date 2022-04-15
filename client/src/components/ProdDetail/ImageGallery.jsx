@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -112,8 +111,8 @@ class ImageGallery extends React.Component {
   }
 }
 
-// ImageGallery.propTypes = {
-//   selectedStyle: PropTypes.shape.isRequired,
-// };
+ImageGallery.propTypes = {
+  selectedStyle: PropTypes.objectOf.isRequired,
+};
 
 export default ImageGallery;
