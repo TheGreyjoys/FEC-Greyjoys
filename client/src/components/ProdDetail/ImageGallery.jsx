@@ -112,7 +112,14 @@ class ImageGallery extends React.Component {
 }
 
 ImageGallery.propTypes = {
-  selectedStyle: PropTypes.objectOf.isRequired,
+  currProduct: PropTypes.number.isRequired,
+  selectedStyle: PropTypes.shape({
+    style_id: PropTypes.number,
+    photos: PropTypes.arrayOf(PropTypes.shape({
+      url: PropTypes.string,
+      thumbnail_url: PropTypes.string,
+    })),
+  }).isRequired,
 };
 
 export default ImageGallery;
