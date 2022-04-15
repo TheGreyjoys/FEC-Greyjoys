@@ -1,3 +1,6 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable max-len */
 /* eslint-disable camelcase */
 import React from 'react';
 import $ from 'jquery';
@@ -13,8 +16,6 @@ class Reviews extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      /* need current product id */
-      /* need current product name */
       allReviews: null,
       reviews: null,
       product_id: this.props.id,
@@ -43,7 +44,7 @@ class Reviews extends React.Component {
     this.selectPage = this.selectPage.bind(this);
     this.getAllReviews = this.getAllReviews.bind(this);
     this.search = this.search.bind(this);
-    this.filter = this.filter.bind(this);
+    this.filterAllReviews = this.filterAllReviews.bind(this);
     this.ratingGraph = this.ratingGraph.bind(this);
     this.filterRating = this.filterRating.bind(this);
   }
@@ -53,10 +54,12 @@ class Reviews extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.state.product_id !== this.props.id) {
-      $(`#filter-rating-${this.state.filter}`).css({ color: 'rgb(85, 85, 85)', 'border-bottom': '1px solid rgb(85, 85, 85)' });
+    const { product_id, filter } = this.state;
+    const { id } = this.props;
+    if (product_id !== id) {
+      $(`#filter-rating-${filter}`).css({ color: 'rgb(85, 85, 85)', 'border-bottom': '1px solid rgb(85, 85, 85)' });
       this.setState({
-        product_id: this.props.id,
+        product_id: id,
         page: 1,
         sort: 'relevant',
         reading: false,
@@ -77,21 +80,23 @@ class Reviews extends React.Component {
       .then((res) => {
         this.setState({ allReviews: res.data.results });
       })
-      .then(this.filter)
+      .then(this.filterAllReviews)
       .then(callback)
       .catch(console.log);
   }
 
-  getMeta(callback) {
+  getMeta(callback, forced = false) {
     const { product_id } = this.state;
 
-    getReviewsMeta(product_id)
+    getReviewsMeta(product_id, forced)
       .then((res) => {
         let sum = 0;
         let people = 0;
         for (const key in res.data.ratings) {
-          sum += key * res.data.ratings[key];
-          people += Number(res.data.ratings[key]);
+          if (Object.prototype.hasOwnProperty.call(res.data.ratings, key)) {
+            sum += key * res.data.ratings[key];
+            people += Number(res.data.ratings[key]);
+          }
         }
         const average = people ? Number(sum / people).toFixed(1) : 0;
         const recTrue = res.data.recommended.true ? res.data.recommended.true : 0;
@@ -101,67 +106,58 @@ class Reviews extends React.Component {
           reviewNumber: people,
           rating: average,
           overallRatings: res.data.ratings,
-          recommended: (
-            100 * recTrue
-            / (Number(recFalse)
-            + Number(recTrue))
-          ).toFixed(1),
+          recommended: (100 * recTrue / (Number(recFalse) + Number(recTrue))).toFixed(1),
         });
       })
       .then(callback)
       .catch(console.log);
   }
 
-  filter(callback) {
+  filterAllReviews(callback) {
     const { filter, allReviews, search } = this.state;
     const filteredReviews = [];
-    if (filter === 0) {
-      allReviews.forEach((review) => {
-        if (review.body.includes(search) || review.summary.includes(search)) {
-          filteredReviews.push(review);
-        }
-      });
-    } else {
-      allReviews.forEach((review) => {
-        if ((review.body.includes(search) || review.summary.includes(search)) && review.rating === filter) {
-          filteredReviews.push(review);
-        }
-      });
-    }
-    this.setState({ filteredReviews, page: 1 }, callback);
+    allReviews.forEach((review) => {
+      if ((review.body.includes(search) || review.summary.includes(search))
+        && (review.rating === filter || filter === 0)) { filteredReviews.push(review); }
+    });
+    this.setState({ filteredReviews }, callback);
   }
 
   search(input) {
-    this.setState({ search: input, reading: true }, () => { this.filter(this.getPageReview); });
+    this.setState(
+      { search: input, reading: true, page: 1 },
+      () => { this.filterAllReviews(this.getPageReview); },
+    );
   }
 
   filterRating(rating) {
-    if (this.state.filter !== rating) {
-      $(`#filter-rating-${this.state.filter}`).css({ color: 'rgb(85, 85, 85)', 'border-bottom': '1px solid rgb(85, 85, 85)' });
-      this.setState({ filter: rating, reading: true }, () => { this.filter(this.getPageReview); });
+    const { filter } = this.state;
+    if (filter !== rating) {
+      $(`#filter-rating-${filter}`).css({ color: 'rgb(85, 85, 85)', 'border-bottom': '1px solid rgb(85, 85, 85)' });
+      this.setState(
+        { filter: rating, reading: true, page: 1 },
+        () => { this.filterAllReviews(this.getPageReview); },
+      );
       $(`#filter-rating-${rating}`).css({ color: 'lightgrey', 'border-bottom': '1px solid lightgrey' });
     } else {
       $(`#filter-rating-${rating}`).css({ color: 'rgb(85, 85, 85)', 'border-bottom': '1px solid rgb(85, 85, 85)' });
-      this.setState({ filter: 0, reading: true }, () => { this.filter(this.getPageReview); });
+      this.setState(
+        { filter: 0, reading: true, page: 1 },
+        () => { this.filterAllReviews(this.getPageReview); },
+      );
     }
   }
 
   changeSort(e) {
     this.setState(
-      {
-        sort: e.target.value,
-        reading: true,
-        page: 1,
-      },
+      { sort: e.target.value, reading: true, page: 1 },
       () => { this.getAllReviews(this.getPageReview); },
     );
   }
 
   toggleExpandReviews() {
     const { reading } = this.state;
-    this.setState({ reading: !reading }, () => {
-
-    });
+    this.setState({ reading: !reading });
   }
 
   goToPage(p) {
@@ -174,7 +170,7 @@ class Reviews extends React.Component {
 
   submitReview() {
     this.closeWrite();
-    this.getMeta(this.getAllReviews);
+    this.getMeta(this.getAllReviews, /* forced = */true);
   }
 
   closeWrite() {
@@ -199,9 +195,13 @@ class Reviews extends React.Component {
   }
 
   charGraph() {
+    const { meta } = this.state;
+    const { characteristics } = meta;
     const graph2 = [];
-    for (const key in this.state.meta.characteristics) {
-      graph2.push(<Graph2 chara={key} key={key} value={this.state.meta.characteristics[key].value} />);
+    for (const key in characteristics) {
+      if (Object.prototype.hasOwnProperty.call(characteristics, key)) {
+        graph2.push(<Graph2 chara={key} key={key} value={characteristics[key].value} />);
+      }
     }
     return graph2;
   }
@@ -236,13 +236,10 @@ class Reviews extends React.Component {
   }
 
   renderReviews() {
-    const {
-      reviews, reading, page, filteredReviews,
-    } = this.state;
+    const { reviews, reading, page, filteredReviews } = this.state;
+    const { length } = reviews;
     const maxPage = Math.ceil(filteredReviews.length / 5);
-    if (reviews.length === 0 && page === 1) {
-      return 'No Reviews';
-    }
+    if (length === 0 && page === 1) { return 'No Reviews'; }
     if (!reading) {
       return (
         <div>
@@ -251,13 +248,9 @@ class Reviews extends React.Component {
             {reviews[0] && <Review key={reviews[0].review_id} review={reviews[0]} getAllReviews={this.getAllReviews} />}
             {reviews[1] && <Review key={reviews[1].review_id} review={reviews[1]} getAllReviews={this.getAllReviews} />}
           </div>
-          {
-          reviews.length > 2 || page > 1
-            ? <button className="bigReviewButton" type="submit" onClick={this.toggleExpandReviews}>MORE REVIEWS</button>
-            : <button className="bigReviewButton" type="submit" disabled>NO MORE REVIEWS</button>
-          }
+          <button className="bigReviewButton" type="submit" onClick={this.toggleExpandReviews} disabled={length <= 2 && page === 1}>
+            {(length <= 2 && page === 1) && 'NO '}MORE REVIEWS</button>
         </div>
-
       );
     }
     return (
@@ -265,27 +258,14 @@ class Reviews extends React.Component {
         <div className="render-reviews" style={{ height: '80vh' }}>
           {reviews.length === 0 && <p>No More Reviews</p>}
           {reviews.map((review) => <Review key={review.review_id} review={review} getAllReviews={this.getAllReviews} />)}
-          {
-          page > 1
-            ? <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(1); }}>&#171; BACK TO FIRST PAGE</button>
-            : <button className="mediumReviewButton" disabled>BACK TO FIRST PAGE</button>
-          }
-          {
-          page > 1
-            ? <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(page - 1); }}>&#8249; PREVIOUS PAGE</button>
-            : <button className="mediumReviewButton" disabled>PREVIOUS PAGE</button>
-          }
+          <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(1); }} disabled={page <= 1}>
+            {page > 1 && '«'}{' '}BACK TO FIRST PAGE</button>
+          <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(page - 1); }} disabled={page <= 1}>
+            {page > 1 && '‹'}{' '}PREVIOUS PAGE</button>
           {this.selectPage()}
-          {
-          page < maxPage
-            ? <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(page + 1); }}>NEXT PAGE &#8250;</button>
-            : <button className="mediumReviewButton" type="submit" disabled>NEXT PAGE</button>
-          }
-          <p style={{ float: 'right' }}>
-            {maxPage}
-            {' '}
-            {maxPage > 1 ? 'pages' : 'page'}
-          </p>
+          <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(page + 1); }} disabled={page >= maxPage}>
+            NEXT PAGE{' '}{page < maxPage && '›'}</button>
+          <p style={{ float: 'right' }}>{maxPage}{' '}{maxPage > 1 ? 'pages' : 'page'}</p>
         </div>
         <button type="submit" onClick={this.toggleExpandReviews} className="bigReviewButton">COLLAPSE</button>
       </div>
@@ -296,6 +276,7 @@ class Reviews extends React.Component {
     const {
       reviews, sort, rating, meta, recommended, reviewNumber, product_id,
     } = this.state;
+
     return (
       <div className="reviews-container">
         { meta
@@ -304,34 +285,20 @@ class Reviews extends React.Component {
               <p>RATINGS & REVIEWS</p>
               <p style={{ fontSize: '40', display: 'inline-block', margin: '3px' }}><b>{rating === 0 ? '' : rating}</b></p>
               {(rating !== 0) ? starRating(rating) : <div>☆☆☆☆☆</div> }
-              <p>
-                {recommended}
-                % of reviews recommend this product
-              </p>
-              <div className="rating_graph">
-                {this.ratingGraph()}
-              </div>
-              <div className="char_graph">
-                {this.charGraph()}
-              </div>
+              <p>{recommended}% of reviews recommend this product</p>
+              <div className="rating_graph">{this.ratingGraph()}</div>
+              <div className="char_graph">{this.charGraph()}</div>
               <div>
                 <dialog id="writeReview">
                   <WriteReview
                     submit={this.submitReview}
                     product_id={product_id}
                     name={this.props.name}
-                    category={this.props.category}
                     characteristics={meta.characteristics}
                     close={this.closeWrite}
                   />
                 </dialog>
-                <button
-                  className="bigReviewButton"
-                  type="submit"
-                  onClick={this.writeReview}
-                >
-                  ADD A REVIEW +
-                </button>
+                <button className="bigReviewButton" type="submit" onClick={this.writeReview}>ADD A REVIEW +</button>
                 <output />
               </div>
             </div>
@@ -340,11 +307,7 @@ class Reviews extends React.Component {
           ? (
             <div className="reviews-main">
               <div className="review-sort">
-                <p style={{ display: 'inline-block' }}>
-                  {reviewNumber}
-                  {' '}
-                  reviews, sorted by
-                  {' '}
+                <p style={{ display: 'inline-block' }}>{reviewNumber}{' '}reviews, sorted by{' '}
                   <select value={sort} onChange={this.changeSort}>
                     <option value="relevant">most relevant</option>
                     <option value="newest">newest</option>
@@ -353,9 +316,7 @@ class Reviews extends React.Component {
                 </p>
                 <SearchReview search={this.search} product_id={product_id} />
               </div>
-              <div>
-                {this.renderReviews()}
-              </div>
+              <div>{this.renderReviews()}</div>
             </div>
           ) : <div>loading...</div>}
       </div>

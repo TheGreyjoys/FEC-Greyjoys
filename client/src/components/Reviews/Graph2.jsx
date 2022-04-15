@@ -1,67 +1,32 @@
+/* eslint-disable no-mixed-operators */
 import React from 'react';
+import PropTypes from 'prop-types';
+import meaning from './meaning';
 
 function Graph2(props) {
-  const meaning = {
-    Size: {
-      1: 'A size too small',
-      2: '½ a size too small',
-      3: 'Perfect',
-      4: '½ a size too big',
-      5: 'A size too wide',
-    },
-    Width: {
-      1: 'Too narrow',
-      2: 'Slightly narrow',
-      3: 'Perfect',
-      4: 'Slightly wide',
-      5: 'Too wide',
-    },
-    Comfort: {
-      1: 'Uncomfortable',
-      2: 'Slightly uncomfortable',
-      3: 'Ok',
-      4: 'Comfortable',
-      5: 'Perfect',
-    },
-    Quality: {
-      1: 'Poor',
-      2: 'Below average',
-      3: 'What I expected',
-      4: 'Pretty great',
-      5: 'Perfect',
-    },
-    Length: {
-      1: 'Runs Short',
-      2: 'Runs slightly short',
-      3: 'Perfect',
-      4: 'Runs slightly long',
-      5: 'Runs long',
-    },
-    Fit: {
-      1: 'Runs tight',
-      2: 'Runs slightly tight',
-      3: 'Perfect',
-      4: 'Runs slightly long',
-      5: 'Runs long',
-    },
-  };
+  const { chara, value } = props;
   return (
     <div className="charChartContainer">
-      <div className="charChartKeys">{props.chara}</div>
+      <div className="charChartKeys">{chara}</div>
       <div className="charBarContainer">
-          <div className="charBarBars">
-            <div className="charBar"></div>
-            <div className="charBar"></div>
-            <div className="charBar"></div>
-          </div>
-          <div className="charBarPointer" style={{'position': 'relative', 'left': `${(Number(props.value) - 1) / 4 * 78}%`, 'top': '-12px'}}>▼</div>
-          <div className="charBarkeys">
-            <div>{meaning[props.chara][1]}</div>
-            <div>{meaning[props.chara][5]}</div>
-          </div>
+        <div className="charBarBars">
+          <div className="charBar" />
+          <div className="charBar" />
+          <div className="charBar" />
+        </div>
+        <div className="charBarPointer" style={{ position: 'relative', left: `${(Number(value) - 1) / 4 * 78}%`, top: '-12px' }}>▼</div>
+        <div className="charBarkeys">
+          <div>{meaning[chara][1]}</div>
+          <div>{meaning[chara][5]}</div>
+        </div>
       </div>
     </div>
   );
 }
+
+Graph2.propTypes = {
+  chara: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+};
 
 export default Graph2;
