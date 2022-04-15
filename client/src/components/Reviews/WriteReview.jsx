@@ -111,6 +111,7 @@ class WriteReview extends React.Component {
       })
         .then(() => {
           $('input:radio').prop('checked', false);
+          $('input:file').val(null);
           this.setState({
             rating: 0,
             recommend: null,

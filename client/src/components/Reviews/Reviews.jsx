@@ -1,11 +1,13 @@
 /* eslint-disable camelcase */
 import React from 'react';
+import $ from 'jquery';
 import Review from './Review';
 import WriteReview from './WriteReview';
 import Graph from './Graph';
 import { getReviews, getReviewsMeta } from '../../requests';
 import starRating from '../../starRating';
 import Graph2 from './Graph2';
+import SearchReview from './SearchReview';
 
 class Reviews extends React.Component {
   constructor(props) {
@@ -25,8 +27,10 @@ class Reviews extends React.Component {
       recommended: 0,
       overallRatings: null,
       filter: 0,
+      search: '',
+      filteredReviews: [],
     };
-    //this.getPageReview = this.getPageReview.bind(this);
+    this.getPageReview = this.getPageReview.bind(this);
     this.changeSort = this.changeSort.bind(this);
     this.renderReviews = this.renderReviews.bind(this);
     this.toggleExpandReviews = this.toggleExpandReviews.bind(this);
@@ -38,12 +42,14 @@ class Reviews extends React.Component {
     this.closeWrite = this.closeWrite.bind(this);
     this.selectPage = this.selectPage.bind(this);
     this.getAllReviews = this.getAllReviews.bind(this);
+    this.search = this.search.bind(this);
+    this.filter = this.filter.bind(this);
+    this.ratingGraph = this.ratingGraph.bind(this);
+    this.filterRating = this.filterRating.bind(this);
   }
 
   componentDidMount() {
-    this.getMeta(this.getAllReviews);
-    //this.getPageReview();
-
+    this.getMeta(() => { this.getAllReviews(this.getPageReview); });
   }
 
   componentDidUpdate() {
@@ -53,29 +59,23 @@ class Reviews extends React.Component {
         page: 1,
         sort: 'relevant',
         reading: false,
-      }, () => { this.getMeta(this.getAllReviews); });
+      }, () => { this.getMeta(() => { this.getAllReviews(this.getPageReview); }); });
     }
   }
 
   getPageReview() {
-    const { page, sort, product_id, filter, allReviews } = this.state;
-/*     getReviews(product_id, sort, page)
-      .then((res) => {
-        this.setState({ reviews: res.data.results });
-      })
-      .catch(console.log); */
-    if (filter === 0) {
-      this.setState({ reviews: allReviews.slice((page - 1) * 5, page * 5) });
-    }
+    const { page, filteredReviews } = this.state;
+    this.setState({ reviews: filteredReviews.slice((page - 1) * 5, page * 5) });
   }
 
-  getAllReviews() {
-    const { sort, product_id, reviewNumber, page } = this.state;
+  getAllReviews(callback) {
+    const { sort, product_id, reviewNumber } = this.state;
     getReviews(product_id, sort, 1, reviewNumber)
       .then((res) => {
-        console.log(res.data);
-        this.setState({ allReviews: res.data.results, reviews: res.data.results.slice((page - 1) * 5, page * 5) });
+        this.setState({ allReviews: res.data.results });
       })
+      .then(this.filter)
+      .then(callback)
       .catch(console.log);
   }
 
@@ -109,8 +109,49 @@ class Reviews extends React.Component {
       .catch(console.log);
   }
 
+  filter(callback) {
+    const { filter, allReviews, search } = this.state;
+    const filteredReviews = [];
+    if (filter === 0) {
+      allReviews.forEach((review) => {
+        if (review.body.includes(search) || review.summary.includes(search)) {
+          filteredReviews.push(review);
+        }
+      });
+    } else {
+      allReviews.forEach((review) => {
+        if ((review.body.includes(search) || review.summary.includes(search)) && review.rating === filter) {
+          filteredReviews.push(review);
+        }
+      });
+    }
+    this.setState({ filteredReviews, page: 1 }, callback);
+  }
+
+  search(input) {
+    this.setState({ search: input, reading: true }, () => { this.filter(this.getPageReview); });
+  }
+
+  filterRating(rating) {
+    if (this.state.filter !== rating) {
+      $(`#filter-rating-${this.state.filter}`).css({ color: 'rgb(85, 85, 85)', 'border-bottom': '1px solid rgb(85, 85, 85)' });
+      this.setState({ filter: rating, reading: true }, () => { this.filter(this.getPageReview); });
+      $(`#filter-rating-${rating}`).css({ color: 'lightgrey', 'border-bottom': '1px solid lightgrey' });
+    } else {
+      $(`#filter-rating-${rating}`).css({ color: 'rgb(85, 85, 85)', 'border-bottom': '1px solid rgb(85, 85, 85)' });
+      this.setState({ filter: 0, reading: true }, () => { this.filter(this.getPageReview); });
+    }
+  }
+
   changeSort(e) {
-    this.setState({ sort: e.target.value, reading: true, page: 1 }, this.getAllReviews);
+    this.setState(
+      {
+        sort: e.target.value,
+        reading: true,
+        page: 1,
+      },
+      () => { this.getAllReviews(this.getPageReview); },
+    );
   }
 
   toggleExpandReviews() {
@@ -130,44 +171,72 @@ class Reviews extends React.Component {
 
   submitReview() {
     this.closeWrite();
-    this.setState({ page: 1 }, () => { this.getMeta(this.getAllReviews); });
+    this.getMeta(this.getAllReviews);
   }
 
   closeWrite() {
     document.getElementById('writeReview').close();
   }
 
+  ratingGraph() {
+    const { overallRatings, reviewNumber } = this.state;
+    const graph = [];
+    for (let i = 5; i > 0; i -= 1) {
+      graph.push(
+        <Graph
+          key={i}
+          rating={i}
+          count={overallRatings[i] ? overallRatings[i] : 0}
+          reviewNumber={reviewNumber || 1}
+          filterRating={this.filterRating}
+        />,
+      );
+    }
+    return graph;
+  }
+
   charGraph() {
     const graph2 = [];
-    for (let key in this.state.meta.characteristics) {
+    for (const key in this.state.meta.characteristics) {
       graph2.push(<Graph2 chara={key} key={key} value={this.state.meta.characteristics[key].value} />);
     }
     return graph2;
   }
 
   selectPage() {
-    const { page, reviews } = this.state;
+    const { page, filteredReviews } = this.state;
     const pagesArr = [];
-    for (let i = page > 3 ? page - 3 : 1; i < page; i += 1) {
-      pagesArr.push(<button className="smallReviewButton" key={i} type="submit" onClick={() => { this.goToPage(i); }}>{i}</button>);
+    const maxPage = Math.ceil(filteredReviews.length / 5);
+    let i;
+    if (maxPage - page >= 2) {
+      i = page > 2 ? page - 2 : 1;
+    } else {
+      i = maxPage - 5 >= 1 ? maxPage - 5 : 1;
+    }
+    const startI = i;
+    while ((i <= 5 || i <= page + 2) && i <= maxPage) {
+      const j = i;
+      if (i === page) {
+        pagesArr.push(<p style={{ fontWeight: 'bold' }}>{page}</p>);
+      } else {
+        pagesArr.push(<button className="smallReviewButton" key={i} type="submit" onClick={() => { this.goToPage(j); }}>{i}</button>);
+      }
+      i += 1;
     }
     return (
       <div className="reviewPageSelector">
-        {page > 3 && <p>...</p>}
+        {startI > 1 && <p>...</p>}
         {pagesArr}
-        <p style={{ fontWeight: 'bold' }}>{page}</p>
-        {reviews.length === 5 && (
-        <p>
-          <button className="smallReviewButton" type="submit" onClick={() => { this.goToPage(page + 1); }}>{page + 1}</button>
-          ...
-        </p>
-        )}
+        {i - 1 < maxPage && <p>...</p>}
       </div>
     );
   }
 
   renderReviews() {
-    const { reviews, reading, page } = this.state;
+    const {
+      reviews, reading, page, filteredReviews,
+    } = this.state;
+    const maxPage = Math.ceil(filteredReviews.length / 5);
     if (reviews.length === 0 && page === 1) {
       return 'No Reviews';
     }
@@ -176,13 +245,13 @@ class Reviews extends React.Component {
         <div>
           <div className="render-reviews" style={{ height: 'auto' }}>
             {reviews.length === 0 && <p>No More Reviews</p>}
-            {reviews[0] && <Review key={reviews[0].review_id} review={reviews[0]} />}
-            {reviews[1] && <Review key={reviews[1].review_id} review={reviews[1]} />}
+            {reviews[0] && <Review key={reviews[0].review_id} review={reviews[0]} getAllReviews={this.getAllReviews} />}
+            {reviews[1] && <Review key={reviews[1].review_id} review={reviews[1]} getAllReviews={this.getAllReviews} />}
           </div>
           {
           reviews.length > 2 || page > 1
             ? <button className="bigReviewButton" type="submit" onClick={this.toggleExpandReviews}>MORE REVIEWS</button>
-            : <button className="bigReviewButton" type="submit" disabled>No More Reviews</button>
+            : <button className="bigReviewButton" type="submit" disabled>NO MORE REVIEWS</button>
           }
         </div>
 
@@ -192,7 +261,7 @@ class Reviews extends React.Component {
       <div>
         <div className="render-reviews" style={{ height: '80vh' }}>
           {reviews.length === 0 && <p>No More Reviews</p>}
-          {reviews.map((review) => <Review key={review.review_id} review={review} />)}
+          {reviews.map((review) => <Review key={review.review_id} review={review} getAllReviews={this.getAllReviews} />)}
           {
           page > 1
             ? <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(1); }}>&#171; BACK TO FIRST PAGE</button>
@@ -204,7 +273,16 @@ class Reviews extends React.Component {
             : <button className="mediumReviewButton" disabled>PREVIOUS PAGE</button>
           }
           {this.selectPage()}
-          {reviews.length === 5 ? <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(page + 1); }}>NEXT PAGE &#8250;</button> : <button className="mediumReviewButton" disabled>NEXT PAGE</button>}
+          {
+          page < maxPage
+            ? <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(page + 1); }}>NEXT PAGE &#8250;</button>
+            : <button className="mediumReviewButton" type="submit" disabled>NEXT PAGE</button>
+          }
+          <p style={{ float: 'right' }}>
+            {maxPage}
+            {' '}
+            {maxPage > 1 ? 'pages' : 'page'}
+          </p>
         </div>
         <button type="submit" onClick={this.toggleExpandReviews} className="bigReviewButton">COLLAPSE</button>
       </div>
@@ -227,21 +305,12 @@ class Reviews extends React.Component {
                 {recommended}
                 % of reviews recommend this product
               </p>
-              {overallRatings
-            && (
-              <div>
-                <Graph
-                  five={overallRatings[5] ? overallRatings[5] : 0}
-                  four={overallRatings[4] ? overallRatings[4] : 0}
-                  three={overallRatings[3] ? overallRatings[3] : 0}
-                  two={overallRatings[2] ? overallRatings[2] : 0}
-                  one={overallRatings[1] ? overallRatings[1] : 0}
-                  reviewNumber={reviewNumber || 1}
-                />
+              <div className="rating_graph">
+                {this.ratingGraph()}
+              </div>
+              <div className="char_graph">
                 {this.charGraph()}
               </div>
-
-            ) }
               <div>
                 <dialog id="writeReview">
                   <WriteReview
@@ -268,7 +337,7 @@ class Reviews extends React.Component {
           ? (
             <div className="reviews-main">
               <div className="review-sort">
-                <p>
+                <p style={{ display: 'inline-block' }}>
                   {reviewNumber}
                   {' '}
                   reviews, sorted by
@@ -279,6 +348,7 @@ class Reviews extends React.Component {
                     <option value="helpful">most helpful</option>
                   </select>
                 </p>
+                <SearchReview search={this.search} />
               </div>
               <div>
                 {this.renderReviews()}
