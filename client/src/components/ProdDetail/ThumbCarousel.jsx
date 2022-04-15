@@ -1,202 +1,169 @@
-/* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import Thumb from './Thumb';
 
-class ThumbCarousel extends React.Component {
-  constructor(props) {
-    super(props);
+function ThumbCarousel(props) {
+  const {
+    allThumbs, currIndex, currProduct, currStyle, handleThumbClick,
+  } = props;
 
-    const { allThumbs, currIndex } = this.props;
+  const [slide, setSlide] = useState(0);
+  const [leftBound, setLeftBound] = useState(0);
+  const [rightBound, setRightBound] = useState(allThumbs.length > 7 ? 6 : allThumbs.length);
 
-    this.state = {
+  useEffect(() => {
+    setSlide(0);
+    setLeftBound(0);
+    setRightBound(allThumbs.length > 7 ? 6 : allThumbs.length);
+  }, [currProduct, currStyle]);
 
-      currIndex,
-      slide: 0,
-      leftBound: 0,
-      rightBound: allThumbs.length > 7 ? 6 : allThumbs.length - 1,
-    };
-    this.slideLeft = this.slideLeft.bind(this);
-    this.slideRight = this.slideRight.bind(this);
-    this.autoSlide = this.autoSlide.bind(this);
-  }
-
-  componentDidUpdate(prevProps) {
-    const { leftBound, rightBound } = this.state;
-    const {
-      currProd, currStyle, allThumbs, currIndex,
-    } = this.props;
-    const oldProd = prevProps.currProd;
-    const oldStyle = prevProps.currStyle;
-    if (currProd !== oldProd || currStyle !== oldStyle) {
-      this.setState({
-        slide: 0,
-        leftBound: 0,
-        rightBound: allThumbs.length > 7 ? 6 : allThumbs.length - 1,
-      });
-    }
-    if (currIndex !== this.state.currIndex) {
-      if (currIndex < leftBound || rightBound < currIndex) {
-        this.autoSlide();
-      }
-      this.setState({ currIndex });
-    }
-  }
-
-  slideLeft() {
-    const { slide, leftBound, rightBound } = this.state;
-
-    if (slide > 0) {
-      this.setState({
-        slide: slide - 1,
-        leftBound: leftBound - 1,
-        rightBound: rightBound - 1,
-      });
-    }
-  }
-
-  slideRight() {
-    const { slide, leftBound, rightBound } = this.state;
-    const { allThumbs } = this.props;
-
-    if (slide < (allThumbs.length - 7)) {
-      this.setState({
-        slide: slide + 1,
-        leftBound: leftBound + 1,
-        rightBound: rightBound + 1,
-      });
-    }
-  }
-
-  autoSlide() {
-    const { currIndex } = this.props;
-    const { slide, leftBound, rightBound } = this.state;
+  const autoSlide = () => {
     if (currIndex > rightBound) {
       const rightShift = currIndex - rightBound;
-      this.setState({
-        slide: slide + rightShift,
-        leftBound: leftBound + rightShift,
-        rightBound: rightBound + rightShift,
-      });
+      setSlide(slide + rightShift);
+      setLeftBound(leftBound + rightShift);
+      setRightBound(rightBound + rightShift);
     }
     if (currIndex < leftBound) {
       const leftShift = currIndex - leftBound;
-      this.setState({
-        slide: slide + leftShift,
-        leftBound: leftBound + leftShift,
-        rightBound: rightBound + leftShift,
-      });
+      setSlide(slide + leftShift);
+      setLeftBound(leftBound + leftShift);
+      setRightBound(rightBound + leftShift);
     }
     return null;
-  }
+  };
 
-  render() {
-    const { slide } = this.state;
-    const { allThumbs, currIndex, handleThumbClick } = this.props;
+  useEffect(() => {
+    if (currIndex < leftBound || currIndex > rightBound) {
+      autoSlide();
+    }
+  }, [currIndex]);
 
-    const thumbCount = allThumbs.length;
-    const thumbGrid = {
-      display: 'grid',
-      gridTemplateColumns: `repeat(${thumbCount}, 55px)`,
-      gridTemplateRows: '1fr',
-      width: `${thumbCount * 55}px`,
-      transform: `translateX(-${(slide * 100) / thumbCount}%)`,
-    };
+  const slideLeft = () => {
+    if (slide > 0) {
+      setSlide(slide - 1);
+      setLeftBound(leftBound - 1);
+      setRightBound(rightBound - 1);
+    }
+  };
 
-    const needScroll = () => {
-      if (thumbCount > 7) {
-        return true;
-      }
-      return false;
-    };
+  const slideRight = () => {
+    if (slide < (allThumbs.length - 7)) {
+      setSlide(slide + 1);
+      setLeftBound(leftBound + 1);
+      setRightBound(rightBound + 1);
+    }
+  };
 
-    const renderLeftArrow = () => {
-      if (needScroll()) {
-        if (slide > 0) {
-          return (
-            <button
-              type="button"
-              className="left-arrow-thumb"
-              onClick={this.slideLeft}
-            >
-              &lt;
-            </button>
-          );
-        }
+  const thumbCount = allThumbs.length;
+  const thumbGrid = {
+    display: 'grid',
+    gridTemplateColumns: `repeat(${thumbCount}, 55px)`,
+    gridTemplateRows: '1fr',
+    width: `${thumbCount * 55}px`,
+    transform: `translateX(-${(slide * 100) / thumbCount}%)`,
+  };
+
+  const needScroll = () => {
+    if (thumbCount > 7) {
+      return true;
+    }
+    return false;
+  };
+
+  const renderLeftArrow = () => {
+    if (needScroll()) {
+      if (slide > 0) {
         return (
           <button
             type="button"
-            className="left-arrow-thumb-dis"
-            onClick={this.slideLeft}
-            disabled
+            className="left-arrow-thumb"
+            onClick={slideLeft}
           >
             &lt;
           </button>
         );
       }
-      return null;
-    };
+      return (
+        <button
+          type="button"
+          className="left-arrow-thumb-dis"
+          disabled
+        >
+          &lt;
+        </button>
+      );
+    }
+    return null;
+  };
 
-    const renderRightArrow = () => {
-      if (needScroll()) {
-        if (slide < (allThumbs.length - 7)) {
-          return (
-            <button
-              type="button"
-              className="right-arrow-thumb"
-              onClick={this.slideRight}
-            >
-              &gt;
-            </button>
-          );
-        }
+  const renderRightArrow = () => {
+    if (needScroll()) {
+      if (slide < (allThumbs.length - 7)) {
         return (
           <button
             type="button"
-            className="right-arrow-thumb-dis"
-            onClick={this.slideRight}
-            disabled
+            className="right-arrow-thumb"
+            onClick={slideRight}
           >
             &gt;
           </button>
         );
       }
-      return null;
-    };
-
-    const dynamicWidth = thumbCount > 7 ? 7 * 55 : thumbCount * 55;
-
-    return (
-      <div
-        className="thumb-carousel"
-        style={{ width: `${dynamicWidth + 65}px` }}
-      >
-        {renderLeftArrow()}
-        <div
-          className="thumb-window"
-          style={{ width: `${dynamicWidth}px` }}
+      return (
+        <button
+          type="button"
+          className="right-arrow-thumb-dis"
+          disabled
         >
-          <div
-            className="thumb-selector"
-            style={thumbGrid}
-          >
-            {allThumbs.map((img, index) => (
-              <Thumb
-                url={allThumbs[index]}
-                index={index}
-                currIndex={currIndex}
-                key={allThumbs[index]}
-                handleThumbClick={handleThumbClick}
-                style={{
-                  'grid-column': index + 1,
-                }}
-              />
-            ))}
-          </div>
+          &gt;
+        </button>
+      );
+    }
+    return null;
+  };
+
+  const dynamicWidth = thumbCount > 7 ? 7 * 55 : thumbCount * 55;
+
+  return (
+    <div
+      className="thumb-carousel"
+      style={{ width: `${dynamicWidth + 65}px` }}
+    >
+      {renderLeftArrow()}
+      <div
+        className="thumb-window"
+        style={{ width: `${dynamicWidth}px` }}
+      >
+        <div
+          className="thumb-selector"
+          style={thumbGrid}
+        >
+          {allThumbs.map((img, index) => (
+            <Thumb
+              thumbUrl={allThumbs[index]}
+              index={index}
+              currIndex={currIndex}
+              key={allThumbs[index]}
+              handleThumbClick={handleThumbClick}
+              style={{
+                'grid-column': index + 1,
+              }}
+            />
+          ))}
         </div>
-        {renderRightArrow()}
       </div>
-    );
-  }
+      {renderRightArrow()}
+    </div>
+  );
 }
+
+ThumbCarousel.propTypes = {
+  allThumbs: PropTypes.arrayOf(PropTypes.string).isRequired,
+  currIndex: PropTypes.number.isRequired,
+  currProduct: PropTypes.number.isRequired,
+  currStyle: PropTypes.number.isRequired,
+  handleThumbClick: PropTypes.func.isRequired,
+};
 
 export default ThumbCarousel;
