@@ -133,7 +133,7 @@ class ProdDetail extends React.Component {
 
     if (loaded) {
       return (
-        <div>
+        <div id="Product Detail">
           <section className="overview">
             <ImageGallery
               selectedStyle={productStyles[selectedStyle]}
