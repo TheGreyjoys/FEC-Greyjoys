@@ -2,13 +2,11 @@ const path = require('path');
 require('dotenv').config();
 
 module.exports = {
-  mode: process.env.NODE_ENV || 'development',
   entry: '/client/src/index.jsx',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'client/dist'),
   },
-  devtool: 'source-map',
   resolve: {
     alias: {
       Components: path.resolve(__dirname, 'client/src/components/'),
