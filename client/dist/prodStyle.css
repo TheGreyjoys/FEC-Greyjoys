@@ -74,7 +74,7 @@
   align-items: center;
   justify-items: center;
 
-  transition: all 100ms linear;
+  transition: all 200ms linear;
 }
 
 .thumb, .thumb-sel {

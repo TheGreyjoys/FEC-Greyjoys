@@ -59,7 +59,7 @@ function ThumbCarousel(props) {
   const thumbGrid = {
     display: 'grid',
     gridTemplateColumns: `repeat(${thumbCount}, 55px)`,
-    gridTemplateRows: '1fr',
+    gridTemplateRows: '55px',
     width: `${thumbCount * 55}px`,
     transform: `translateX(-${(slide * 100) / thumbCount}%)`,
   };
