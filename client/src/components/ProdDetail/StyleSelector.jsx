@@ -109,7 +109,17 @@ function StyleSelector(props) {
         onChange={handleQtyChange}
       >
         <option value="default" disabled hidden>Qty</option>
-        {qtyArray.map((val, index) => <option key={index + 1} value={index + 1}>{index + 1}</option>)}
+        {qtyArray.map((val, index) => {
+          const value = index + 1;
+          return (
+            <option
+              key={value}
+              value={value}
+            >
+              {value}
+            </option>
+          );
+        })}
       </select>
     );
   };
@@ -162,5 +172,12 @@ function StyleSelector(props) {
     </form>
   );
 }
+
+StyleSelector.propTypes = {
+  currProduct: PropTypes.number.isRequired,
+  selectedStyle: PropTypes.number.isRequired,
+  handleCartAdd: PropTypes.func.isRequired,
+  handleStyleChange: PropTypes.func.isRequired,
+};
 
 export default StyleSelector;
