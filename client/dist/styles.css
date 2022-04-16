@@ -152,6 +152,9 @@ nav {
   border: 2px solid white;
   border-radius: 25px;
 
+  object-fit: cover;
+  object-position: center;
+
   transition: all 25ms linear;
 }
 
