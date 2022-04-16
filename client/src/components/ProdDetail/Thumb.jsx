@@ -1,45 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-class Thumb extends React.Component {
-  constructor(props) {
-    super(props);
+function Thumb(props) {
+  const {
+    thumbUrl, index, currIndex, handleThumbClick,
+  } = props;
 
-    const { url, index, currIndex } = this.props;
+  const [url, setUrl] = useState(thumbUrl);
 
-    this.state = {
-      url,
-      index,
-      currIndex,
-    };
-  }
+  useEffect(() => {
+    setUrl(thumbUrl);
+  }, [thumbUrl]);
 
-  componentDidUpdate(prevProps) {
-    const newIndex = this.props.currIndex;
-    const oldIndex = prevProps.currIndex;
-    const newUrl = this.props.url;
-    const oldUrl = prevProps.url;
-    if (newIndex !== oldIndex || newUrl !== oldUrl) {
-      this.setState({
-        url: newUrl,
-        currIndex: newIndex,
-      });
-    }
-  }
+  useEffect(() => {
 
-  render() {
-    const { url, index, currIndex } = this.state;
-    const { handleThumbClick } = this.props;
-    return (
-      <input
-        type="image"
-        className={index === currIndex ? 'thumb-sel' : 'thumb'}
-        src={url}
-        alt={`thumb${index}`}
-        value={index}
-        onClick={handleThumbClick}
-      />
-    );
-  }
+  }, [currIndex]);
+
+  return (
+    <input
+      type="image"
+      className={index === currIndex ? 'thumb-sel' : 'thumb'}
+      src={url}
+      alt={`thumb${index}`}
+      value={index}
+      onClick={handleThumbClick}
+    />
+  );
 }
+
+Thumb.propTypes = {
+  currIndex: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
+  thumbUrl: PropTypes.string.isRequired,
+  handleThumbClick: PropTypes.func.isRequired,
+};
 
 export default Thumb;

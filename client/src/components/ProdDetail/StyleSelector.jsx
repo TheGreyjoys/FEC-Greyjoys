@@ -86,7 +86,7 @@ function StyleSelector(props) {
         onChange={handleSizeChange}
       >
         <option value="default" disabled hidden>Size</option>
-        {availSizes.map((option) => <option value={option}>{option}</option>)}
+        {availSizes.map((option) => <option key={option} value={option}>{option}</option>)}
       </select>
     );
   };
@@ -109,7 +109,17 @@ function StyleSelector(props) {
         onChange={handleQtyChange}
       >
         <option value="default" disabled hidden>Qty</option>
-        {qtyArray.map((val, index) => <option value={index + 1}>{index + 1}</option>)}
+        {qtyArray.map((val, index) => {
+          const value = index + 1;
+          return (
+            <option
+              key={value}
+              value={value}
+            >
+              {value}
+            </option>
+          );
+        })}
       </select>
     );
   };
@@ -146,6 +156,7 @@ function StyleSelector(props) {
         <div className="select">
           {Object.values(styles).map((style) => (
             <Style
+              key={style.style_id}
               currStyle={currStyle}
               style={style}
               handleStyleClick={handleStyleClick}
@@ -161,5 +172,12 @@ function StyleSelector(props) {
     </form>
   );
 }
+
+StyleSelector.propTypes = {
+  currProduct: PropTypes.number.isRequired,
+  selectedStyle: PropTypes.number.isRequired,
+  handleCartAdd: PropTypes.func.isRequired,
+  handleStyleChange: PropTypes.func.isRequired,
+};
 
 export default StyleSelector;

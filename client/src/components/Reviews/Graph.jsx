@@ -1,45 +1,37 @@
+/* eslint-disable no-mixed-operators */
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function Graph(props) {
+  const {
+    rating, filterRating, reviewNumber, count,
+  } = props;
   return (
-    <div className="rating_graph">
-      <div className="rating">
-        <p>5 stars</p>
-        <div className="bar">
-          <div className="filled" style={{ width: `${Number(props.five) / props.reviewNumber * 100}%` }}></div>
-        </div>
-        <p>{props.five}</p>
+    <div className="rating">
+      <button
+        className="smallReviewButton"
+        id={`filter-rating-${rating}`}
+        type="submit"
+        onClick={() => { filterRating(rating); }}
+      >
+        {rating}
+        {' '}
+        stars
+
+      </button>
+      <div className="bar">
+        <div className="filled" style={{ width: `${Number(count) / reviewNumber * 100}%` }} />
       </div>
-      <div className="rating">
-        <p>4 stars</p>
-        <div className="bar">
-          <div className="filled" style={{ width: `${Number(props.four) / props.reviewNumber * 100}%`  }}></div>
-        </div>
-        <p>{props.four}</p>
-      </div>
-      <div className="rating">
-        <p>3 stars</p>
-        <div className="bar">
-          <div className="filled" style={{ width: `${Number(props.three) / props.reviewNumber * 100}%` }}></div>
-        </div>
-        <p>{props.three}</p>
-      </div>
-      <div className="rating">
-        <p>2 stars</p>
-        <div className="bar">
-          <div className="filled" style={{ width: `${Number(props.two) / props.reviewNumber * 100}%` }}></div>
-        </div>
-        <p>{props.two}</p>
-      </div>
-      <div className="rating">
-        <p>1 stars</p>
-        <div className="bar">
-          <div className="filled" style={{ width: `${Number(props.one) / props.reviewNumber * 100}%` }}></div>
-        </div>
-        <p>{props.one}</p>
-      </div>
+      <p>{count}</p>
     </div>
   );
 }
+
+Graph.propTypes = {
+  rating: PropTypes.number.isRequired,
+  filterRating: PropTypes.func.isRequired,
+  reviewNumber: PropTypes.number.isRequired,
+  count: PropTypes.string.isRequired,
+};
 
 export default Graph;

@@ -3,6 +3,7 @@ import $ from 'jquery';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { postReview } from '../../requests';
+import meaning from './meaning';
 // import { CLOUDINARY_UPLOAD_PRESET } from '../../../../config';
 
 class WriteReview extends React.Component {
@@ -43,17 +44,11 @@ class WriteReview extends React.Component {
   }
 
   handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value,
-      cannotPost: '',
-    });
+    this.setState({ [e.target.name]: e.target.value, cannotPost: '' });
   }
 
   clickStar(rating) {
-    this.setState({
-      rating,
-      cannotPost: '',
-    });
+    this.setState({ rating, cannotPost: '' });
   }
 
   showStar(position) {
@@ -110,7 +105,7 @@ class WriteReview extends React.Component {
         photos: uploadImg,
       })
         .then(() => {
-          $('input:radio').prop('checked', false);
+          $('input:file').val(null);
           this.setState({
             rating: 0,
             recommend: null,
@@ -130,50 +125,6 @@ class WriteReview extends React.Component {
 
   renderChara() {
     const charaArr = [];
-    const meaning = {
-      Size: {
-        1: 'A size too small',
-        2: '½ a size too small',
-        3: 'Perfect',
-        4: '½ a size too big',
-        5: 'A size too wide',
-      },
-      Width: {
-        1: 'Too narrow',
-        2: 'Slightly narrow',
-        3: 'Perfect',
-        4: 'Slightly wide',
-        5: 'Too wide',
-      },
-      Comfort: {
-        1: 'Uncomfortable',
-        2: 'Slightly uncomfortable',
-        3: 'Ok',
-        4: 'Comfortable',
-        5: 'Perfect',
-      },
-      Quality: {
-        1: 'Poor',
-        2: 'Below average',
-        3: 'What I expected',
-        4: 'Pretty great',
-        5: 'Perfect',
-      },
-      Length: {
-        1: 'Runs Short',
-        2: 'Runs slightly short',
-        3: 'Perfect',
-        4: 'Runs slightly long',
-        5: 'Runs long',
-      },
-      Fit: {
-        1: 'Runs tight',
-        2: 'Runs slightly tight',
-        3: 'Perfect',
-        4: 'Runs slightly long',
-        5: 'Runs long',
-      },
-    };
     // eslint-disable-next-line no-restricted-syntax
     // eslint-disable-next-line guard-for-in
     // eslint-disable-next-line no-restricted-syntax
@@ -181,30 +132,20 @@ class WriteReview extends React.Component {
     // eslint-disable-next-line no-restricted-syntax
     for (const key in this.props.characteristics) {
       if (Object.prototype.hasOwnProperty.call(this.props.characteristics, key)) {
+        const charInputs = [];
+        for (let i = 1; i < 6; i += 1) {
+          charInputs.push(
+            <div className="charInput" key={key + i}>
+              <input type="radio" name={key} value={i} id={i} onChange={this.handleChara} checked={this.state.characteristics[this.props.characteristics[key].id] === i} />
+              <label htmlFor={i}>{meaning[key][i]}</label>
+            </div>,
+          );
+        }
         charaArr.push(
           <div key={key} className="charContainer">
             <p className="charKey">{key}</p>
             <div className="charSelector">
-              <div className="charInput">
-                <input type="radio" name={key} value={1} id={1} onChange={this.handleChara} />
-                <label htmlFor={1}>{meaning[key][1]}</label>
-              </div>
-              <div className="charInput">
-                <input type="radio" name={key} value={2} id={2} onChange={this.handleChara} />
-                <label htmlFor={2}>{meaning[key][2]}</label>
-              </div>
-              <div className="charInput">
-                <input type="radio" name={key} value={3} id={3} onChange={this.handleChara} />
-                <label htmlFor={3}>{meaning[key][3]}</label>
-              </div>
-              <div className="charInput">
-                <input type="radio" name={key} value={4} id={4} onChange={this.handleChara} />
-                <label htmlFor={4}>{meaning[key][4]}</label>
-              </div>
-              <div className="charInput">
-                <input type="radio" name={key} value={5} id={5} onChange={this.handleChara} />
-                <label htmlFor={5}>{meaning[key][5]}</label>
-              </div>
+              {charInputs}
             </div>
           </div>,
         );
@@ -214,6 +155,10 @@ class WriteReview extends React.Component {
   }
 
   render() {
+    const stars = [];
+    for (let i = 1; i < 6; i += 1) {
+      stars.push(<div className="selectable star" onClick={() => { this.clickStar(i); }}>{this.showStar(i)}</div>);
+    }
     return (
       <div className="writeReviewForm">
         <button className="mediumReviewButton" style={{ float: 'right' }} onClick={this.props.close}>✕</button>
@@ -225,19 +170,15 @@ class WriteReview extends React.Component {
         </h3>
         <div>
           <p>Your overall rating (required):</p>
-          <div className="selectable star" onClick={() => { this.clickStar(1); }}>{this.showStar(1)}</div>
-          <div className="selectable star" onClick={() => { this.clickStar(2); }}>{this.showStar(2)}</div>
-          <div className="selectable star" onClick={() => { this.clickStar(3); }}>{this.showStar(3)}</div>
-          <div className="selectable star" onClick={() => { this.clickStar(4); }}>{this.showStar(4)}</div>
-          <div className="selectable star" onClick={() => { this.clickStar(5); }}>{this.showStar(5)}</div>
+          {stars}
           <p style={{ display: 'inline-block' }}>{this.explainStar()}</p>
         </div>
         <div>
           <p>Do you recommend this product (required)? </p>
-          <input type="radio" name="recommend" value="true" id="yes" onChange={this.handleChange} />
+          <input type="radio" name="recommend" value="true" id="yes" onChange={this.handleChange} checked={this.state.recommend === "true"}/>
           <label htmlFor="yes">Yes</label>
 
-          <input type="radio" name="recommend" value="false" id="no" onChange={this.handleChange} />
+          <input type="radio" name="recommend" value="false" id="no" onChange={this.handleChange} checked={this.state.recommend === "false"}/>
           <label htmlFor="no">No</label>
         </div>
 

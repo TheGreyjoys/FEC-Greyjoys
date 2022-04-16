@@ -1,32 +1,52 @@
 import axios from 'axios';
+import { cache, checkCache } from './dataCache';
 
 const controller = new AbortController();
 const { signal } = controller;
 
-// this file does not yet contain requests for Q&A section or Cart API or Interactions API
+// this file does not yet contain requests for Q&A section
 
-function getCurrentProduct(id) {
-  return axios.get(`/products/${id}`, { signal });
+const dataPacker = (rawData) => (
+  { data: rawData }
+);
+
+const requestPromise = (id, type, url, forced) => (
+  new Promise((res) => {
+    const data = checkCache(id, type);
+    if (!data || forced) {
+      axios.get(url, { signal })
+        .then((result) => {
+          cache(id, type, result.data);
+          res(result);
+        });
+    } else {
+      res(dataPacker(data));
+    }
+  })
+);
+
+function getCurrentProduct(id, forced) {
+  return requestPromise(id, 'info', `/products/${id}`, forced);
 }
 
 function getAllProducts() {
   return axios.get('/products', { signal });
 }
 
-function getProductStyles(id) {
-  return axios.get(`/products/${id}/styles`, { signal });
+function getProductStyles(id, forced) {
+  return requestPromise(id, 'styles', `/products/${id}/styles`, forced);
 }
 
-function getRelatedProducts(id) {
-  return axios.get(`/products/${id}/related`, { signal });
+function getRelatedProducts(id, forced) {
+  return requestPromise(id, 'related', `/products/${id}/related`, forced);
 }
 
-function getReviews(id, sort, page) {
-  return axios.get(`/reviews?product_id=${id}&sort=${sort}&page=${page}`, { signal });
+function getReviews(id, sort, page, count = 5) {
+  return axios.get(`/reviews?product_id=${id}&sort=${sort}&page=${page}&count=${count}`, { signal });
 }
 
-function getReviewsMeta(id) {
-  return axios.get(`/reviews/meta?product_id=${id}`, { signal });
+function getReviewsMeta(id, forced) {
+  return requestPromise(id, 'reviewsMeta', `/reviews/meta?product_id=${id}`, forced);
 }
 
 function postReview(review) {

@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
+const configJS = require('./config');
 const express = require('express');
+const expressStaticGzip = require('express-static-gzip');
 const path = require('path');
 const axios = require('axios');
 const fs = require('fs');
@@ -23,7 +25,7 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use(express.static(path.join(__dirname, '../client/dist')));
+app.use(expressStaticGzip(path.join(__dirname, '../client/dist')));
 
 // a route that will forward all incoming HTTP requests to the API
 app.all('*', (req, res) => {
