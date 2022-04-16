@@ -30,3 +30,5 @@ oldFiles/
 
 cert.pem
 key.pem
+
+server/
