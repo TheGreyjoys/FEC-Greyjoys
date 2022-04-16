@@ -733,10 +733,18 @@ td {
 
 .smallReviewButton {
   border: 0px;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid rgb(85, 85, 85);
   background-color: white;
   margin: 5px;
   color: rgb(85, 85, 85)
+}
+
+.clickedSmallReviewButton {
+  border: 0px;
+  border-bottom: 1px solid lightgrey;
+  background-color: white;
+  margin: 5px;
+  color: lightgrey
 }
 
 .smallReviewButton:disabled {
@@ -789,6 +797,10 @@ td {
 
 .reviewPhoto {
   width: 20%;
+}
+
+.expandedReviewPhoto {
+  width: 60%;
 }
 
 .reviewThumbnails {

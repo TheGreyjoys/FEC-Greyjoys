@@ -52,7 +52,6 @@ function App() {
         <Reviews
           id={productData.id}
           name={productData.name}
-          category={productData.category}
         />
       </main>
     );

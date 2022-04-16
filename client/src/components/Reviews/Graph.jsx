@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 
 function Graph(props) {
   const {
-    rating, filterRating, reviewNumber, count,
+    rating, filterRating, reviewNumber, count, filter,
   } = props;
   return (
     <div className="rating">
       <button
-        className="smallReviewButton"
+        className={filter === rating ? 'clickedSmallReviewButton' : 'smallReviewButton'}
         id={`filter-rating-${rating}`}
         type="submit"
         onClick={() => { filterRating(rating); }}
@@ -32,6 +32,7 @@ Graph.propTypes = {
   filterRating: PropTypes.func.isRequired,
   reviewNumber: PropTypes.number.isRequired,
   count: PropTypes.string.isRequired,
+  filter: PropTypes.number.isRequired,
 };
 
 export default Graph;

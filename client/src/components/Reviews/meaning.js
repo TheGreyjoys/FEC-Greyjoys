@@ -41,6 +41,14 @@ const meaning = {
     4: 'Runs slightly long',
     5: 'Runs long',
   },
+  Star: {
+    0: '',
+    1: '1 star - “Poor”',
+    2: '2 stars - “Fair”',
+    3: '3 stars - “Average”',
+    4: '4 stars - “Good”',
+    5: '5 stars - “Great”',
+  },
 };
 
 export default meaning;
