@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/mouse-events-have-key-events */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable max-len */
@@ -12,11 +13,14 @@ function Comparison(props) {
   const {
     id, name: compName = 'hi', features: compFeatures,
   } = cardProduct;
+
   const [showComp, setShowComp] = useState(false);
+  const [hover, setHover] = useState(false);
 
   function toggleShowComp(e) {
     e.preventDefault();
     setShowComp(!showComp);
+    setHover(false);
   }
 
   // make a template for a table row. it will be populated by iterating through the first array of features, then the second. duplicate features will be removed. Then each array will be checked for if there is a value matching that feature, if there is, then it will be added to the table at that feature.
@@ -53,12 +57,13 @@ function Comparison(props) {
   }
 
   if (!showComp) {
-    return <button type="button" onClick={toggleShowComp} className="actionButton">☆</button>;
+    return <button type="button" onClick={toggleShowComp} className="actionButton" onMouseOver={() => { setHover(true); }} onMouseOut={() => { setHover(false); }}>{hover ? '★' : '☆'}</button>;
   }
   return ReactDOM.createPortal(
     <div>
-      <button type="button" className="closeModal" onClick={toggleShowComp}>Close</button>
       <div className="modal">
+        <button type="button" className="closeModal" onClick={toggleShowComp} style={{ float: 'right' }}>x</button>
+        <br />
         <table className="comparisonTable">
           <thead>
             <tr>
