@@ -23,7 +23,6 @@ function Comparison(props) {
     setHover(false);
   }
 
-  // make a template for a table row. it will be populated by iterating through the first array of features, then the second. duplicate features will be removed. Then each array will be checked for if there is a value matching that feature, if there is, then it will be added to the table at that feature.
   function makeListOfFeatures(currFeat, compFeat) {
     const allFeatures = [];
     currFeat.forEach((obj) => {
