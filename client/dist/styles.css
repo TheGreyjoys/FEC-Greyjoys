@@ -278,6 +278,9 @@ nav {
   width: 50px;
   margin: 5px;
 
+  object-fit: cover;
+  object-position: center;
+
   border-radius: 30px;
   border: 2px solid grey;
 }
@@ -290,6 +293,9 @@ nav {
   height: 47px;
   width: 47px;
   margin: 5px;
+
+  object-fit: cover;
+  object-position: center;
 
   border-radius: 30px;
   border: 4px solid black;
