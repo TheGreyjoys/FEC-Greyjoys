@@ -1,14 +1,20 @@
 /* eslint-disable no-console */
-const configJS = require('./config')
 const express = require('express');
 const path = require('path');
 const axios = require('axios');
+const fs = require('fs');
+const spdy = require('spdy');
+const configJS = require('./config');
 
 const app = express();
 const port = process.env.PORT || 3000;
 require('dotenv').config();
 
 const TOKEN = configJS.TOKEN || process.env.TOKEN;
+const options = {
+  key: fs.readFileSync(path.join(__dirname, '../key.pem')),
+  cert: fs.readFileSync(path.join(__dirname, '../cert.pem')),
+};
 
 app.use(express.json());
 
@@ -50,6 +56,13 @@ app.all('*', (req, res) => {
       });
   }
 });
+
+// spdy.createServer(
+//   options,
+//   app,
+// ).listen(port, () => {
+//   console.log(`Super cool app listening on port ${port}`);
+// });
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
