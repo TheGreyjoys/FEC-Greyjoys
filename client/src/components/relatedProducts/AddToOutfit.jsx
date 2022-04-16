@@ -23,7 +23,7 @@ function AddToOutfit(props) {
   }
 
   return (
-    <button className="card" type="button" style={{ height: '302.5px', width: '202px', fontFamily: 'Fira sans' }} onClick={handleClick}>
+    <button className="card" type="button" style={{ height: '312.5px', width: '202px', fontFamily: 'Fira sans' }} onClick={handleClick}>
       <div style={{ fontSize: '30px' }}>&#43;</div>
       <br />
       <p>Add This Item to Your Outfit</p>
