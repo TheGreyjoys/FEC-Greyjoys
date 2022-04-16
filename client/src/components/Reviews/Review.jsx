@@ -1,20 +1,18 @@
 /* eslint-disable class-methods-use-this */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prop-types */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable camelcase */
-/* eslint-disable react/require-default-props */
 import React from 'react';
-import $ from 'jquery';
+import PropTypes from 'prop-types';
 import { markHelpful, markReported } from '../../requests';
 
 class Review extends React.Component {
   constructor(props) {
     super(props);
+    const { review } = this.props;
     this.state = {
       clicked: false,
-      helpful: this.props.review.helpfulness,
-      markedHelpful: localStorage.getItem(`markedHelpful${this.props.review.review_id}`),
+      helpful: review.helpfulness,
+      markedHelpful: localStorage.getItem(`markedHelpful${review.review_id}`),
       reported: false,
       expandedImg: '',
     };
@@ -27,22 +25,25 @@ class Review extends React.Component {
   }
 
   getDate() {
-    let time = new Date(this.props.review.date);
+    const { review } = this.props;
+    let time = new Date(review.date);
     time = time.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     return time;
   }
 
   report(id) {
+    const { getAllReviews } = this.props;
     markReported(id)
       .then(() => {
         this.setState({ reported: true });
       })
-      .then(this.props.getAllReviews)
+      .then(getAllReviews)
       .catch(console.log);
   }
 
   helpful(id) {
     const { helpful } = this.state;
+    const { getAllReviews, review } = this.props;
     if (localStorage.getItem(`markedHelpful${id}`) !== 'true') {
       markHelpful(id)
         .then(() => {
@@ -52,9 +53,9 @@ class Review extends React.Component {
           localStorage.setItem(`markedHelpful${id}`, 'true');
         })
         .then(() => {
-          this.setState({ markedHelpful: localStorage.getItem(`markedHelpful${this.props.review.review_id}`) });
+          this.setState({ markedHelpful: localStorage.getItem(`markedHelpful${review.review_id}`) });
         })
-        .then(this.props.getAllReviews)
+        .then(getAllReviews)
         .catch(console.log);
     }
   }
@@ -76,22 +77,17 @@ class Review extends React.Component {
   }
 
   toggleExpandImg(e) {
-    const oldImg = this.state.expandedImg;
-    if (this.state.expandedImg !== e.target.id) {
-      this.setState({ expandedImg: e.target.id }, () => {
-        $(`#${e.target.id}`).css('width', '60%');
-        if (oldImg !== '') {
-          $(`#${oldImg}`).css('width', '20%');
-        }
-      });
+    const { expandedImg } = this.state;
+    if (expandedImg !== e.target.id) {
+      this.setState({ expandedImg: e.target.id });
     } else {
-      this.setState({ expandedImg: '' }, () => { $(`#${e.target.id}`).css('width', '20%'); });
+      this.setState({ expandedImg: '' });
     }
   }
 
   render() {
     const {
-      clicked, helpful, markedHelpful, reported,
+      clicked, helpful, markedHelpful, reported, expandedImg,
     } = this.state;
     const { review } = this.props;
     const {
@@ -109,7 +105,12 @@ class Review extends React.Component {
       <ul className="review">
         <div>
           {this.stars(rating)}
-          <div className="reviewNameAndDate">{reviewer_name},{' '}{this.getDate()}</div>
+          <div className="reviewNameAndDate">
+            {reviewer_name}
+            ,
+            {' '}
+            {this.getDate()}
+          </div>
         </div>
         <p className="reviewSummary">{clicked ? summary : summary.slice(0, 61)}</p>
         <p>{clicked ? body : summary.slice(61) + body.slice(0, 251)}</p>
@@ -121,22 +122,45 @@ class Review extends React.Component {
           <p>{response}</p>
         </div>
         )}
-        <div>{photos.length !== 0
-          && photos.slice(0, 5).map((photo) => <img className="reviewPhoto" key={photo.id} id={photo.id} src={photo.url} alt="review" onClick={this.toggleExpandImg} />)}
+        <div>
+          {photos.length !== 0
+          && photos.slice(0, 5).map((photo) => <img className={expandedImg === photo.id.toString() ? 'expandedReviewPhoto' : 'reviewPhoto'} key={photo.id} id={photo.id} src={photo.url} alt="review" onClick={this.toggleExpandImg} onKeyDown={this.toggleExpandImg} />)}
         </div>
         <button className="smallReviewButton" type="submit" onClick={() => { this.helpful(review_id); }} disabled={markedHelpful === 'true'}>
-          Helpful({helpful})
+          Helpful(
+          {helpful}
+          )
         </button>
         <button
           className="smallReviewButton"
           type="submit"
           onClick={() => { this.report(review_id); }}
-        >Report
+        >
+          Report
         </button>
         <div className="dividingLine" />
       </ul>
     );
   }
 }
+
+Review.propTypes = {
+  getAllReviews: PropTypes.func.isRequired,
+  review: PropTypes.shape({
+    body: PropTypes.string,
+    date: PropTypes.string,
+    helpfulness: PropTypes.number,
+    photos: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number,
+      url: PropTypes.string,
+    })),
+    rating: PropTypes.number,
+    recommend: PropTypes.bool,
+    response: PropTypes.string,
+    review_id: PropTypes.number,
+    reviewer_name: PropTypes.string,
+    summary: PropTypes.string,
+  }).isRequired,
+};
 
 export default Review;

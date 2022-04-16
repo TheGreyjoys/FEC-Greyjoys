@@ -1,4 +1,7 @@
+/* eslint-disable camelcase */
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class SearchReview extends React.Component {
   constructor(props) {
@@ -10,7 +13,8 @@ class SearchReview extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.product_id !== prevProps.product_id) {
+    const { product_id } = this.props;
+    if (product_id !== prevProps.product_id) {
       this.setState({ search: '' });
     }
   }
@@ -33,7 +37,10 @@ class SearchReview extends React.Component {
               () => { this.props.search(''); },
             );
           }}
-        >Clear</button>
+        >
+          Clear
+
+        </button>
         <button
           className="mediumReviewButton"
           style={{ borderLeft: '1px solid rgb(85, 85, 58)' }}
@@ -47,5 +54,10 @@ class SearchReview extends React.Component {
     );
   }
 }
+
+SearchReview.propTypes = {
+  product_id: PropTypes.number.isRequired,
+  search: PropTypes.func.isRequired,
+};
 
 export default SearchReview;

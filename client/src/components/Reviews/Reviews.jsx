@@ -1,9 +1,8 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-restricted-syntax */
+/* eslint-disable class-methods-use-this */
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
 import React from 'react';
-import $ from 'jquery';
+import PropTypes from 'prop-types';
 import Review from './Review';
 import WriteReview from './WriteReview';
 import Graph from './Graph';
@@ -15,10 +14,11 @@ import SearchReview from './SearchReview';
 class Reviews extends React.Component {
   constructor(props) {
     super(props);
+    const { id } = this.props;
     this.state = {
       allReviews: null,
       reviews: null,
-      product_id: this.props.id,
+      product_id: id,
       page: 1,
       sort: 'relevant',
       reading: false,
@@ -54,10 +54,9 @@ class Reviews extends React.Component {
   }
 
   componentDidUpdate() {
-    const { product_id, filter } = this.state;
+    const { product_id } = this.state;
     const { id } = this.props;
     if (product_id !== id) {
-      $(`#filter-rating-${filter}`).css({ color: 'rgb(85, 85, 85)', 'border-bottom': '1px solid rgb(85, 85, 85)' });
       this.setState({
         product_id: id,
         page: 1,
@@ -92,11 +91,10 @@ class Reviews extends React.Component {
       .then((res) => {
         let sum = 0;
         let people = 0;
-        for (const key in res.data.ratings) {
-          if (Object.prototype.hasOwnProperty.call(res.data.ratings, key)) {
-            sum += key * res.data.ratings[key];
-            people += Number(res.data.ratings[key]);
-          }
+        const keys = Object.keys(res.data.ratings);
+        for (let i = 0; i < keys.length; i += 1) {
+          sum += keys[i] * res.data.ratings[keys[i]];
+          people += Number(res.data.ratings[keys[i]]);
         }
         const average = people ? Number(sum / people).toFixed(1) : 0;
         const recTrue = res.data.recommended.true ? res.data.recommended.true : 0;
@@ -106,7 +104,7 @@ class Reviews extends React.Component {
           reviewNumber: people,
           rating: average,
           overallRatings: res.data.ratings,
-          recommended: (100 * recTrue / (Number(recFalse) + Number(recTrue))).toFixed(1),
+          recommended: ((100 * recTrue) / (Number(recFalse) + Number(recTrue))).toFixed(1),
         });
       })
       .then(callback)
@@ -133,14 +131,11 @@ class Reviews extends React.Component {
   filterRating(rating) {
     const { filter } = this.state;
     if (filter !== rating) {
-      $(`#filter-rating-${filter}`).css({ color: 'rgb(85, 85, 85)', 'border-bottom': '1px solid rgb(85, 85, 85)' });
       this.setState(
         { filter: rating, reading: true, page: 1 },
         () => { this.filterAllReviews(this.getPageReview); },
       );
-      $(`#filter-rating-${rating}`).css({ color: 'lightgrey', 'border-bottom': '1px solid lightgrey' });
     } else {
-      $(`#filter-rating-${rating}`).css({ color: 'rgb(85, 85, 85)', 'border-bottom': '1px solid rgb(85, 85, 85)' });
       this.setState(
         { filter: 0, reading: true, page: 1 },
         () => { this.filterAllReviews(this.getPageReview); },
@@ -178,7 +173,7 @@ class Reviews extends React.Component {
   }
 
   ratingGraph() {
-    const { overallRatings, reviewNumber } = this.state;
+    const { overallRatings, reviewNumber, filter } = this.state;
     const graph = [];
     for (let i = 5; i > 0; i -= 1) {
       graph.push(
@@ -188,6 +183,7 @@ class Reviews extends React.Component {
           count={overallRatings[i] ? overallRatings[i] : 0}
           reviewNumber={reviewNumber || 1}
           filterRating={this.filterRating}
+          filter={filter}
         />,
       );
     }
@@ -198,10 +194,9 @@ class Reviews extends React.Component {
     const { meta } = this.state;
     const { characteristics } = meta;
     const graph2 = [];
-    for (const key in characteristics) {
-      if (Object.prototype.hasOwnProperty.call(characteristics, key)) {
-        graph2.push(<Graph2 chara={key} key={key} value={characteristics[key].value} />);
-      }
+    const keys = Object.keys(characteristics);
+    for (let i = 0; i < keys.length; i += 1) {
+      graph2.push(<Graph2 chara={keys[i]} key={keys[i]} value={characteristics[keys[i]].value} />);
     }
     return graph2;
   }
@@ -236,7 +231,9 @@ class Reviews extends React.Component {
   }
 
   renderReviews() {
-    const { reviews, reading, page, filteredReviews } = this.state;
+    const {
+      reviews, reading, page, filteredReviews,
+    } = this.state;
     const { length } = reviews;
     const maxPage = Math.ceil(filteredReviews.length / 5);
     if (length === 0 && page === 1) { return 'No Reviews'; }
@@ -249,7 +246,10 @@ class Reviews extends React.Component {
             {reviews[1] && <Review key={reviews[1].review_id} review={reviews[1]} getAllReviews={this.getAllReviews} />}
           </div>
           <button className="bigReviewButton" type="submit" onClick={this.toggleExpandReviews} disabled={length <= 2 && page === 1}>
-            {(length <= 2 && page === 1) && 'NO '}MORE REVIEWS</button>
+            {(length <= 2 && page === 1) && 'NO '}
+            MORE REVIEWS
+
+          </button>
         </div>
       );
     }
@@ -259,13 +259,29 @@ class Reviews extends React.Component {
           {reviews.length === 0 && <p>No More Reviews</p>}
           {reviews.map((review) => <Review key={review.review_id} review={review} getAllReviews={this.getAllReviews} />)}
           <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(1); }} disabled={page <= 1}>
-            {page > 1 && '«'}{' '}BACK TO FIRST PAGE</button>
+            {page > 1 && '«'}
+            {' '}
+            BACK TO FIRST PAGE
+
+          </button>
           <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(page - 1); }} disabled={page <= 1}>
-            {page > 1 && '‹'}{' '}PREVIOUS PAGE</button>
+            {page > 1 && '‹'}
+            {' '}
+            PREVIOUS PAGE
+
+          </button>
           {this.selectPage()}
           <button className="mediumReviewButton" type="submit" onClick={() => { this.goToPage(page + 1); }} disabled={page >= maxPage}>
-            NEXT PAGE{' '}{page < maxPage && '›'}</button>
-          <p style={{ float: 'right' }}>{maxPage}{' '}{maxPage > 1 ? 'pages' : 'page'}</p>
+            NEXT PAGE
+            {' '}
+            {page < maxPage && '›'}
+
+          </button>
+          <p style={{ float: 'right' }}>
+            {maxPage}
+            {' '}
+            {maxPage > 1 ? 'pages' : 'page'}
+          </p>
         </div>
         <button type="submit" onClick={this.toggleExpandReviews} className="bigReviewButton">COLLAPSE</button>
       </div>
@@ -276,6 +292,7 @@ class Reviews extends React.Component {
     const {
       reviews, sort, rating, meta, recommended, reviewNumber, product_id,
     } = this.state;
+    const { name } = this.props;
 
     return (
       <div id="Reviews" className="reviews-container">
@@ -285,7 +302,10 @@ class Reviews extends React.Component {
               <p>RATINGS & REVIEWS</p>
               <p style={{ fontSize: '40', display: 'inline-block', margin: '3px' }}><b>{rating === 0 ? '' : rating}</b></p>
               {(rating !== 0) ? starRating(rating) : <div>☆☆☆☆☆</div> }
-              <p>{recommended}% of reviews recommend this product</p>
+              <p>
+                {recommended}
+                % of reviews recommend this product
+              </p>
               <div className="rating_graph">{this.ratingGraph()}</div>
               <div className="char_graph">{this.charGraph()}</div>
               <div>
@@ -293,7 +313,7 @@ class Reviews extends React.Component {
                   <WriteReview
                     submit={this.submitReview}
                     product_id={product_id}
-                    name={this.props.name}
+                    name={name}
                     characteristics={meta.characteristics}
                     close={this.closeWrite}
                   />
@@ -307,7 +327,11 @@ class Reviews extends React.Component {
           ? (
             <div className="reviews-main">
               <div className="review-sort">
-                <p style={{ display: 'inline-block' }}>{reviewNumber}{' '}reviews, sorted by{' '}
+                <p style={{ display: 'inline-block' }}>
+                  {reviewNumber}
+                  {' '}
+                  reviews, sorted by
+                  {' '}
                   <select value={sort} onChange={this.changeSort}>
                     <option value="relevant">most relevant</option>
                     <option value="newest">newest</option>
@@ -323,5 +347,10 @@ class Reviews extends React.Component {
     );
   }
 }
+
+Reviews.propTypes = {
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+};
 
 export default Reviews;
