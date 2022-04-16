@@ -6,7 +6,6 @@ const path = require('path');
 const axios = require('axios');
 const fs = require('fs');
 const spdy = require('spdy');
-const configJS = require('./config');
 
 const app = express();
 const port = process.env.PORT || 3000;

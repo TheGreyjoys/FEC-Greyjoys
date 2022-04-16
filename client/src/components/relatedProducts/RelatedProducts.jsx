@@ -32,7 +32,7 @@ function RelatedProducts(props) {
         && <button type="button" className="leftArrow" onClick={scrollLeft}>&larr;</button>
         }
         <div className="carousel-content-wrapper">
-          <div className="carousel-content" style={{ transform: `translateX(-${(currentIndex * 100) / length}%)` }}>
+          <div className="carousel-content" style={{ transform: `translateX(-${(currentIndex * 20.5)}%)` }}>
             {products.map((product) => (
               <Card
                 key={product}
@@ -45,7 +45,7 @@ function RelatedProducts(props) {
           </div>
         </div>
         {
-        currentIndex < (length - 4)
+        currentIndex < (length - 5)
         && <button type="button" className="rightArrow" onClick={scrollRight}>&rarr;</button>
         }
       </div>
